@@ -7,6 +7,8 @@ import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { baseUnitOptions, paymentStatusOptions, paymentTypeOptions, statusOptions, transferStatusOptions } from "../../constants";
 import { fetchAllBaseUnits } from "../../store/action/baseUnitsAction";
+import _ from 'lodash';
+
 
 const FilterDropdown = ( props ) => {
     const {

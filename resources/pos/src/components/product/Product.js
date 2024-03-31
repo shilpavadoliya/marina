@@ -20,6 +20,7 @@ import { fetchFrontSetting } from "../../store/action/frontSettingAction";
 import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 import ImportProductModel from "./ImportProductModel";
 import { productExcelAction } from "../../store/action/productExcelAction";
+import _ from 'lodash';
 
 const Product = (props) => {
     const {
@@ -101,6 +102,8 @@ const Product = (props) => {
                 images: product?.attributes.images,
                 id: product.id,
                 currency: currencySymbol,
+                image: product?.attributes.image,
+                product_unit_quantity: product?.attributes.product_unit_quantity,
             };
         });
 
@@ -164,61 +167,6 @@ const Product = (props) => {
             ),
             sortField: "code",
             sortable: true,
-        },
-        {
-            name: getFormattedMessage("product.input.brand.label"),
-            selector: (row) => row.brand_name,
-            sortField: "brand_name",
-            sortable: false,
-        },
-        {
-            name: getFormattedMessage("product.table.price.column.label"),
-
-            selector: (row) =>
-                currencySymbolHandling(
-                    allConfigData,
-                    row.currency,
-                    row.product_price
-                ),
-            sortField: "product_price",
-            sortable: true,
-        },
-        {
-            name: getFormattedMessage("product.input.product-unit.label"),
-            sortField: "product_unit",
-            sortable: true,
-            cell: (row) => {
-                return (
-                    row.product_unit && (
-                        <span className="badge bg-light-success">
-                            <span>{row.product_unit}</span>
-                        </span>
-                    )
-                );
-            },
-        },
-        {
-            name: getFormattedMessage("product.product-in-stock.label"),
-            // name: "In stock",
-            selector: (row) => row.in_stock,
-            sortField: "in_stock",
-            sortable: false,
-        },
-        {
-            name: getFormattedMessage(
-                "globally.react-table.column.created-date.label"
-            ),
-            selector: (row) => row.date,
-            sortField: "created_at",
-            sortable: true,
-            cell: (row) => {
-                return (
-                    <span className="badge bg-light-info">
-                        <div className="mb-1">{row.time}</div>
-                        {row.date}
-                    </span>
-                );
-            },
         },
         {
             name: getFormattedMessage("react-data-table.action.column.label"),

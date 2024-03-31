@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use App\Models\Price;
 
 /**
  * Class ProductCategoryRepository
@@ -87,6 +88,25 @@ class ProductRepository extends BaseRepository
                         config('app.media_disc'));
                 }
             }
+
+            if (isset($input['image']) && ! empty($input['image'])) {
+                $product['main_image_url'] = $product->addMedia($input['image'])->toMediaCollection(Product::PRODUCT_MAIN_IMAGE_PATH,
+                config('app.media_disc'));
+            }
+
+            if (isset($input['prices']) && is_array($input['prices'])) {
+                $pricesData = [];
+    
+                foreach ($input['prices'] as $price) {
+                    $pricesData[] = new Price([
+                        'location_id' => $price['location'],
+                        'product_id' => $product->id,
+                        'price' => $price['price'],
+                    ]);
+                }
+    
+                $product->prices()->saveMany($pricesData);
+            }
             
 
             
@@ -114,11 +134,55 @@ class ProductRepository extends BaseRepository
                         config('app.media_disc'));
                 }
             }
-            $product->clearMediaCollection(Product::PRODUCT_BARCODE_PATH);
-            // $reference_code = 'PR_'.$product->id;
-            // $this->generateBarcode($input, $reference_code);
-            // $product['barcode_image_url'] = Storage::url('product_barcode/barcode-'.$reference_code.'.png');
+        
+            if (isset($input['image']) && ! empty($input['image'])) {
+                $product->clearMediaCollection(Product::PRODUCT_MAIN_IMAGE_PATH);
+                $product['main_image_url'] = $product->addMedia($input['image'])->toMediaCollection(Product::PRODUCT_MAIN_IMAGE_PATH,
+                    config('app.media_disc'));
 
+               
+            }
+
+            if (isset($input['prices']) && is_array($input['prices'])) {
+
+                $updatedPricesData = [];
+
+                $locationIds = [];
+                foreach ($input['prices'] as $price) {
+                    $locationIds[] = $price['location'];
+                }
+
+
+                // Fetch existing prices based on location_id and product_id
+                $existingPrices = Price::whereIn('location_id', $locationIds)
+                                        ->where('product_id', $product->id)
+                                        ->get()
+                                        ->keyBy('location_id');
+
+                
+                foreach ($input['prices'] as $price) {
+                    $locationId = $price['location'];
+                    $productId = $product->id;
+
+                    if (isset($existingPrices[$locationId])) {
+                        // Update existing price
+                        $existingPrices[$locationId]->update(['price' => $price['price']]);
+                    } else {
+                        // Create new price
+                        $updatedPricesData[] = new Price([
+                            'location_id' => $locationId,
+                            'product_id' => $productId,
+                            'price' => $price['price'],
+                        ]);
+                    }
+                }
+
+                // Save new prices
+                if (!empty($updatedPricesData)) {
+                    $product->prices()->saveMany($updatedPricesData);
+                }
+            }
+            
             DB::commit();
 
             return $product;

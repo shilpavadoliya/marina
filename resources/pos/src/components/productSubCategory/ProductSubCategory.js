@@ -14,7 +14,6 @@ import { Tokens } from '../../constants';
 import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 
 const ProductSubCategory = (props) => {
-    // console.log(props);
     const {
         fetchProductSubCategories,
         productSubCategories,
@@ -41,12 +40,12 @@ const ProductSubCategory = (props) => {
         fetchProductSubCategories(filter, true);
     };
 
-
     const itemsValue = productSubCategories.length >= 0 && productSubCategories.map(product => ({
         name: product.attributes.name,
         image: product.attributes.image,
         products_count: product.attributes.products_count,
         category_id: product.attributes.category_id,
+        category_name: product.attributes.category_name,
         id: product.id,
     }));
 

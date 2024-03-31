@@ -10,7 +10,7 @@ const EditProductSubCategory = (props) => {
         <>
             {productSubCategory &&
             <ProductSubCategoryForm handleClose={handleClose} show={show} singleProductCategory={productSubCategory}
-                                 title={getFormattedMessage('product-category.edit.title')}/>
+                                 title={getFormattedMessage('product-sub-category.edit.title')}/>
             }
         </>
     )

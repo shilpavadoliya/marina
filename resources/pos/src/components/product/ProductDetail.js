@@ -122,57 +122,6 @@ const ProductDetail = (props) => {
                                         <tr>
                                             <th className="py-4" scope="row">
                                                 {getFormattedMessage(
-                                                    "product.input.brand.label"
-                                                )}
-                                            </th>
-                                            <td className="py-4">
-                                                {product &&
-                                                    product.attributes &&
-                                                    product.attributes
-                                                        .brand_name}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th className="py-4" scope="row">
-                                                {getFormattedMessage(
-                                                    "product.product-details.cost.label"
-                                                )}
-                                            </th>
-                                            <td className="py-4">
-                                                {currencySymbolHandling(
-                                                    allConfigData,
-                                                    frontSetting.value &&
-                                                        frontSetting.value
-                                                            .currency_symbol,
-                                                    product &&
-                                                        product.attributes &&
-                                                        product.attributes
-                                                            .product_cost
-                                                )}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th className="py-4" scope="row">
-                                                {getFormattedMessage(
-                                                    "product.table.price.column.label"
-                                                )}
-                                            </th>
-                                            <td className="py-4">
-                                                {currencySymbolHandling(
-                                                    allConfigData,
-                                                    frontSetting.value &&
-                                                        frontSetting.value
-                                                            .currency_symbol,
-                                                    product &&
-                                                        product.attributes &&
-                                                        product.attributes
-                                                            .product_price
-                                                )}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th className="py-4" scope="row">
-                                                {getFormattedMessage(
                                                     "product.product-details.unit.label"
                                                 )}
                                             </th>
@@ -194,35 +143,7 @@ const ProductDetail = (props) => {
                                                     </td>
                                                 )}
                                         </tr>
-                                        <tr>
-                                            <th className="py-4" scope="row">
-                                                {getFormattedMessage(
-                                                    "product.product-details.tax.label"
-                                                )}
-                                            </th>
-                                            <td className="py-4">
-                                                {product &&
-                                                product.attributes &&
-                                                product.attributes.order_tax
-                                                    ? product.attributes
-                                                          .order_tax
-                                                    : 0}{" "}
-                                                %
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th className="py-4" scope="row">
-                                                {getFormattedMessage(
-                                                    "product.input.stock-alert.label"
-                                                )}
-                                            </th>
-                                            <td className="py-4">
-                                                {product &&
-                                                    product.attributes &&
-                                                    product.attributes
-                                                        .stock_alert}
-                                            </td>
-                                        </tr>
+                                                                            
                                     </tbody>
                                 </table>
                             </div>

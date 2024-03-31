@@ -11,6 +11,8 @@ import {
     getFormattedMessage,
 } from "../../../shared/sharedMethod";
 import { toastType } from "../../../constants";
+import _ from 'lodash';
+
 
 const Product = (props) => {
     const {

@@ -32,6 +32,8 @@ class CustomPathGenerator implements PathGenerator
                 return str_replace('{PARENT_DIR}', ProductSubCategory::PATH, $path);
             case Product::PATH:
                 return str_replace('{PARENT_DIR}', Product::PATH, $path);
+            case Product::PRODUCT_MAIN_IMAGE_PATH:
+                return str_replace('{PARENT_DIR}', Product::PRODUCT_MAIN_IMAGE_PATH, $path);
             case Product::PRODUCT_BARCODE_PATH:
                 return str_replace('{PARENT_DIR}', Product::PRODUCT_BARCODE_PATH, $path);
             case User::PATH:

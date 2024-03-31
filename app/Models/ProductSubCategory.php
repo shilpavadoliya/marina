@@ -82,7 +82,9 @@ class ProductSubCategory extends BaseModel implements HasMedia, JsonResourceful
             'name' => $this->name,
             'image' => $this->image_url,
             'products_count' => $this->products()->count(),
-            'category_id' => $this->category_id
+            'category_id' => $this->category_id,
+            'category_name' => $this->category->name
+
         ];
 
         return $fields;
@@ -101,7 +103,7 @@ class ProductSubCategory extends BaseModel implements HasMedia, JsonResourceful
 
     public function products(): HasMany
     {
-        return $this->hasMany(Product::class, 'product_category_id', 'id');
+        return $this->hasMany(Product::class, 'sub_category_id', 'id');
     }
 
     public function category() {

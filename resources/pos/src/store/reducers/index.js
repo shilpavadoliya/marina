@@ -6,6 +6,7 @@ import toastReducer from './toastReducer';
 import currencyReducer from './currencyReducer';
 import productCategoryReducers from './productCategoryReducers';
 import productSubCategoryReducers from './productSubCategoryReducers';
+import productAvailableLocationReduce from './availableLocationReducer';
 import roleReducer from './roleReducer';
 import permissionReducer from './permissionReducer';
 import warehouseReducer from './warehouseReducrs';
@@ -110,6 +111,7 @@ export default combineReducers( {
     warehouses: warehouseReducer,
     productCategories: productCategoryReducers,
     productSubCategories: productSubCategoryReducers,
+    availableLocations : productAvailableLocationReduce,
     units: unitsReducers,
     suppliers: supplierReducer,
     users: userReducers,

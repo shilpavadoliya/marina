@@ -1,8 +1,6 @@
 import {productSubCategoriesActionType} from '../../constants';
 
 export default (state = [], action) => {
-        console.log(action.type);
-        console.log('come');
     switch (action.type) {
         case productSubCategoriesActionType.FETCH_PRODUCTS_SUB_CATEGORIES:
             return action.payload;

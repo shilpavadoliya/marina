@@ -12,6 +12,8 @@ import { getFormattedMessage } from "../sharedMethod";
 import DateRangePicker from "../datepicker/DateRangePicker";
 import FilterDropdown from "../filterMenu/FilterDropdown";
 import { setProductUnitId } from "../../store/action/productUnitIdAction";
+import _ from 'lodash';
+
 
 const ReactDataTable = (props) => {
     const {

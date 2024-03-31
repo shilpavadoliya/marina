@@ -21,7 +21,6 @@ export const fetchProductSubCategories =
             dispatch(setLoading(true));
         }
         let url = apiBaseURL.PRODUCTS_SUB_CATEGORIES;
-        console.log(url);
         if (
             !_.isEmpty(filter) &&
             (filter.page ||
@@ -35,7 +34,6 @@ export const fetchProductSubCategories =
         apiConfig
             .get(url)
             .then((response) => {
-                console.log(response);
                 dispatch({
                     type: productSubCategoriesActionType.FETCH_PRODUCTS_SUB_CATEGORIES,
                     payload: response.data.data,
@@ -43,7 +41,6 @@ export const fetchProductSubCategories =
                 dispatch(setTotalRecord(response.data.meta.total));
             })
             .catch((response) => {
-                console.log(response);
                 dispatch(
                     addToast({
                         text: response.response.data.message,

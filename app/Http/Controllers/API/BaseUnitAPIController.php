@@ -79,12 +79,7 @@ class BaseUnitAPIController extends AppBaseController
 
     public function destroy($id): JsonResponse
     {
-        $defaultBaseUnit = BaseUnit::whereId($id)->where('is_default', true)->exists();
-
-        if ($defaultBaseUnit) {
-            return $this->sendError('Default Base unit can\'t be deleted.');
-        }
-
+       
         $baseUnitUse = $this->baseUnitRepository->baseUnitCantDelete($id);
         if ($baseUnitUse) {
             return $this->sendError('Base unit can\'t be deleted.');

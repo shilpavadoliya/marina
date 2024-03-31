@@ -32,6 +32,15 @@ const EditProduct = ( props ) => {
             value: product?.attributes.brand_id,
             label: product?.attributes.brand_name
         },
+        
+        sub_category_id: {
+            value: product?.attributes.sub_category_id,
+            label: product?.attributes.sub_category_name
+        },
+        product_type: {
+            value: product?.attributes.product_type,
+            label: product?.attributes.product_type == 1 ? 'B2B' : product?.attributes.product_type == 2 ? 'B2C' : '',
+        },
         barcode_symbol: product?.attributes.barcode_symbol,
         product_cost: product?.attributes.product_cost,
         product_price: product?.attributes.product_price,
@@ -45,7 +54,11 @@ const EditProduct = ( props ) => {
         images: product?.attributes.images,
         quantity_limit: product?.attributes.quantity_limit,
         is_Edit: true,
-        id: product.id
+        id: product.id,
+        image:product?.attributes.image,
+        product_unit_quantity:product?.attributes.product_unit_quantity,
+        product_description:product?.attributes.product_description,
+        prices:product?.attributes.prices,
     } ) );
     const getProductUnit = itemsValue && base.filter( ( fill ) => Number( fill?.id ) === Number( itemsValue[ 0 ]?.product_unit ) )
 

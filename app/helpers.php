@@ -52,6 +52,7 @@ if (! function_exists('getSettingValue')) {
 function canDelete(array $models, string $columnName, int $id): bool
 {
     foreach ($models as $model) {
+        
         $result = $model::where($columnName, $id)->exists();
 
         if ($result) {

@@ -86,6 +86,7 @@ import EditSaleReturnFromSale from "./components/saleReturn/EditSaleReturnFromSa
 import Language from "./components/languages/Language";
 import EditLanguageData from "./components/languages/EditLanguageData";
 import BaseUnits from "./components/base-unit/BaseUnits";
+import AvailableLocation from "./components/available-location/AvaialbleLocation";
 import RegisterReport from "./components/report/registerReport/RegisterReport";
 
 export const route = [
@@ -138,6 +139,11 @@ export const route = [
         path: "units",
         ele: <Units />,
         permission: Permissions.MANAGE_UNITS,
+    },
+    {
+        path: "available-location",
+        ele: <AvailableLocation />,
+        permission: '',
     },
     {
         path: "base-units",

@@ -35,6 +35,7 @@ use App\Http\Controllers\API\UnitAPIController;
 use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\API\WarehouseAPIController;
 use App\Http\Controllers\MailTemplateAPIController;
+use App\Http\Controllers\API\AvailableLocationAPIController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -109,9 +110,11 @@ Route::middleware('auth:sanctum')->group(function () {
     //    Route::middleware('permission:manage_units')->group(function () {
     Route::resource('units', UnitAPIController::class);
     Route::resource('base-units', BaseUnitAPIController::class);
+    Route::resource('available-location', AvailableLocationAPIController::class);
     //    });
     Route::get('units', [UnitAPIController::class, 'index']);
 
+    Route::get('available-location', [AvailableLocationAPIController::class, 'index']);
     // products route
 
     Route::resource('products', ProductAPIController::class);

@@ -87,6 +87,7 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
     const JSON_API_TYPE = 'products';
 
     public const PATH = 'product';
+    public const PRODUCT_MAIN_IMAGE_PATH = 'main_product_image';
 
     // public const PRODUCT_BARCODE_PATH = 'product_barcode';
 
@@ -115,25 +116,41 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
         'suitable_type',
         'package_size',
         'product_unit',
+        'product_unit_quantity'
         
     ];
 
     public static $rules = [
-        'name' => 'required',
-        'code' => 'required|unique:products',
-        'product_category_id' => 'required|exists:product_categories,id',
-        'product_price' => 'required|numeric',
-        'product_unit' => 'required',
+        // 'name' => 'required',
+        // 'code' => 'required|unique:products',
+        // 'code' => 'unique:products',
+        // 'product_category_id' => 'required|exists:product_categories,id',
+        // 'product_category_id' => 'exists:product_categories,id',
+        // 'product_price' => 'numeric',
+        // 'product_price' => 'required|numeric',
+        // 'product_unit' => 'required',
         'images.*' => 'image|mimes:jpg,jpeg,png',
     ];
 
     public static $availableRelations = [
         'product_category_id' => 'productCategory',
+        'sub_category_id' => 'productSubCategory',
     ];
 
     protected $casts = [
         'product_price' => 'float',
     ];
+
+    public function getMainImageUrlAttribute(): string
+    {
+        /** @var Media $media */
+        $media = $this->getMedia(Product::PRODUCT_MAIN_IMAGE_PATH)->first();
+        if (! empty($media)) {
+            return $media->getFullUrl();
+        }
+
+        return '';
+    }
 
     /**
      * @return array|string
@@ -182,9 +199,17 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
             'product_price' => $this->product_price,
             'product_unit' => $this->product_unit,
             'images' => $this->image_url,
+            'image' => $this->main_image_url,
             'product_category_name' => $this->productCategory->name,
+            'sub_category_name' => $this->productSubCategory->name,
+            'sub_category_id' => $this->productSubCategory->id,
             'created_at' => $this->created_at,
             'product_unit_name' => $this->getProductUnitName(),
+            'product_unit_quantity'=> $this->product_unit_quantity,
+            'product_type'=> $this->product_type,
+            'product_description'=> $this->product_description,
+            'prices' => $this->preparePricesWithLocations() // Modified here
+
         ];
 
         return $fields;
@@ -243,6 +268,16 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
     public function productCategory(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id', 'id');
+    }
+
+    public function productSubCategory(): BelongsTo
+    {
+        return $this->belongsTo(ProductSubCategory::class, 'sub_category_id', 'id');
+    }
+
+    public function prices()
+    {
+        return $this->hasMany(Price::class);
     }
 
     public function brand(): BelongsTo
@@ -342,5 +377,20 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
             'grand_total' => $this->grand_total,
             'product_unit' => $this->product_unit,
         ];
+    }
+
+    public function preparePricesWithLocations()
+    {
+        $pricesWithLocations = [];
+        
+        foreach ($this->prices as $price) {
+            $pricesWithLocations[] = [
+                'price' => $price->price,
+                'label' => $price->location->name,
+                'value' => $price->location_id
+            ];
+        }
+
+        return $pricesWithLocations;
     }
 }

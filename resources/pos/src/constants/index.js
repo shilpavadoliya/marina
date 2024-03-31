@@ -11,6 +11,7 @@ export const apiBaseURL = {
     WAREHOUSES: "/warehouses",
     UNITS: "/units",
     BASE_UNITS: "/base-units",
+    AVAILABLE_LOCATION: "/available-location",
     SUPPLIERS: "/suppliers",
     SMS_SETTING: "/sms-settings",
     SUPPLIERS_REPORT: "/supplier-report",
@@ -310,6 +311,15 @@ export const productSubCategoriesActionType = {
     FETCH_ALL_PRODUCTS_SUB_CATEGORIES: "FETCH_ALL_PRODUCTS_SUB_CATEGORIES",
 };
 
+export const avaiableLocationActionType = {
+    FETCH_ALL_AVAILABLE_LOCATIONS: "FETCH_ALL_AVAILABLE_LOCATIONS",
+    FETCH_AVAILABLE_LOCATION: "FETCH_AVAILABLE_LOCATION",
+    ADD_AVAILABLE_LOCATION: "ADD_AVAILABLE_LOCATION",
+    EDIT_AVAILABLE_LOCATION: "EDIT_AVAILABLE_LOCATION",
+    DELETE_AVAILABLE_LOCATION: "DELETE_AVAILABLE_LOCATION",
+    FETCH_ALL_AVAILABLE_LOCATION: "FETCH_ALL_AVAILABLE_LOCATION",
+};
+
 export const expenseCategoriesActionType = {
     FETCH_EXPENSES_CATEGORIES: "FETCH_EXPENSES_CATEGORIES",
     FETCH_EXPENSE_CATEGORIES: "FETCH_EXPENSE_CATEGORIES",
@@ -560,6 +570,7 @@ export const Permissions = {
     MANAGE_CURRENCY: "manage_currency",
     MANAGE_WAREHOUSES: "manage_warehouses",
     MANAGE_UNITS: "manage_units",
+    MANAGE_AVAILABLE_LOCATION: "manage_available_location",
     MANAGE_PRODUCT_CATEGORIES: "manage_product_categories",
     MANAGE_PRODUCTS: "manage_products",
     MANAGE_SUPPLIERS: "manage_suppliers",

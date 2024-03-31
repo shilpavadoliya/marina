@@ -15,14 +15,13 @@ import { fetchAllProductCategories } from '../../store/action/productCategoryAct
 const ProductSubCategoryForm = (props) => {
     const {handleClose, show, title, addProductData, editProductSubCategory, singleProductCategory,fetchAllProductCategories,productCategories} = props;
     
-    // console.log(singleProductCategory.category_id);
     const innerRef = createRef();
     const [productCategoryValue, setProductCategoryValue] = useState({
         name: singleProductCategory ? singleProductCategory.name : '',
         image: singleProductCategory ? singleProductCategory.image : '',
         category_id: singleProductCategory ? singleProductCategory.category_id : '',
     });
-    console.log(productCategoryValue.category_id);
+    
     const [errors, setErrors] = useState({
         name: '',
     });
@@ -33,9 +32,16 @@ const ProductSubCategoryForm = (props) => {
 
     const disabled = selectImg ? false : singleProductCategory && singleProductCategory.name === productCategoryValue.name.trim();
 
-    const [ selectedProductCategory ] = useState( singleProductCategory && singleProductCategory[ 0 ] ? ( [ {
-        label: singleProductCategory[ 0 ].category_id.label, value: singleProductCategory[ 0 ].category_id.value
-    } ] ) : productCategoryValue.category_id );
+    const [selectedProductCategory, setSelectedProductCategory] = useState(
+        singleProductCategory && singleProductCategory[0]
+          ? [
+              {
+                label: singleProductCategory[0].category_name,
+                value: singleProductCategory[0].category_id,
+              },
+            ]
+          : productCategoryValue.category_id
+      );
     const handleImageChanges = (e) => {
         e.preventDefault();
         if (e.target.files.length > 0) {
@@ -113,13 +119,22 @@ const ProductSubCategoryForm = (props) => {
         handleClose(false);
     };
 
+
     const onProductCategoryChange = ( obj ) => {
         setProductCategoryValue( productCategoryValue => ( { ...productCategoryValue, category_id: obj } ) );
         setErrors( '' );
     };
 
-        useEffect( () => {
+    
+
+    useEffect( () => {
         fetchAllProductCategories();
+         if (singleProductCategory && singleProductCategory.category_id) {
+            setSelectedProductCategory({
+                label: singleProductCategory.category_name,
+                value: singleProductCategory.category_id
+            });
+        }
     }, [] );
 
     return (
@@ -151,16 +166,17 @@ const ProductSubCategoryForm = (props) => {
                                               value={productCategoryValue.name}/>
                                 <span className='text-danger d-block fw-400 fs-small mt-2'>{errors['name'] ? errors['name'] : null}</span>
                         </div>
-                       <div className='col-md-12 mb-3'>
-                       {productCategoryValue.category_id}
-                                        <ReactSelect title={getFormattedMessage( 'product.input.product-category.label' )}
-                                            placeholder={placeholderText( 'product.input.product-category.placeholder.label' )}
-                                            defaultValue={productCategoryValue.category_id}
-                                            value={productCategoryValue.category_id}
-                                            data={productCategories} 
-                                            onChange={onProductCategoryChange}
-                                            errors={errors[ 'category_id' ]} />
-                                    </div>
+                        <div className="col-md-12 mb-3">
+                            <ReactSelect
+                                title={getFormattedMessage('product.input.product-category.label')}
+                                placeholder={placeholderText('product.input.product-category.placeholder.label')}
+                                defaultValue={selectedProductCategory}
+                                value={productCategoryValue.category_id}
+                                data={productCategories}
+                                onChange={onProductCategoryChange}
+                                errors={errors['category_id']}
+                            />
+                            </div>
                         <ImagePicker imagePreviewUrl={imagePreviewUrl} handleImageChange={handleImageChanges}
                                      user={user} imageTitle={placeholderText('globally.input.change-logo.tooltip')}/>
                     </div>
