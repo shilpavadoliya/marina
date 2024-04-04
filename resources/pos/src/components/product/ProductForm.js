@@ -434,10 +434,18 @@ const [imagePreviewUrl, setImagePreviewUrl] = useState(previewImg);
         if (selectImg) {
             formData.append('image', data.image);
         }
-        priceFields.forEach((price, index) => {
-            formData.append(`prices[${index}][location]`, price.location.value);
-            formData.append(`prices[${index}][price]`, price.price);
-          });
+
+        if(priceFields){
+                priceFields.forEach((price, index) => {
+                    if (price.location && price.location.value) {
+                        formData.append(`prices[${index}][location]`, price.location.value);
+                    }
+                    if (price.price && price.price !== '') {
+                        formData.append(`prices[${index}][price]`, price.price);
+                    }
+                });
+        }
+        
         return formData;
     };
 

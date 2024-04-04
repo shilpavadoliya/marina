@@ -53,6 +53,33 @@ class Supplier extends BaseModel
         'country',
         'city',
         'address',
+        'business_constitution',
+        'distributor_category',
+        'managing_partner',
+        'contact_person',
+        'phone_number',
+        'mobile_number',
+        'principal_address',
+        'brands_handled',
+        'cst_number',
+        'vat_number',
+        'gstin',
+        'service_tax_number',
+        'pan',
+        'bank_name',
+        'bank_branch',
+        'account_number',
+        'ifsc_code',
+        'appointment_type',
+        'distributor_margin',
+        'payment_terms',
+        'security_required',
+        'territory_assigned',
+        'customers_covered',
+        'claim_periodicity',
+        'registered_office_state'
+
+
     ];
 
     public static $rules = [
