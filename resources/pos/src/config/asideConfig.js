@@ -134,20 +134,7 @@ export default [
             // },
         ],
     },
-    // {
-    //     title: "adjustments.title",
-    //     name: "adjustments",
-    //     fontIcon: <FontAwesomeIcon icon={faMapLocation} />,
-    //     to: "/app/adjustments",
-    //     class: "d-flex",
-    //     permission: Permissions.MANAGE_ADJUSTMENTS,
-    //     items: [
-    //         {
-    //             title: getFormattedMessage("adjustments.title"),
-    //             to: "/app/adjustments",
-    //         },
-    //     ],
-    // },
+    
     // {
     //     title: "quotations.title",
     //     name: "quotations.title",
@@ -312,6 +299,8 @@ export default [
             },
         ],
     },
+
+
     {
         title: "roles.permissions.title",
         name: "roles",
@@ -326,20 +315,54 @@ export default [
             },
         ],
     },
+
+
     {
         title: "warehouse.title",
         name: "warehouse",
-        fontIcon: <FontAwesomeIcon icon={faHome} />,
+        fontIcon: <FontAwesomeIcon icon={faUser} />,
         to: "/app/warehouse",
         class: "d-flex",
-        permission: Permissions.MANAGE_WAREHOUSES,
-        items: [
+        is_submenu: "true",
+        subPath: {
+            customerSubPath: "/app/customers",
+            userSubPath: "/app/users",
+            suppliareSubPath: "/app/suppliers",
+        },
+        permission:
+            Permissions.MANAGE_WAREHOUSES,
+        subMenu: [
             {
-                title: getFormattedMessage("warehouse.title"),
+                title: "warehouse.title",
+                name: "warehouse",
+                fontIcon: <FontAwesomeIcon icon={faHome} />,
                 to: "/app/warehouse",
+                class: "d-flex",
+                permission: Permissions.MANAGE_WAREHOUSES,
+                items: [
+                    {
+                        title: getFormattedMessage("warehouse.title"),
+                        to: "/app/warehouse",
+                    },
+                ],
+            },
+            {
+                title: "adjustments.title",
+                name: "adjustments",
+                fontIcon: <FontAwesomeIcon icon={faMapLocation} />,
+                to: "/app/adjustments",
+                class: "d-flex",
+                permission: Permissions.MANAGE_ADJUSTMENTS,
+                items: [
+                    {
+                        title: getFormattedMessage("adjustments.title"),
+                        to: "/app/adjustments",
+                    },
+                ],
             },
         ],
     },
+
     // {
     //     title: "reports.title",
     //     name: "reports",
