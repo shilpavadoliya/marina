@@ -16,6 +16,8 @@ const EditSupplier = (props) => {
         fetchSupplier(id,true);
     }, []);
 
+    console.log(props);
+
     const itemsValue = suppliers && suppliers.length === 1 && suppliers.map(supplier => ({
         name: supplier.attributes.name,
         email: supplier.attributes.email,
@@ -23,6 +25,7 @@ const EditSupplier = (props) => {
         country: supplier.attributes.country,
         city: supplier.attributes.city,
         address: supplier.attributes.address,
+        managing_partner: supplier.attributes.managing_partner,
         id: supplier.id
     }));
 

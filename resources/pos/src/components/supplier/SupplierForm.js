@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -6,52 +6,61 @@ import * as EmailValidator from 'email-validator';
 import { editSupplier } from '../../store/action/supplierAction';
 import { getFormattedMessage, placeholderText, numValidate } from '../../shared/sharedMethod';
 import ModelFooter from '../../shared/components/modelFooter';
+import { fetchAllWarehouses } from '../../store/action/warehouseAction';
+import ReactSelect from '../../shared/select/reactSelect';
 
 const SupplierForm = (props) => {
-    const { addSupplierData, id, editSupplier, singleSupplier } = props;
+    const { addSupplierData, id, editSupplier, singleSupplier,  warehouses, fetchAllWarehouses } = props;
     const navigate = useNavigate();
+
 
     const [supplierValue, setSupplierValue] = useState({
         name: singleSupplier ? singleSupplier[0].name : '',
         email: singleSupplier ? singleSupplier[0].email : '',
-        businessConstitution: singleSupplier ? singleSupplier[0].business_constitution : '',
-        distributorCategory: singleSupplier ? singleSupplier[0].distributor_category : '',
-        managingPartner: singleSupplier ? singleSupplier[0].managing_partner : '',
+        business_constitution: singleSupplier ? singleSupplier[0].business_constitution : '',
+        distributor_category: singleSupplier ? singleSupplier[0].distributor_category : '',
+        managing_partner: singleSupplier ? singleSupplier[0].managing_partner : '',
         phone: singleSupplier ? singleSupplier[0].phone : '',
         country: singleSupplier ? singleSupplier[0].country : '',
         city: singleSupplier ? singleSupplier[0].city : '',
         address: singleSupplier ? singleSupplier[0].address : '',
-        registeredOfficeState: singleSupplier ? singleSupplier[0].registered_office_state : '',
-        contactPerson: singleSupplier ? singleSupplier[0].contact_person : '',
-        mobileNumber: singleSupplier ? singleSupplier[0].mobile_number : '',
-        principalAddress: singleSupplier ? singleSupplier[0].principal_address : '',
-        brandsHandled: singleSupplier ? singleSupplier[0].brands_handled : '',
-        cstNumber: singleSupplier ? singleSupplier[0].cst_number : '',
-        vatNumber: singleSupplier ? singleSupplier[0].vat_number : '',
+        registered_office_state: singleSupplier ? singleSupplier[0].registered_office_state : '',
+        contact_person: singleSupplier ? singleSupplier[0].contact_person : '',
+        mobile_number: singleSupplier ? singleSupplier[0].mobile_number : '',
+        pin_code: singleSupplier ? singleSupplier[0].pin_code : '',
+        principal_address: singleSupplier ? singleSupplier[0].principal_address : '',
+        brands_handled: singleSupplier ? singleSupplier[0].brands_handled : '',
+        cst_number: singleSupplier ? singleSupplier[0].cst_number : '',
+        vat_number: singleSupplier ? singleSupplier[0].vat_number : '',
         gstin: singleSupplier ? singleSupplier[0].gstin : '',
-        serviceTaxNumber: singleSupplier ? singleSupplier[0].service_tax_number : '',
+        service_tax_number: singleSupplier ? singleSupplier[0].service_tax_number : '',
         pan: singleSupplier ? singleSupplier[0].pan : '',
-        bankName: singleSupplier ? singleSupplier[0].bank_name : '',
-        bankBranch: singleSupplier ? singleSupplier[0].bank_branch : '',
-        accountNumber: singleSupplier ? singleSupplier[0].account_number : '',
-        ifscCode: singleSupplier ? singleSupplier[0].ifsc_code : '',
-        appointmentType: singleSupplier ? singleSupplier[0].appointment_type : '',
-        distributorMargin: singleSupplier ? singleSupplier[0].distributor_margin : '',
-        paymentTerms: singleSupplier ? singleSupplier[0].payment_terms : '',
-        securityRequired: singleSupplier ? singleSupplier[0].security_required : '',
-        territoryAssigned: singleSupplier ? singleSupplier[0].territory_assigned : '',
-        customersCovered: singleSupplier ? singleSupplier[0].customers_covered : '',
-        claimPeriodicity: singleSupplier ? singleSupplier[0].claim_periodicity : '',
+        bank_name: singleSupplier ? singleSupplier[0].bank_name : '',
+        bank_branch: singleSupplier ? singleSupplier[0].bank_branch : '',
+        account_number: singleSupplier ? singleSupplier[0].account_number : '',
+        ifsc_code: singleSupplier ? singleSupplier[0].ifsc_code : '',
+        appointment_type: singleSupplier ? singleSupplier[0].appointment_type : '',
+        distributor_margin: singleSupplier ? singleSupplier[0].distributor_margin : '',
+        payment_terms: singleSupplier ? singleSupplier[0].payment_terms : '',
+        security_required: singleSupplier ? singleSupplier[0].security_required : '',
+        territory_assigned: singleSupplier ? singleSupplier[0].territory_assigned : '',
+        customers_covered: singleSupplier ? singleSupplier[0].customers_covered : '',
+        claim_periodicity: singleSupplier ? singleSupplier[0].claim_periodicity : '',
 
     });
+    useEffect( () => {
+        fetchAllWarehouses()
+    }, [] );
 
     const [errors, setErrors] = useState({
-        distributorName: '',
+        name: '',
         email: '',
         phone: '',
         country: '',
         city: '',
-        address: ''
+        address: '',
+        warehouse_id: '',
+        
     });
 
     const fileInputRef = useRef(null);
@@ -62,7 +71,13 @@ const SupplierForm = (props) => {
 
     const disabled = singleSupplier && singleSupplier[0].name === supplierValue.name && singleSupplier[0].country === supplierValue.country && singleSupplier[0].city === supplierValue.city && singleSupplier[0].email === supplierValue.email && singleSupplier[0].address === supplierValue.address && singleSupplier[0].phone === supplierValue.phone
 
+    const onWarehouseChange = ( obj ) => {
+        setSaleValue( inputs => ( { ...inputs, warehouse_id: obj } ) );
+        setErrors( '' );
+    };
+
     const handleValidation = () => {
+        console.log('come inside');
         let errorss = {};
         let isValid = false;
         if (!supplierValue['name']) {
@@ -89,9 +104,10 @@ const SupplierForm = (props) => {
     };
 
     const onChangeInput = (e) => {
+        console.log(e.target.name,e.target.value );
         e.preventDefault();
         setSupplierValue(inputs => ({ ...inputs, [e.target.name]: e.target.value }))
-        setErrors('');
+        // setErrors('');
     };
 
     const onSubmit = (event) => {
@@ -136,7 +152,7 @@ const SupplierForm = (props) => {
                             <span className='required' />
                             <input type='text' name='email'
                                 placeholder={placeholderText("globally.input.email.placeholder.label")}
-         x                       className='form-control'
+                                className='form-control'
                                 onChange={(e) => onChangeInput(e)}
                                 value={supplierValue.email} />
                             <span
@@ -209,7 +225,7 @@ const SupplierForm = (props) => {
                             <select name='business_constitution'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.businessConstitution}>
+                                value={supplierValue.business_constitution}>
                                 <option value=''>Select Constitution of Business</option>
                                 <option value='1'>PROPRITORSHIP</option>
                                 <option value='2'>PARTNERSHIP</option>
@@ -224,7 +240,7 @@ const SupplierForm = (props) => {
                             <select name='distributor_category'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.distributorCategory}>
+                                value={supplierValue.distributor_category}>
                                 <option value=''>Select Distributor Category/Type</option>
                                 <option value='1'>FROZEN SEAFOOD FOODS</option>
                                 <option value='2'>Super Stockist</option>
@@ -238,7 +254,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='managing_partner'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.managingPartner} />
+                                value={supplierValue.managing_partner} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -247,7 +263,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='registered_office_state'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.registeredOfficeState} />
+                                value={supplierValue.registered_office_state} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -256,7 +272,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='contact_person'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.contactPerson} />
+                                value={supplierValue.contact_person} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -265,7 +281,16 @@ const SupplierForm = (props) => {
                             <input type='text' name='mobile_number'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.mobileNumber} />
+                                value={supplierValue.mobile_number} />
+                        </div>
+                        <div className='col-md-6 mb-3'>
+                            <label className='form-label'>
+                                Pin Code:
+                            </label>
+                            <input type='text' name='pin_code'
+                                className='form-control'
+                                onChange={(e) => onChangeInput(e)}
+                                value={supplierValue.pin_code} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -274,7 +299,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='principal_address'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.principalAddress} />
+                                value={supplierValue.principal_address} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -283,7 +308,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='brands_handled'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.brandsHandled} />
+                                value={supplierValue.brands_handled} />
                         </div>
                     </div>
 
@@ -296,7 +321,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='cst_number'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.cstNumber} />
+                                value={supplierValue.cst_number} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -305,7 +330,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='vat_number'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.vatNumber} />
+                                value={supplierValue.vat_number} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -314,7 +339,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='service_tax_number'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.serviceTaxNumber} />
+                                value={supplierValue.service_tax_number} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -332,7 +357,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='bank_name'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.bankName} />
+                                value={supplierValue.bank_name} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -341,7 +366,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='account_number'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.accountNumber} />
+                                value={supplierValue.account_number} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -350,7 +375,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='ifsc_code'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.ifscCode} />
+                                value={supplierValue.ifsc_code} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -359,7 +384,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='appointment_type'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.appointmentType} />
+                                value={supplierValue.appointment_type} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -368,7 +393,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='distributor_margin'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.distributorMargin} />
+                                value={supplierValue.distributor_margin} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -376,9 +401,8 @@ const SupplierForm = (props) => {
                             </label>
                             <textarea name='payment_terms'
                                 className='form-control'
-                                onChange={(e) => onChangeInput(e)}>
-                                {supplierValue.paymentTerms}
-                            </textarea>
+                                onChange={(e) => onChangeInput(e)}
+                                  value={supplierValue.payment_terms} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -387,7 +411,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='security_required'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.securityRequired} />
+                                value={supplierValue.security_required} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -396,7 +420,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='territory_assigned'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.territoryAssigned} />
+                                value={supplierValue.territory_assigned} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -405,7 +429,7 @@ const SupplierForm = (props) => {
                             <input type='text' name='customers_covered'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.customersCovered} />
+                                value={supplierValue.customers_covered} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>
@@ -414,9 +438,16 @@ const SupplierForm = (props) => {
                             <textarea name='claim_periodicity'
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}>
-                                {supplierValue.claimPeriodicity}
+                                {supplierValue.claim_periodicity}
                             </textarea>
                         </div>
+                        <div className='col-md-6 mb-3'>
+                        <ReactSelect name='warehouse_id' data={warehouses} onChange={onWarehouseChange}
+                            title={getFormattedMessage( 'warehouse.title' )} errors={errors[ 'warehouse_id' ]}
+                            defaultValue={supplierValue.warehouse_id} value={supplierValue.warehouse_id} addSearchItems={singleSupplier}
+                            isWarehouseDisable={true}
+                            placeholder={placeholderText( 'purchase.select.warehouse.placeholder.label' )} />
+                    </div>
                         <div className='col-md-6 mb-3'>
                             <input
                                 type="file"
@@ -439,4 +470,12 @@ const SupplierForm = (props) => {
     )
 };
 
-export default connect(null, { editSupplier })(SupplierForm);
+
+// export default connect( null, { editSupplier, fetchProductsByWarehouse } )( SupplierForm )
+
+const mapStateToProps = ( state ) => {
+    const { warehouses } = state;
+    return {warehouses };
+};
+
+export default connect( mapStateToProps, {fetchAllWarehouses, editSupplier } )( SupplierForm );

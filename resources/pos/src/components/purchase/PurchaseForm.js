@@ -257,7 +257,7 @@ const PurchaseForm = ( props ) => {
                     <div className='col-md-4 mb-3'>
                         <ReactSelect data={suppliers} onChange={onSupplierChange}
                             defaultValue={purchaseValue.supplier_id}
-                            title={getFormattedMessage( 'supplier.title' )} errors={errors[ 'supplier_id' ]}
+                            title={getFormattedMessage( 'distributor.title' )} errors={errors[ 'supplier_id' ]}
                             placeholder={placeholderText( 'purchase.select.supplier.placeholder.label' )} />
                     </div>
                     <div className='col-md-12 mb-3'>

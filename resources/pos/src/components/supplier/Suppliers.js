@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import MasterLayout from '../MasterLayout';
-import { fetchSuppliers } from '../../store/action/supplierAction';
+import { fetchSuppliers, activeInactiveSupplier } from '../../store/action/supplierAction';
 import ReactDataTable from '../../shared/table/ReactDataTable';
 import DeleteSupplier from './DeleteSupplier';
 import TabTitle from '../../shared/tab-title/TabTitle';
@@ -13,7 +13,7 @@ import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 import ImportSuppliersModel from './ImportSuppliersModel'
 
 const Suppliers = ( props ) => {
-    const { fetchSuppliers, suppliers, totalRecord, isLoading, allConfigData } = props;
+    const { fetchSuppliers, suppliers, totalRecord, isLoading, allConfigData , activeInactiveSupplier} = props;
     const [ deleteModel, setDeleteModel ] = useState( false );
     const [ isDelete, setIsDelete ] = useState( null );
     const [ importSuppliers, setImportSuppliers ] = useState( false );
@@ -37,7 +37,8 @@ const Suppliers = ( props ) => {
         navigate( `/app/suppliers/edit/${id}` )
     };
 
-    const itemsValue = suppliers.length >= 0 && suppliers.map( supplier => ( {
+    const itemsValue = suppliers.length >= 0 && suppliers.map( supplier => ( 
+        {        
         date: getFormattedDate( supplier.attributes.created_at, allConfigData && allConfigData ),
         time: moment( supplier.attributes.created_at ).format( 'LT' ),
         name: supplier.attributes.name,
@@ -45,9 +46,10 @@ const Suppliers = ( props ) => {
         country: supplier.attributes.country,
         city: supplier.attributes.city,
         email: supplier.attributes.email,
-        id: supplier.id
+        id: supplier.id,
+        is_active: supplier.attributes.status === 1 ? true : false,
     } ) );
-
+    
     const columns = [
         {
             name: getFormattedMessage( 'supplier.title' ),
@@ -82,6 +84,24 @@ const Suppliers = ( props ) => {
             }
         },
         {
+            name: getFormattedMessage( "purchase.select.status.label" ),
+            sortField: 'status',
+            cell: row => {
+                
+                console.log(row.is_active);
+                return (
+                    <div className="d-flex align-items-center mt-4">
+                        <label className="form-check form-switch form-switch-sm">
+                            <input name="status" data-id="704" className="form-check-input admin-status" type="checkbox"
+                                value="1" checked={row.is_active} onChange={() => onChecked( row )} />
+                            <span className="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                        </label>
+                    </div>
+                )
+            },
+            sortable: false,
+        },
+        {
             name: getFormattedMessage( 'react-data-table.action.column.label' ),
             right: true,
             ignoreRowClick: true,
@@ -91,6 +111,10 @@ const Suppliers = ( props ) => {
                 onClickDeleteModel={onClickDeleteModel} />
         }
     ];
+
+    const onChecked = ( row ) => {
+        activeInactiveSupplier( row.id, row );
+    };
 
     return (
         <MasterLayout>
@@ -111,5 +135,5 @@ const mapStateToProps = ( state ) => {
     return { suppliers, totalRecord, isLoading, allConfigData }
 };
 
-export default connect( mapStateToProps, { fetchSuppliers } )( Suppliers );
+export default connect( mapStateToProps, { fetchSuppliers, activeInactiveSupplier } )( Suppliers );
 

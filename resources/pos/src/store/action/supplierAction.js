@@ -199,3 +199,26 @@ export const addImportSupplier = (importSupplier) => async (dispatch) => {
             );
         });
 };
+
+export const activeInactiveSupplier = (Id) => async (dispatch) => {
+    apiConfig
+        .post(apiBaseURL.SUPPLIER_STATUS + "/" + Id)
+        .then((response) => {
+            dispatch({
+                type: supplierActionType.SET_ACTIVE_DE_ACTIVE,
+                payload: response.data.data,
+            });
+            dispatch(
+                addToast({
+                    text: getFormattedMessage(
+                        "supplier.success.edit.message"
+                    ),
+                })
+            );
+        })
+        .catch(({ response }) => {
+            dispatch(
+                addToast({ text: response.data.message, type: toastType.ERROR })
+            );
+        });
+};

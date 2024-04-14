@@ -161,6 +161,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //    });
     Route::get('suppliers', [SupplierAPIController::class, 'index']);
     Route::post('import-suppliers', [SupplierAPIController::class, 'importSuppliers']);
+    Route::post('supplier-status/{id}', [SupplierAPIController::class, 'changeActiveStatus']);
 
     //sale
     //    Route::middleware('permission:manage_sale')->group(function () {

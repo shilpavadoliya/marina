@@ -9,6 +9,7 @@ use App\Http\Resources\SupplierCollection;
 use App\Http\Resources\SupplierResource;
 use App\Imports\SupplierImport;
 use App\Models\Purchase;
+use App\Models\Supplier;
 use App\Repositories\SupplierRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -86,4 +87,15 @@ class SupplierAPIController extends AppBaseController
 
         return $this->sendSuccess('Suppliers imported successfully');
     }
+
+    
+    public function changeActiveStatus($id): SupplierResource
+    {
+        $supplier = $this->supplierRepository->find($id);
+        $status = $supplier->status == 0 ? 1 : 0;
+        $supplier->update(['status' => $status]);
+
+        return new SupplierResource($supplier);
+    }
+
 }

@@ -134,20 +134,20 @@ export default [
             // },
         ],
     },
-    // {
-    //     title: "adjustments.title",
-    //     name: "adjustments",
-    //     fontIcon: <FontAwesomeIcon icon={faMapLocation} />,
-    //     to: "/app/adjustments",
-    //     class: "d-flex",
-    //     permission: Permissions.MANAGE_ADJUSTMENTS,
-    //     items: [
-    //         {
-    //             title: getFormattedMessage("adjustments.title"),
-    //             to: "/app/adjustments",
-    //         },
-    //     ],
-    // },
+    {
+        title: "adjustments.title",
+        name: "adjustments",
+        fontIcon: <FontAwesomeIcon icon={faMapLocation} />,
+        to: "/app/adjustments",
+        class: "d-flex",
+        permission: Permissions.MANAGE_ADJUSTMENTS,
+        items: [
+            {
+                title: getFormattedMessage("adjustments.title"),
+                to: "/app/adjustments",
+            },
+        ],
+    },
     // {
     //     title: "quotations.title",
     //     name: "quotations.title",
@@ -162,37 +162,37 @@ export default [
     //         },
     //     ],
     // },
-    // {
-    //     title: "purchases.title",
-    //     name: "purchases",
-    //     fontIcon: <FontAwesomeIcon icon={faReceipt} />,
-    //     to: "/app/purchases",
-    //     class: "d-flex",
-    //     is_submenu: "true",
-    //     permission: Permissions.MANAGE_PURCHASE,
-    //     subPath: {
-    //         purchasesSubPath: "/app/purchases",
-    //         purchaseReturnSubPath: "/app/purchase-return",
-    //     },
-    //     subMenu: [
-    //         {
-    //             title: "purchases.title",
-    //             name: "purchases",
-    //             fontIcon: <FontAwesomeIcon icon={faReceipt} />,
-    //             to: "/app/purchases",
-    //             class: "d-flex",
-    //             permission: Permissions.MANAGE_PURCHASE,
-    //         },
-    //         {
-    //             title: "purchases.return.title",
-    //             name: "purchases return",
-    //             fontIcon: <FontAwesomeIcon icon={faArrowLeft} />,
-    //             to: "/app/purchase-return",
-    //             class: "d-flex",
-    //             permission: Permissions.MANAGE_PURCHASE_RETURN,
-    //         },
-    //     ],
-    // },
+    {
+        title: "purchases.title",
+        name: "purchases",
+        fontIcon: <FontAwesomeIcon icon={faReceipt} />,
+        to: "/app/purchases",
+        class: "d-flex",
+        is_submenu: "true",
+        permission: Permissions.MANAGE_PURCHASE,
+        subPath: {
+            purchasesSubPath: "/app/purchases",
+            // purchaseReturnSubPath: "/app/purchase-return",
+        },
+        subMenu: [
+            {
+                title: "purchases.title",
+                name: "purchases",
+                fontIcon: <FontAwesomeIcon icon={faReceipt} />,
+                to: "/app/purchases",
+                class: "d-flex",
+                permission: Permissions.MANAGE_PURCHASE,
+            },
+            // {
+            //     title: "purchases.return.title",
+            //     name: "purchases return",
+            //     fontIcon: <FontAwesomeIcon icon={faArrowLeft} />,
+            //     to: "/app/purchase-return",
+            //     class: "d-flex",
+            //     permission: Permissions.MANAGE_PURCHASE_RETURN,
+            // },
+        ],
+    },
     // {
     //     title: "sales.title",
     //     name: "sales",

@@ -75,6 +75,7 @@ export const apiBaseURL = {
     EMAIL_TEMPLATES: "mail-templates",
     SMS_TEMPLATES: "sms-templates",
     SMS_TEMPLATES_STATUS: "sms-template-status",
+    SUPPLIER_STATUS: "supplier-status",
     EMAIL_TEMPLATES_STATUS: "mail-template-status",
     ALL_SALE_PURCHASE: "all-sales-purchases-count",
     SUPPLIER_PURCHASE_REPORT: "supplier-purchases-report",
@@ -178,6 +179,7 @@ export const supplierActionType = {
     DELETE_SUPPLIER: "DELETE_SUPPLIER",
     FETCH_ALL_SUPPLIERS: "FETCH_ALL_SUPPLIERS",
     FETCH_SUPPLIERS_REPORT: "FETCH_SUPPLIERS_REPORT",
+    SET_ACTIVE_DE_ACTIVE: "SET_ACTIVE_DE_ACTIVE"
 };
 
 export const smsApiActionType = {
