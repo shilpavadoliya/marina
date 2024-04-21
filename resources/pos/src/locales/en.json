@@ -354,7 +354,7 @@
     "currency.success.create.message": "Currency created successfully",
     "currency.success.edit.message": "Currency updated successfully",
     "currency.success.delete.message": "Currency deleted successfully",
-    "purchases.title": "Place Orders",
+    "purchases.title": "Orders",
     "purchases.purchases-details.title": "Order Details",
     "purchase.title": "Order",
     "purchase.create.title": "Create Order",

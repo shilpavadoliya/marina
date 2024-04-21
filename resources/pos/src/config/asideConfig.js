@@ -122,7 +122,7 @@ export default [
                 fontIcon: <FontAwesomeIcon icon={faRulerHorizontal} />,
                 to: "/app/available-location",
                 class: "d-flex",
-                permission: '',
+                permission: Permissions.MANAGE_PRODUCTS,
             },
             // {
             //     title: "print.barcode.title",

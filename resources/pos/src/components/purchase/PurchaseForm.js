@@ -5,7 +5,7 @@ import moment from 'moment';
 import { InputGroup, Table } from 'react-bootstrap-v5';
 import { searchPurchaseProduct } from '../../store/action/purchaseProductAction';
 import { editPurchase } from '../../store/action/purchaseAction';
-import { fetchAllProducts } from '../../store/action/productAction';
+import { fetchProductsByWarehouse } from '../../store/action/productAction';
 import PurchaseTable from '../../shared/components/purchase/PurchaseTable';
 import { preparePurchaseProductArray } from '../../shared/prepareArray/preparePurchaseArray';
 import { decimalValidate, getFormattedMessage, placeholderText, onFocusInput, getFormattedOptions } from '../../shared/sharedMethod';
@@ -27,7 +27,7 @@ const PurchaseForm = ( props ) => {
         singlePurchase,
         warehouses,
         suppliers,
-        fetchAllProducts,
+        fetchProductsByWarehouse,
         products, frontSetting, allConfigData
     } = props;
     const navigate = useNavigate();
@@ -79,7 +79,7 @@ const PurchaseForm = ( props ) => {
     }, [] );
 
     useEffect( () => {
-        purchaseValue.warehouse_id.value ? fetchAllProducts() : null
+        purchaseValue.warehouse_id.value ? fetchProductsByWarehouse() : null
     }, [ purchaseValue.warehouse_id ] )
 
     const handleValidation = () => {
@@ -257,7 +257,7 @@ const PurchaseForm = ( props ) => {
                     <div className='col-md-4 mb-3'>
                         <ReactSelect data={suppliers} onChange={onSupplierChange}
                             defaultValue={purchaseValue.supplier_id}
-                            title={getFormattedMessage( 'distributor.title' )} errors={errors[ 'supplier_id' ]}
+                            title={getFormattedMessage( 'supplier.title' )} errors={errors[ 'supplier_id' ]}
                             placeholder={placeholderText( 'purchase.select.supplier.placeholder.label' )} />
                     </div>
                     <div className='col-md-12 mb-3'>
@@ -396,4 +396,4 @@ const mapStateToProps = ( state ) => {
     return { customProducts: preparePurchaseProductArray( products ), purchaseProducts, products, frontSetting, allConfigData }
 };
 
-export default connect( mapStateToProps, { editPurchase, fetchAllProducts, searchPurchaseProduct, } )( PurchaseForm );
+export default connect( mapStateToProps, { editPurchase, fetchProductsByWarehouse, searchPurchaseProduct, } )( PurchaseForm );

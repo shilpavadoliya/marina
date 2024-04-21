@@ -143,7 +143,7 @@ export const route = [
     {
         path: "available-location",
         ele: <AvailableLocation />,
-        permission: '',
+        permission: Permissions.MANAGE_PRODUCTS,
     },
     {
         path: "base-units",

@@ -12,35 +12,34 @@ import ActionButton from '../../shared/action-buttons/ActionButton';
 import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 import ImportSuppliersModel from './ImportSuppliersModel'
 
-const Suppliers = ( props ) => {
-    const { fetchSuppliers, suppliers, totalRecord, isLoading, allConfigData , activeInactiveSupplier} = props;
-    const [ deleteModel, setDeleteModel ] = useState( false );
-    const [ isDelete, setIsDelete ] = useState( null );
-    const [ importSuppliers, setImportSuppliers ] = useState( false );
+const Suppliers = (props) => {
+    const { fetchSuppliers, suppliers, totalRecord, isLoading, allConfigData, activeInactiveSupplier, userRole } = props;
+    const [deleteModel, setDeleteModel] = useState(false);
+    const [isDelete, setIsDelete] = useState(null);
+    const [importSuppliers, setImportSuppliers] = useState(false);
 
     const handleClose = () => {
-        setImportSuppliers( !importSuppliers );
+        setImportSuppliers(!importSuppliers);
     };
     const navigate = useNavigate()
 
-    const onClickDeleteModel = ( isDelete = null ) => {
-        setDeleteModel( !deleteModel );
-        setIsDelete( isDelete );
+    const onClickDeleteModel = (isDelete = null) => {
+        setDeleteModel(!deleteModel);
+        setIsDelete(isDelete);
     };
 
-    const onChange = ( filter ) => {
-        fetchSuppliers( filter, true );
+    const onChange = (filter) => {
+        fetchSuppliers(filter, true);
     };
 
-    const goToEditProduct = ( item ) => {
+    const goToEditProduct = (item) => {
         const id = item.id
-        navigate( `/app/suppliers/edit/${id}` )
+        navigate(`/app/suppliers/edit/${id}`)
     };
 
-    const itemsValue = suppliers.length >= 0 && suppliers.map( supplier => ( 
-        {        
-        date: getFormattedDate( supplier.attributes.created_at, allConfigData && allConfigData ),
-        time: moment( supplier.attributes.created_at ).format( 'LT' ),
+    const itemsValue = suppliers.length >= 0 && suppliers.map(supplier => ({
+        date: getFormattedDate(supplier.attributes.created_at, allConfigData && allConfigData),
+        time: moment(supplier.attributes.created_at).format('LT'),
         name: supplier.attributes.name,
         phone: supplier.attributes.phone,
         country: supplier.attributes.country,
@@ -48,11 +47,11 @@ const Suppliers = ( props ) => {
         email: supplier.attributes.email,
         id: supplier.id,
         is_active: supplier.attributes.status === 1 ? true : false,
-    } ) );
-    
+    }));
+
     const columns = [
         {
-            name: getFormattedMessage( 'supplier.title' ),
+            name: getFormattedMessage('supplier.title'),
             selector: row => row.name,
             sortable: true,
             sortField: 'name',
@@ -64,13 +63,13 @@ const Suppliers = ( props ) => {
             }
         },
         {
-            name: getFormattedMessage( 'globally.input.phone-number.label' ),
+            name: getFormattedMessage('globally.input.phone-number.label'),
             selector: row => row.phone,
             sortField: 'phone',
             sortable: true,
         },
         {
-            name: getFormattedMessage( 'globally.react-table.column.created-date.label' ),
+            name: getFormattedMessage('globally.react-table.column.created-date.label'),
             selector: row => row.date,
             sortField: 'created_at',
             sortable: true,
@@ -83,26 +82,24 @@ const Suppliers = ( props ) => {
                 )
             }
         },
-        {
-            name: getFormattedMessage( "purchase.select.status.label" ),
+        (userRole === 1 || userRole === 2 || userRole === 4) && {
+            name: getFormattedMessage("purchase.select.status.label"),
             sortField: 'status',
             cell: row => {
-                
-                console.log(row.is_active);
                 return (
                     <div className="d-flex align-items-center mt-4">
                         <label className="form-check form-switch form-switch-sm">
                             <input name="status" data-id="704" className="form-check-input admin-status" type="checkbox"
-                                value="1" checked={row.is_active} onChange={() => onChecked( row )} />
+                                value="1" checked={row.is_active} onChange={() => onChecked(row)} />
                             <span className="switch-slider" data-checked="✓" data-unchecked="✕"></span>
                         </label>
                     </div>
                 )
             },
             sortable: false,
-        },
+        },        
         {
-            name: getFormattedMessage( 'react-data-table.action.column.label' ),
+            name: getFormattedMessage('react-data-table.action.column.label'),
             right: true,
             ignoreRowClick: true,
             allowOverflow: true,
@@ -112,16 +109,16 @@ const Suppliers = ( props ) => {
         }
     ];
 
-    const onChecked = ( row ) => {
-        activeInactiveSupplier( row.id, row );
+    const onChecked = (row) => {
+        activeInactiveSupplier(row.id, row);
     };
 
     return (
         <MasterLayout>
             <TopProgressBar />
-            <TabTitle title={placeholderText( 'suppliers.title' )} />
+            <TabTitle title={placeholderText('suppliers.title')} />
             <ReactDataTable columns={columns} items={itemsValue} onChange={onChange} isLoading={isLoading}
-                ButtonValue={getFormattedMessage( 'supplier.create.title' )} buttonImport={true} goToImport={handleClose}
+                ButtonValue={getFormattedMessage('supplier.create.title')} buttonImport={true} goToImport={handleClose}
                 totalRows={totalRecord} importBtnTitle={'suppliers.import.title'}
                 to='#/app/suppliers/create' />
             <DeleteSupplier onClickDeleteModel={onClickDeleteModel} deleteModel={deleteModel} onDelete={isDelete} />
@@ -130,10 +127,13 @@ const Suppliers = ( props ) => {
     )
 };
 
-const mapStateToProps = ( state ) => {
+const mapStateToProps = (state) => {
     const { suppliers, totalRecord, isLoading, allConfigData } = state;
-    return { suppliers, totalRecord, isLoading, allConfigData }
+    const userRoleArray = localStorage.getItem('loginUserArray');
+    const parsedRoles = JSON.parse(userRoleArray);
+
+    const userRole = parsedRoles.id;
+    return { suppliers, totalRecord, isLoading, allConfigData, userRole }
 };
 
-export default connect( mapStateToProps, { fetchSuppliers, activeInactiveSupplier } )( Suppliers );
-
+export default connect(mapStateToProps, { fetchSuppliers, activeInactiveSupplier })(Suppliers);

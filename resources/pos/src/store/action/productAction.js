@@ -182,7 +182,7 @@ export const fetchAllProducts = () => async (dispatch) => {
 
 export const fetchProductsByWarehouse = (id) => async (dispatch) => {
     apiConfig
-        .get(`products?page[size]=0&warehouse_id=${id}`)
+        .get(`products?page[size]=0&&product_type=1`)
         .then((response) => {
             dispatch({
                 type: productActionType.FETCH_PRODUCTS_BY_WAREHOUSE,

@@ -64,7 +64,7 @@ class AdjustmentItem extends BaseModel implements JsonResourceful
         'quantity' => 'double',
     ];
 
-    protected $appends = ['sale_unit'];
+    // protected $appends = ['sale_unit'];
 
     public function prepareLinks(): array
     {
@@ -94,12 +94,12 @@ class AdjustmentItem extends BaseModel implements JsonResourceful
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    public function getSaleUnitAttribute()
-    {
-        $saleUnitId = Product::whereId($this->product_id)->value('sale_unit');
+    // public function getSaleUnitAttribute()
+    // {
+    //     $saleUnitId = Product::whereId($this->product_id)->value('sale_unit');
 
-        $saleUnit = Unit::whereId($saleUnitId)->value('short_name');
+    //     $saleUnit = Unit::whereId($saleUnitId)->value('short_name');
 
-        return $saleUnit;
-    }
+    //     return $saleUnit;
+    // }
 }

@@ -53,16 +53,13 @@ const AdjustmentTableBody = ( props ) => {
     };
 
     const handleIncrement = () => {
-        setUpdateProducts( updateProducts =>
-            updateProducts.map( ( item ) => {
-                if ( item.id === singleProduct.id ) {
-                    const compareQty = posAllProducts.filter( ( pro ) => pro.id === singleProduct.id ).map( ( pro ) => pro.attributes.stock.quantity )
-                    return { ...item, quantity: item.adjustMethod === 2 ? compareQty[ 0 ] > item.quantity ? item.quantity++ + 1 : compareQty[ 0 ] : item.quantity++ + 1 }
-                } else {
-                    return item
-                }
-            } )
-        )
+        setUpdateProducts((updateProducts) =>
+            updateProducts.map((item) =>
+                item.id === singleProduct.id
+                    ? { ...item, quantity: item.quantity++ + 1 }
+                    : item
+            )
+        );
     };
     const handleDecrement = () => {
         if ( singleProduct.quantity - 1 > 0.00 ) {

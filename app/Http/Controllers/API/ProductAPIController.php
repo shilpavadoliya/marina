@@ -40,6 +40,10 @@ class ProductAPIController extends AppBaseController
             $products->where('product_unit', $request->get('product_unit'));
         }
 
+        if ($request->get('product_type')) {
+            $products->where('product_type', $request->get('product_type'));
+        }
+
         if ($request->get('warehouse_id') && $request->get('warehouse_id') != 'null') {
             $warehouseId = $request->get('warehouse_id');
             $products->whereHas('stock', function ($q) use ($warehouseId) {

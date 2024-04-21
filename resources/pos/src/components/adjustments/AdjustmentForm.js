@@ -32,7 +32,7 @@ const AdjustmentForm = ( props ) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [ updateProducts, setUpdateProducts ] = useState( [] );
-    const [ quantity, setQuantity ] = useState( 0 );
+    const [ quantity, setQuantity ] = useState( 1 );
     const [ adjustMentValue, setAdjustMentValue ] = useState( {
         date: new Date(),
         warehouse_id: '',
@@ -172,7 +172,7 @@ const AdjustmentForm = ( props ) => {
                             updateProducts={updateProducts} isAllProducts={true}
                             setUpdateProducts={setUpdateProducts} customProducts={customProducts} />
                     </div>
-                    <div class="custom-responsive">
+                    <div className="custom-responsive">
                         <label className='form-label'>
                             {getFormattedMessage( 'purchase.order-item.table.label' )}:
                         </label>

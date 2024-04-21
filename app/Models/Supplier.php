@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $country
  * @property string $city
  * @property string $address
+ * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -77,8 +78,8 @@ class Supplier extends BaseModel
         'territory_assigned',
         'customers_covered',
         'claim_periodicity',
-        'registered_office_state'
-
+        'registered_office_state',
+        'status'
 
     ];
 
@@ -108,6 +109,7 @@ class Supplier extends BaseModel
             'city' => $this->city,
             'address' => $this->address,
             'created_at' => $this->created_at,
+            'status' => $this->status
         ];
 
         return $fields;
