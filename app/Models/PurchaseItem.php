@@ -73,6 +73,7 @@ class PurchaseItem extends BaseModel implements JsonResourceful
         'purchase_unit',
         'quantity',
         'sub_total',
+        'sales_price'
     ];
 
     public static $rules = [
@@ -136,6 +137,7 @@ class PurchaseItem extends BaseModel implements JsonResourceful
             'sub_total' => $this->sub_total,
             'product_code' => $this->product->code,
             'product_name' => $this->product->name,
+            'sales_price' => $this->sales_price,
         ];
 
         return $fields;

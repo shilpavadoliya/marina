@@ -76,6 +76,7 @@ export const apiBaseURL = {
     SMS_TEMPLATES: "sms-templates",
     SMS_TEMPLATES_STATUS: "sms-template-status",
     SUPPLIER_STATUS: "supplier-status",
+    PURCHASE_STATUS: "purchase-status",
     EMAIL_TEMPLATES_STATUS: "mail-template-status",
     ALL_SALE_PURCHASE: "all-sales-purchases-count",
     SUPPLIER_PURCHASE_REPORT: "supplier-purchases-report",
@@ -240,6 +241,7 @@ export const purchaseActionType = {
     DELETE_PURCHASE: "DELETE_PURCHASE",
     PURCHASE_DETAILS: "PURCHASE_DETAILS",
     PURCHASE_PDF_ACTION: "PURCHASE_PDF_ACTION",
+    PURCHASE_STATUS: "purchase-status",
 };
 
 export const transferActionType = {
@@ -708,15 +710,18 @@ export const baseUnitOptions = [
 
 export const statusOptions = [
     { id: 0, name: "unit.filter.all.label" },
-    { id: 1, name: "status.filter.received.label" },
+    { id: 1, name: "status.filter.delivered.label" },
     { id: 2, name: "status.filter.pending.label" },
     { id: 3, name: "status.filter.ordered.label" },
 ];
 
 export const saleStatusOptions = [
-    { id: 1, name: "status.filter.received.label" },
     { id: 2, name: "status.filter.pending.label" },
     { id: 3, name: "status.filter.ordered.label" },
+    { id: 1, name: "status.filter.delivered.label" },
+    { id: 3, name: "status.filter.proceed_for_delivery.label" },
+    { id: 3, name: "status.filter.out_for_delivery.label" },
+    { id: 3, name: "status.filter.canceled.label" },
 ];
 
 export const salePaymentStatusOptions = [

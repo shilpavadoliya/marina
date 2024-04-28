@@ -1,8 +1,12 @@
 export const subTotalCount = (cartItem) => {
-    const totalAmount = taxAmount(cartItem) + amountBeforeTax(cartItem);
-    return Number(+totalAmount * cartItem.quantity).toFixed(2);
+    const salePrice = parseFloat(cartItem.sale_price);
+    const quantity = parseFloat(cartItem.quantity);
+    if (isNaN(salePrice) || isNaN(quantity)) {
+        return 0; // Return 0 if either sale price or quantity is not a number
+    } else {
+        return (salePrice * quantity).toFixed(2); // Calculate subtotal and round to 2 decimal places
+    }
 }
-
 export const discountAmount = (cartItem) => {
     if (cartItem.discount_type === '1' || cartItem.discount_type === 1) {
         return ((+cartItem.fix_net_unit / 100) * +cartItem.discount_value);
@@ -61,14 +65,14 @@ export const calculateSubTotal = (carts) => {
     carts.forEach(cartItem => {
         subTotalAmount = subTotalAmount + Number(subTotalCount(cartItem))
     })
-    return +subTotalAmount;
+    return +subTotalAmount; 
 }
 
 export const calculateCartTotalAmount = (carts, inputValue) => {
-    let finalTotalAmount
-    const value = inputValue && inputValue;
-    let totalAmountAfterDiscount = calculateSubTotal(carts) - value.discount
-    let taxCal = (totalAmountAfterDiscount * inputValue.tax_rate / 100).toFixed(2)
-    finalTotalAmount = Number(totalAmountAfterDiscount) + Number(taxCal) + Number(value.shipping)
-    return (parseFloat(finalTotalAmount).toFixed(2))
+    console.log(carts);
+    let finalTotalAmount = 0; // 
+    const value = inputValue || {};
+    const subtotal = calculateSubTotal(carts);
+    finalTotalAmount = subtotal;
+    return finalTotalAmount.toFixed(2);
 }

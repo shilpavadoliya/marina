@@ -159,7 +159,7 @@ class PurchaseAPIController extends AppBaseController
         $data['purchase_pdf_url'] = Storage::url('pdf/Purchase-'.$purchase->reference_code.'.pdf');
 
         return $this->sendResponse($data, 'pdf retrieved Successfully');
-    }
+    }   
 
     public function purchaseInfo(Purchase $purchase): JsonResponse
     {
@@ -185,5 +185,14 @@ class PurchaseAPIController extends AppBaseController
         PurchaseResource::usingWithCollection();
 
         return new PurchaseCollection($purchases);
+    }
+
+    public function updateStatus($id, Request $request): PurchaseResource
+    {
+        // dd('come');
+        $purchase = $this->purchaseRepository->find($id);
+        $purchase->update(['status' => $request->get('value')]);
+
+        return new PurchaseResource($purchase);
     }
 }

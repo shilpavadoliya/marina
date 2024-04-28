@@ -169,3 +169,26 @@ export const deletePurchase = (purchaseId) => async (dispatch) => {
             );
         });
 };
+
+    export const changePurchaseStatus = (purchaseId, newStatus) => async (dispatch) => {
+        apiConfig
+            .post(apiBaseURL.PURCHASE_STATUS + "/" + purchaseId, newStatus)
+            .then((response) => {
+                dispatch({
+                    type: purchaseActionType.EDIT_PURCHASE,
+                    payload: response.data.data,
+                });
+                dispatch(
+                    addToast({
+                        text: getFormattedMessage(
+                            "supplier.success.edit.message"
+                        ),
+                    })
+                );
+            })
+            .catch(({ response }) => {
+                dispatch(
+                    addToast({ text: response.data.message, type: toastType.ERROR })
+                );
+            });
+    };

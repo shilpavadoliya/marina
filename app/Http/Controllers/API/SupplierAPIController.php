@@ -15,6 +15,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 
 /**
  * Class SupplierAPIController
@@ -32,7 +35,17 @@ class SupplierAPIController extends AppBaseController
     public function index(Request $request): SupplierCollection
     {
         $perPage = getPageSize($request);
-        $suppliers = $this->supplierRepository->paginate($perPage);
+
+        $user = User::where('id', auth()->id())->first();
+        $roleId = $user->roles()->first()->id;
+        
+        $suppliers = $this->supplierRepository;
+
+        if(!empty($roleId) && $roleId != 1  ) {
+            $suppliers->where('user_id', auth()->id());
+        }
+
+        $suppliers = $suppliers->paginate($perPage);
         SupplierResource::usingWithCollection();
 
         return new SupplierCollection($suppliers);
@@ -44,6 +57,7 @@ class SupplierAPIController extends AppBaseController
     public function store(CreateSupplierRequest $request): SupplierResource
     {
         $input = $request->all();
+        $input['user_id'] = auth()->id();
         $supplier = $this->supplierRepository->create($input);
 
         return new SupplierResource($supplier);

@@ -79,7 +79,8 @@ class Supplier extends BaseModel
         'customers_covered',
         'claim_periodicity',
         'registered_office_state',
-        'status'
+        'status',
+        'user_id'
 
     ];
 

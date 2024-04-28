@@ -6,7 +6,7 @@ export const prepareTransferArray = (products) => {
             code: product.attributes.code,
             barcode_url: product.attributes.barcode_url,
             stock: product.attributes.stock && product.attributes.stock.quantity,
-            short_name: product.attributes.purchase_unit_name.short_name,
+            // short_name: product.attributes.purchase_unit_name.short_name,
             net_unit_cost :  product.attributes.product_cost,
             product_unit: product.attributes.product_unit,
             fix_net_unit: product.attributes.product_cost,

@@ -34,6 +34,7 @@ const PurchaseTable = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [modalId, setModalId] = useState(null);
 
+    console.log();
     useEffect(() => {
         singleProduct.newItem !== "" &&
             productUnitDropdown(singleProduct.product_unit);
@@ -82,6 +83,18 @@ const PurchaseTable = (props) => {
         }
     };
 
+    const handleSaleChange = (e) => {
+        e.preventDefault();
+        const { value } = e.target;
+        setUpdateProducts((updateProducts) =>
+            updateProducts.map((item) =>
+                item.id === singleProduct.id
+                    ? { ...item, sale_price: value } // Update sale_price for the specific product
+                    : item
+            )
+        );
+    };
+
     const handleChange = (e) => {
         e.preventDefault();
         const { value } = e.target;
@@ -107,18 +120,18 @@ const PurchaseTable = (props) => {
         <>
             <tr key={index} className="align-middle text-nowrap">
                 <td className="ps-3">
-                    <h4 className="product-name">{singleProduct.code}</h4>
+                    <h4 className="product-name">{singleProduct.name}</h4>
                     <div className="d-flex align-items-center">
                         <span className="badge bg-light-success">
-                            <span>{singleProduct.name}</span>
+                            <span>{singleProduct.code}</span>
                         </span>
-                        <span className="badge bg-light-primary p-1 ms-1">
+                        {/* <span className="badge bg-light-primary p-1 ms-1">
                             <FontAwesomeIcon
                                 icon={faPencil}
                                 onClick={(e) => handleClose(e)}
                                 style={{ cursor: "pointer" }}
                             />
-                        </span>
+                        </span> */}
                     </div>
                 </td>
                 <td>
@@ -126,7 +139,7 @@ const PurchaseTable = (props) => {
                         allConfigData,
                         frontSetting.value &&
                             frontSetting.value.currency_symbol,
-                        amountBeforeTax(singleProduct)
+                        singleProduct.net_unit_cost
                     )}
                 </td>
                 <td>
@@ -188,16 +201,17 @@ const PurchaseTable = (props) => {
                         allConfigData,
                         frontSetting.value &&
                             frontSetting.value.currency_symbol,
-                        discountAmountMultiply(singleProduct)
+                        (singleProduct.minimum_price)
                     )}
                 </td>
                 <td>
-                    {currencySymbolHandling(
-                        allConfigData,
-                        frontSetting.value &&
-                            frontSetting.value.currency_symbol,
-                        taxAmountMultiply(singleProduct)
-                    )}
+                    
+                    <input type='text' className='form-control'
+                               placeholder='Sale price'
+                               name='sale_price'
+                               value={singleProduct.sale_price}
+                               onChange={(e) => handleSaleChange(e)}
+                        />
                 </td>
                 <td>
                     {currencySymbolHandling(

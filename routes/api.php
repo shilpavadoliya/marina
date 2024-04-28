@@ -238,6 +238,7 @@ Route::middleware('auth:sanctum')->group(function () {
         [PurchaseAPIController::class, 'pdfDownload'])->name('purchase-pdf-download');
     Route::get('purchase-info/{purchase}', [PurchaseAPIController::class, 'purchaseInfo'])->name('purchase-info');
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('/purchase-status/{purchase}', [PurchaseAPIController::class, 'updateStatus'])->name('update-status');
 
     //    Route::middleware('permission:manage_adjustments')->group(function () {
     Route::resource('adjustments', AdjustmentAPIController::class);

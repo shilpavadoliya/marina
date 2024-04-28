@@ -83,8 +83,6 @@ const AdjustmentForm = ( props ) => {
         const qtyCart = updateProducts.filter( ( a ) => a.quantity === 0 );
         if ( !adjustMentValue.date ) {
             error[ 'date' ] = getFormattedMessage( 'globally.date.validate.label' );
-        } else if ( !adjustMentValue.warehouse_id ) {
-            error[ 'warehouse_id' ] = getFormattedMessage( 'product.input.warehouse.validate.label' );
         } else if ( qtyCart.length > 0 ) {
             dispatch( addToast( { text: getFormattedMessage( 'globally.product-quantity.validate.message' ), type: toastType.ERROR } ) )
         } else if ( updateProducts.length < 1 ) {
@@ -151,19 +149,9 @@ const AdjustmentForm = ( props ) => {
                         <ReactSelect name='warehouse_id' data={warehouses} onChange={onWarehouseChange}
                             title={getFormattedMessage( 'warehouse.title' )} errors={errors[ 'warehouse_id' ]}
                             defaultValue={adjustMentValue.warehouse_id} value={adjustMentValue.warehouse_id} addSearchItems={singleAdjustMent}
-                            isWarehouseDisable={true}
                             placeholder={placeholderText( 'purchase.select.warehouse.placeholder.label' )} />
                     </div>
-                    <div className='col-md-4'>
-                        <label className='form-label fs-6 text-gray-700 mb-3'>
-                            {getFormattedMessage( 'react-data-table.date.column.label' )}:
-                        </label>
-                        <span className='required' />
-                        <div className='position-relative'>
-                            <ReactDatePicker onChangeDate={handleCallback} newStartDate={adjustMentValue.date} />
-                        </div>
-                        <span className='text-danger d-block fw-400 fs-small mt-2'>{errors[ 'date' ] ? errors[ 'date' ] : null}</span>
-                    </div>
+                    
                     <div className='mb-10'>
                         <label className='form-label'>
                             {getFormattedMessage( 'product.title' )}:

@@ -44,13 +44,9 @@ const PurchaseForm = ( props ) => {
         date: singlePurchase ? moment( singlePurchase.date ).toDate() : new Date(),
         warehouse_id: singlePurchase ? singlePurchase.warehouse_id : '',
         supplier_id: singlePurchase ? singlePurchase.supplier_id : '',
-        tax_rate: singlePurchase ? singlePurchase.tax_rate.toFixed( 2 ) : '0.00',
-        tax_amount: singlePurchase ? singlePurchase.tax_amount.toFixed( 2 ) : '0.00',
-        discount: singlePurchase ? singlePurchase.discount.toFixed( 2 ) : '0.00',
-        shipping: singlePurchase ? singlePurchase.shipping.toFixed( 2 ) : '0.00',
         grand_total: singlePurchase ? singlePurchase.grand_total : '0.00',
         notes: singlePurchase ? singlePurchase.notes : '',
-        status_id: singlePurchase ? singlePurchase.status_id : { label: getFormattedMessage( "status.filter.received.label" ), value: 1 },
+        status_id: singlePurchase ? singlePurchase.status_id : { label: getFormattedMessage( "status.filter.pending.label" ), value: 1 },
     } );
 
     const [ errors, setErrors ] = useState( {
@@ -64,9 +60,16 @@ const PurchaseForm = ( props ) => {
         status_id: ''
     } );
 
+    
+
     useEffect( () => {
-        setUpdateProducts( updateProducts );
-    }, [ updateProducts, quantity, newCost, newDiscount, newTax, subTotal, newPurchaseUnit ] );
+        setUpdateProducts( customProducts );
+        console.log(updateProducts);
+    }, [ products, quantity, newCost, newDiscount, newTax, subTotal, newPurchaseUnit ] );
+
+    useEffect( () => {
+        purchaseValue.warehouse_id.value ? fetchProductsByWarehouse() : null
+    }, [ purchaseValue.warehouse_id ] )
 
     useEffect( () => {
         updateProducts.length >= 1 ? dispatch( { type: 'DISABLE_OPTION', payload: true } ) : dispatch( { type: 'DISABLE_OPTION', payload: false } )
@@ -78,9 +81,6 @@ const PurchaseForm = ( props ) => {
         }
     }, [] );
 
-    useEffect( () => {
-        purchaseValue.warehouse_id.value ? fetchProductsByWarehouse() : null
-    }, [ purchaseValue.warehouse_id ] )
 
     const handleValidation = () => {
         let errorss = {};
@@ -129,13 +129,6 @@ const PurchaseForm = ( props ) => {
         setNewCost( item );
     };
 
-    const updateDiscount = ( item ) => {
-        setNewDiscount( item );
-    };
-
-    const updateTax = ( item ) => {
-        setNewTax( item );
-    };
 
     const onChangeInput = ( e ) => {
         e.preventDefault();
@@ -248,26 +241,33 @@ const PurchaseForm = ( props ) => {
                         <span className='text-danger d-block fw-400 fs-small mt-2'>{errors[ 'date' ] ? errors[ 'date' ] : null}</span>
                     </div>
                     <div className='col-md-4 mb-3'>
-                        <ReactSelect data={warehouses} onChange={onWarehouseChange}
-                            defaultValue={purchaseValue.warehouse_id} addSearchItems={singlePurchase}
-                            isWarehouseDisable={true}
-                            title={getFormattedMessage( 'warehouse.title' )} errors={errors[ 'warehouse_id' ]}
-                            placeholder={placeholderText( 'purchase.select.warehouse.placeholder.label' )} />
-                    </div>
-                    <div className='col-md-4 mb-3'>
                         <ReactSelect data={suppliers} onChange={onSupplierChange}
                             defaultValue={purchaseValue.supplier_id}
                             title={getFormattedMessage( 'supplier.title' )} errors={errors[ 'supplier_id' ]}
                             placeholder={placeholderText( 'purchase.select.supplier.placeholder.label' )} />
                     </div>
-                    <div className='col-md-12 mb-3'>
-                        <label className='form-label'>
-                            {getFormattedMessage( 'dashboard.stockAlert.product.label' )}:
-                        </label>
-                        <ProductSearch values={purchaseValue} products={products} isAllProducts={true}
-                            handleValidation={handleValidation} updateProducts={updateProducts}
-                            setUpdateProducts={setUpdateProducts} customProducts={customProducts} />
+                    <div className='col-md-4 mb-3'>
+                        <ReactSelect data={warehouses} onChange={onWarehouseChange}
+                            defaultValue={purchaseValue.warehouse_id} addSearchItems={singlePurchase}
+                            isWarehouseDisable={false}
+                            title={getFormattedMessage( 'warehouse.title' )} errors={errors[ 'warehouse_id' ]}
+                            placeholder={placeholderText( 'purchase.select.warehouse.placeholder.label' )} />
                     </div>
+                   
+                    {/* <div className='col-md-12 mb-3'>
+    <label className='form-label'>
+        {getFormattedMessage('dashboard.stockAlert.product.label')}:
+    </label>
+    <ProductSearch
+        values={purchaseValue}
+        products={products}
+        isAllProducts={true}
+        handleValidation={handleValidation}
+        updateProducts={updateProducts}
+        setUpdateProducts={setUpdateProducts}
+        customProducts={customProducts}
+    />
+</div> */}
                     <div className='col-12 md-12'>
                         <label
                             className='form-label'>
@@ -281,24 +281,29 @@ const PurchaseForm = ( props ) => {
                                     <th>{getFormattedMessage( 'purchase.order-item.table.net-unit-cost.column.label' )}</th>
                                     <th>{getFormattedMessage( 'purchase.order-item.table.stock.column.label' )}</th>
                                     <th className='text-lg-start text-center'>{getFormattedMessage( 'purchase.order-item.table.qty.column.label' )}</th>
-                                    <th>{getFormattedMessage( 'purchase.order-item.table.discount.column.label' )}</th>
-                                    <th>{getFormattedMessage( 'purchase.order-item.table.tax.column.label' )}</th>
+                                    <th>{getFormattedMessage( 'purchase.order-item.table.min-price.column.label' )}</th>
+                                    <th>{getFormattedMessage( 'purchase.order-item.table.sale-price.column.label' )}</th>
                                     <th>{getFormattedMessage( 'purchase.order-item.table.sub-total.column.label' )}</th>
                                     <th>{getFormattedMessage( 'react-data-table.action.column.label' )}</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {updateProducts && updateProducts.map( ( singleProduct, index ) => {
-                                    return <PurchaseTable singleProduct={singleProduct} index={index}
-                                        updateQty={updatedQty}
-                                        updateCost={updateCost} updateDiscount={updateDiscount}
-                                        updateProducts={updateProducts}
-                                        updateSubTotal={updateSubTotal} frontSetting={frontSetting}
-                                        setUpdateProducts={setUpdateProducts} updateTax={updateTax}
-                                        updatePurchaseUnit={updatePurchaseUnit}
-                                        purchaseItem={singlePurchase && singlePurchase.purchase_items}
-                                    />
-                                } )}
+                            <tbody> 
+                                 { updateProducts.map((singleProduct, index) => (
+                                    
+                                <PurchaseTable
+                                    key={index}
+                                    singleProduct={singleProduct}
+                                    index={index}
+                                    updateQty={updatedQty}
+                                    updateCost={updateCost}
+                                    updateProducts={updateProducts}
+                                    updateSubTotal={updateSubTotal}
+                                    frontSetting={frontSetting}
+                                    setUpdateProducts={setUpdateProducts}
+                                    updatePurchaseUnit={updatePurchaseUnit}
+                                    purchaseItem={singlePurchase && singlePurchase.purchase_items}
+                                />
+                            ))}
                                 {!updateProducts.length && <tr>
                                     <td colSpan={8} className='fs-5 px-3 py-6 custom-text-center'>
                                         {getFormattedMessage( 'sale.product.table.no-data.label' )}
@@ -312,59 +317,8 @@ const PurchaseForm = ( props ) => {
                         <ProductMainCalculation inputValues={purchaseValue} updateProducts={updateProducts}
                             frontSetting={frontSetting} allConfigData={allConfigData} />
                     </div>
-                    <div className='col-md-4 mb-5'>
-                        <label className='form-label'>
-                            {getFormattedMessage( 'purchase.input.order-tax.label' )}:
-                        </label>
-                        <InputGroup>
-                            <input aria-label='Dollar amount (with dot and two decimal places)'
-                                className='form-control'
-                                onBlur={( event ) => onBlurInput( event )}
-                                onFocus={( event ) => onFocusInput( event )}
-                                value={purchaseValue.tax_rate} type='text' name='tax_rate'
-                                onKeyPress={( event ) => decimalValidate( event )}
-                                onChange={( e ) => {
-                                    onChangeInput( e )
-                                }} />
-                            <InputGroup.Text>%</InputGroup.Text>
-                        </InputGroup>
-                        <span className='text-danger d-block fw-400 fs-small mt-2'>{errors[ 'orderTax' ] ? errors[ 'orderTax' ] : null}</span>
-                    </div>
-                    <div className='col-md-4 mb-5'>
-                        <label className='form-label'>
-                            {getFormattedMessage( 'purchase.order-item.table.discount.column.label' )}:
-                        </label>
-                        <InputGroup>
-                            <input aria-label='Dollar amount (with dot and two decimal places)'
-                                className='form-control'
-                                onBlur={( event ) => onBlurInput( event )}
-                                onFocus={( event ) => onFocusInput( event )}
-                                value={purchaseValue.discount} type='text' name='discount'
-                                onKeyPress={( event ) => decimalValidate( event )}
-                                onChange={( e ) => onChangeInput( e )}
-                            />
-                            <InputGroup.Text>{frontSetting.value && frontSetting.value.currency_symbol}</InputGroup.Text>
-                        </InputGroup>
-                        <span className='text-danger d-block fw-400 fs-small mt-2'>{errors[ 'discount' ] ? errors[ 'discount' ] : null}</span>
-                    </div>
-                    <div className='col-md-4 mb-5'>
-                        <label
-                            className='form-label'>
-                            {getFormattedMessage( 'purchase.input.shipping.label' )}:
-                        </label>
-                        <InputGroup>
-                            <input aria-label='Dollar amount (with dot and two decimal places)'
-                                className='form-control' value={purchaseValue.shipping}
-                                type='text' name='shipping'
-                                onBlur={( event ) => onBlurInput( event )}
-                                onFocus={( event ) => onFocusInput( event )}
-                                onKeyPress={( event ) => decimalValidate( event )}
-                                onChange={( e ) => onChangeInput( e )}
-                            />
-                            <InputGroup.Text>{frontSetting.value && frontSetting.value.currency_symbol}</InputGroup.Text>
-                        </InputGroup>
-                        <span className='text-danger d-block fw-400 fs-small mt-2'>{errors[ 'shipping' ] ? errors[ 'shipping' ] : null}</span>
-                    </div>
+                    
+                   
                     <div className='col-md-4 mb-5'>
                         <ReactSelect multiLanguageOption={statusFilterOptions} onChange={onStatusChange} name='status'
                             title={getFormattedMessage( 'purchase.select.status.label' )}

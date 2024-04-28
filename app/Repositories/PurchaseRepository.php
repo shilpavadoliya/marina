@@ -75,8 +75,8 @@ class PurchaseRepository extends BaseRepository
             }
 
             $purchaseInputArray = Arr::only($input, [
-                'supplier_id', 'warehouse_id', 'date', 'tax_rate', 'tax_amount', 'discount', 'shipping', 'grand_total',
-                'received_amount', 'paid_amount', 'payment_type', 'notes', 'status',
+                'supplier_id', 'warehouse_id', 'date', 'grand_total',
+                'received_amount', 'paid_amount', 'payment_type', 'notes', 'status','sale_price'
             ]);
 
             /** @var Purchase $purchase */
@@ -110,38 +110,38 @@ class PurchaseRepository extends BaseRepository
 
         //discount calculation
         $perItemDiscountAmount = 0;
-        $purchaseItem['net_unit_cost'] = $purchaseItem['product_cost'];
-        if ($purchaseItem['discount_type'] == Purchase::PERCENTAGE) {
-            if ($purchaseItem['discount_value'] <= 100 && $purchaseItem['discount_value'] >= 0) {
-                $purchaseItem['discount_amount'] = ($purchaseItem['discount_value'] * $purchaseItem['product_cost'] / 100) * $purchaseItem['quantity'];
-                $perItemDiscountAmount = $purchaseItem['discount_amount'] / $purchaseItem['quantity'];
-                $purchaseItem['net_unit_cost'] -= $perItemDiscountAmount;
-            } else {
-                throw new UnprocessableEntityHttpException('Please enter discount value between 0 to 100.');
-            }
-        } elseif ($purchaseItem['discount_type'] == Purchase::FIXED) {
-            if ($purchaseItem['discount_value'] <= $purchaseItem['product_cost'] && $purchaseItem['discount_value'] >= 0) {
-                $purchaseItem['discount_amount'] = $purchaseItem['discount_value'] * $purchaseItem['quantity'];
-                $perItemDiscountAmount = $purchaseItem['discount_amount'] / $purchaseItem['quantity'];
-                $purchaseItem['net_unit_cost'] -= $perItemDiscountAmount;
-            } else {
-                throw new UnprocessableEntityHttpException("Please enter  discount's value between product's price.");
-            }
-        }
+        $purchaseItem['net_unit_cost'] = $purchaseItem['net_unit_cost'];
+        // if ($purchaseItem['discount_type'] == Purchase::PERCENTAGE) {
+        //     if ($purchaseItem['discount_value'] <= 100 && $purchaseItem['discount_value'] >= 0) {
+        //         $purchaseItem['discount_amount'] = ($purchaseItem['discount_value'] * $purchaseItem['product_cost'] / 100) * $purchaseItem['quantity'];
+        //         $perItemDiscountAmount = $purchaseItem['discount_amount'] / $purchaseItem['quantity'];
+        //         $purchaseItem['net_unit_cost'] -= $perItemDiscountAmount;
+        //     } else {
+        //         throw new UnprocessableEntityHttpException('Please enter discount value between 0 to 100.');
+        //     }
+        // } elseif ($purchaseItem['discount_type'] == Purchase::FIXED) {
+        //     if ($purchaseItem['discount_value'] <= $purchaseItem['product_cost'] && $purchaseItem['discount_value'] >= 0) {
+        //         $purchaseItem['discount_amount'] = $purchaseItem['discount_value'] * $purchaseItem['quantity'];
+        //         $perItemDiscountAmount = $purchaseItem['discount_amount'] / $purchaseItem['quantity'];
+        //         $purchaseItem['net_unit_cost'] -= $perItemDiscountAmount;
+        //     } else {
+        //         throw new UnprocessableEntityHttpException("Please enter  discount's value between product's price.");
+        //     }
+        // }
         //tax calculation
         $perItemTaxAmount = 0;
-        if ($purchaseItem['tax_value'] <= 100 && $purchaseItem['tax_value'] >= 0) {
-            if ($purchaseItem['tax_type'] == Purchase::EXCLUSIVE) {
-                $purchaseItem['tax_amount'] = (($purchaseItem['net_unit_cost'] * $purchaseItem['tax_value']) / 100) * $purchaseItem['quantity'];
-                $perItemTaxAmount = $purchaseItem['tax_amount'] / $purchaseItem['quantity'];
-            } elseif ($purchaseItem['tax_type'] == Purchase::INCLUSIVE) {
-                $purchaseItem['tax_amount'] = ($purchaseItem['net_unit_cost'] * $purchaseItem['tax_value']) / (100 + $purchaseItem['tax_value']) * $purchaseItem['quantity'];
-                $perItemTaxAmount = $purchaseItem['tax_amount'] / $purchaseItem['quantity'];
-                $purchaseItem['net_unit_cost'] -= $perItemTaxAmount;
-            }
-        } else {
-            throw new UnprocessableEntityHttpException('Please enter tax value between 0 to 100 ');
-        }
+        // if ($purchaseItem['tax_value'] <= 100 && $purchaseItem['tax_value'] >= 0) {
+        //     if ($purchaseItem['tax_type'] == Purchase::EXCLUSIVE) {
+        //         $purchaseItem['tax_amount'] = (($purchaseItem['net_unit_cost'] * $purchaseItem['tax_value']) / 100) * $purchaseItem['quantity'];
+        //         $perItemTaxAmount = $purchaseItem['tax_amount'] / $purchaseItem['quantity'];
+        //     } elseif ($purchaseItem['tax_type'] == Purchase::INCLUSIVE) {
+        //         $purchaseItem['tax_amount'] = ($purchaseItem['net_unit_cost'] * $purchaseItem['tax_value']) / (100 + $purchaseItem['tax_value']) * $purchaseItem['quantity'];
+        //         $perItemTaxAmount = $purchaseItem['tax_amount'] / $purchaseItem['quantity'];
+        //         $purchaseItem['net_unit_cost'] -= $perItemTaxAmount;
+        //     }
+        // } else {
+        //     throw new UnprocessableEntityHttpException('Please enter tax value between 0 to 100 ');
+        // }
         $purchaseItem['sub_total'] = ($purchaseItem['net_unit_cost'] + $perItemTaxAmount) * $purchaseItem['quantity'];
 
         return $purchaseItem;
@@ -159,22 +159,22 @@ class PurchaseRepository extends BaseRepository
         }
 
         $subTotalAmount = $purchase->purchaseItems()->sum('sub_total');
-        if ($input['discount'] <= $subTotalAmount) {
-            $input['grand_total'] = $subTotalAmount - $input['discount'];
-        } else {
-            throw new UnprocessableEntityHttpException('Discount amount should not be greater than total.');
-        }
-        if ($input['tax_rate'] <= 100 && $input['tax_rate'] >= 0) {
-            $input['tax_amount'] = $input['grand_total'] * $input['tax_rate'] / 100;
-        } else {
-            throw new UnprocessableEntityHttpException('Please enter tax value between 0 to 100.');
-        }
+        // if ($input['discount'] <= $subTotalAmount) {
+        //     $input['grand_total'] = $subTotalAmount - $input['discount'];
+        // } else {
+        //     throw new UnprocessableEntityHttpException('Discount amount should not be greater than total.');
+        // }
+        // if ($input['tax_rate'] <= 100 && $input['tax_rate'] >= 0) {
+        //     $input['tax_amount'] = $input['grand_total'] * $input['tax_rate'] / 100;
+        // } else {
+        //     throw new UnprocessableEntityHttpException('Please enter tax value between 0 to 100.');
+        // }
         $input['grand_total'] = $input['grand_total'] + $input['tax_amount'];
-        if ($input['shipping'] <= $input['grand_total'] && $input['shipping'] >= 0) {
-            $input['grand_total'] += $input['shipping'];
-        } else {
-            throw new UnprocessableEntityHttpException('Shipping amount should not be greater than total.');
-        }
+        // if ($input['shipping'] <= $input['grand_total'] && $input['shipping'] >= 0) {
+        //     $input['grand_total'] += $input['shipping'];
+        // } else {
+        //     throw new UnprocessableEntityHttpException('Shipping amount should not be greater than total.');
+        // }
 
         $input['reference_code'] = getSettingValue('purchase_code').'_111'.$purchase->id;
         $purchase->update($input);
@@ -201,18 +201,16 @@ class PurchaseRepository extends BaseRepository
                 //get different ids & update
                 $purchaseItmOldIds[$key] = $purchaseItem['purchase_item_id'];
                 $purchaseItemArr = Arr::only($purchaseItem, [
-                    'purchase_item_id', 'product_id', 'product_cost', 'net_unit_cost', 'tax_type', 'tax_value',
-                    'tax_amount', 'discount_type', 'discount_value', 'discount_amount', 'purchase_unit', 'quantity',
-                    'sub_total',
+                    'purchase_item_id', 'product_id', 'product_cost', 'net_unit_cost', 'purchase_unit', 'quantity',
+                    'sub_total','sales_price'
                 ]);
                 $this->updateItem($purchaseItemArr, $input['warehouse_id']);
                 //create new product items
                 if (is_null($purchaseItem['purchase_item_id'])) {
                     $purchaseItem = $this->calculationPurchaseItems($purchaseItem);
                     $purchaseItemArr = Arr::only($purchaseItem, [
-                        'purchase_item_id', 'product_id', 'product_cost', 'net_unit_cost', 'tax_type', 'tax_value',
-                        'tax_amount', 'discount_type', 'discount_value', 'discount_amount', 'purchase_unit', 'quantity',
-                        'sub_total',
+                        'purchase_item_id', 'product_id', 'product_cost', 'net_unit_cost',  'purchase_unit', 'quantity',
+                        'sub_total','sales_price'
                     ]);
                     $purchase->purchaseItems()->create($purchaseItemArr);
                     // manage new product
@@ -256,26 +254,25 @@ class PurchaseRepository extends BaseRepository
         $purchase = Purchase::findOrFail($id);
         $subTotalAmount = $purchase->purchaseItems()->sum('sub_total');
 
-        if ($input['discount'] > $subTotalAmount || $input['discount'] < 0) {
-            throw new UnprocessableEntityHttpException('Discount amount should not be greater than total.');
-        }
-        $input['grand_total'] = $subTotalAmount - $input['discount'];
-        if ($input['tax_rate'] > 100 || $input['tax_rate'] < 0) {
-            throw new UnprocessableEntityHttpException('Please enter tax value between 0 to 100.');
-        }
-        $input['tax_amount'] = $input['grand_total'] * $input['tax_rate'] / 100;
+        // if ($input['discount'] > $subTotalAmount || $input['discount'] < 0) {
+        //     throw new UnprocessableEntityHttpException('Discount amount should not be greater than total.');
+        // }
+        // $input['grand_total'] = $subTotalAmount - $input['discount'];
+        // if ($input['tax_rate'] > 100 || $input['tax_rate'] < 0) {
+        //     throw new UnprocessableEntityHttpException('Please enter tax value between 0 to 100.');
+        // }
+        // $input['tax_amount'] = $input['grand_total'] * $input['tax_rate'] / 100;
 
-        $input['grand_total'] += $input['tax_amount'];
+        // $input['grand_total'] += $input['tax_amount'];
 
-        if ($input['shipping'] > $input['grand_total'] || $input['shipping'] < 0) {
-            throw new UnprocessableEntityHttpException('Shipping amount should not be greater than total.');
-        }
+        // if ($input['shipping'] > $input['grand_total'] || $input['shipping'] < 0) {
+        //     throw new UnprocessableEntityHttpException('Shipping amount should not be greater than total.');
+        // }
 
-        $input['grand_total'] += $input['shipping'];
+        // $input['grand_total'] += $input['shipping'];
 
         $purchaseInputArray = Arr::only($input, [
-            'supplier_id', 'warehouse_id', 'date', 'tax_rate', 'tax_amount', 'discount', 'shipping', 'grand_total',
-            'received_amount', 'paid_amount', 'payment_type', 'notes', 'status',
+            'supplier_id', 'warehouse_id', 'date', 'grand_total', 'notes', 'status',
         ]);
         $purchase->update($purchaseInputArray);
 

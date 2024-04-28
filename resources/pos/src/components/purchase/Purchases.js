@@ -13,11 +13,15 @@ import {
     currencySymbolHandling,
     placeholderText,
 } from "../../shared/sharedMethod";
-import { getFormattedMessage } from "../../shared/sharedMethod";
+import { getFormattedMessage, getFormattedOptions } from "../../shared/sharedMethod";
 import { purchasePdfAction } from "../../store/action/purchasePdfAction";
 import { fetchFrontSetting } from "../../store/action/frontSettingAction";
 import ShowPayment from "../../shared/showPayment/ShowPayment";
 import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
+import ReactSelect from '../../shared/select/reactSelect';
+import { saleStatusOptions } from '../../constants';
+import { changePurchaseStatus } from '../../store/action/purchaseAction';
+
 
 const Product = (props) => {
     const {
@@ -29,6 +33,7 @@ const Product = (props) => {
         isLoading,
         suppliers,
         purchasePdfAction,
+        changePurchaseStatus,
         frontSetting,
         fetchFrontSetting,
         allConfigData,
@@ -36,6 +41,7 @@ const Product = (props) => {
     const [deleteModel, setDeleteModel] = useState(false);
     const [isDelete, setIsDelete] = useState(null);
     const [isShowPaymentModel, setIsShowPaymentModel] = useState(false);
+    const [selectedPurchaseId, setSelectedPurchaseId] = useState(null); 
     const currencySymbol =
         frontSetting &&
         frontSetting.value &&
@@ -73,6 +79,13 @@ const Product = (props) => {
     //onClick pdf function
     const onPdfClick = (id) => {
         purchasePdfAction(id);
+    };
+    
+    const onStatusChange = (selectedPurchaseId, selectedOption) => {
+        console.log(selectedPurchaseId,selectedOption.value);
+        changePurchaseStatus(selectedPurchaseId, selectedOption);
+            // Handle success if needed
+        
     };
 
     const itemsValue =
@@ -152,6 +165,15 @@ const Product = (props) => {
         }
     }, [purchases]);
 
+    
+    const statusFilterOptions = getFormattedOptions( saleStatusOptions )
+    const statusDefaultValue = statusFilterOptions.map( ( option ) => {
+        return {
+            value: option.id,
+            label: option.name
+        }
+    } )
+    console.log(statusDefaultValue);
     const columns = [
         {
             name: getFormattedMessage("dashboard.recentSales.reference.label"),
@@ -181,42 +203,42 @@ const Product = (props) => {
             sortField: "warehouse",
             sortable: false,
         },
-        {
-            name: getFormattedMessage("purchase.select.status.label"),
-            sortField: "status",
-            sortable: false,
-            cell: (row) => {
-                return (
-                    (row.status === 1 && (
-                        <span className="badge bg-light-success">
-                            <span>
-                                {getFormattedMessage(
-                                    "status.filter.received.label"
-                                )}
-                            </span>
-                        </span>
-                    )) ||
-                    (row.status === 2 && (
-                        <span className="badge bg-light-primary">
-                            <span>
-                                {getFormattedMessage(
-                                    "status.filter.pending.label"
-                                )}
-                            </span>
-                        </span>
-                    )) ||
-                    (row.status === 3 && (
-                        <span className="badge bg-light-warning">
-                            <span>
-                                {getFormattedMessage(
-                                    "status.filter.ordered.label"
-                                )}
-                            </span>
-                        </span>
-                    ))
-                );
-            },
-        },
+        // {
+        //     name: getFormattedMessage("purchase.select.status.label"),
+        //     sortField: "status",
+        //     sortable: false,
+        //     cell: (row) => {
+        //         return (
+        //             (row.status === 1 && (
+        //                 <span className="badge bg-light-success">
+        //                     <span>
+        //                         {getFormattedMessage(
+        //                             "status.filter.received.label"
+        //                         )}
+        //                     </span>
+        //                 </span>
+        //             )) ||
+        //             (row.status === 2 && (
+        //                 <span className="badge bg-light-primary">
+        //                     <span>
+        //                         {getFormattedMessage(
+        //                             "status.filter.pending.label"
+        //                         )}
+        //                     </span>
+        //                 </span>
+        //             )) ||
+        //             (row.status === 3 && (
+        //                 <span className="badge bg-light-warning">
+        //                     <span>
+        //                         {getFormattedMessage(
+        //                             "status.filter.ordered.label"
+        //                         )}
+        //                     </span>
+        //                 </span>
+        //             ))
+        //         );
+        //     },
+        // },
         {
             name: getFormattedMessage("purchase.grant-total.label"),
             // selector: row => row.currency + ' ' + parseFloat(row.grand_total).toFixed(2),
@@ -265,39 +287,36 @@ const Product = (props) => {
         // },
         {
             name: getFormattedMessage(
-                "globally.react-table.column.payment-type.label"
+                "globally.react-table.column.status.label"
             ),
-            selector: (row) => row.payment,
-            sortField: "payment",
+            selector: (row) => row.status,
+            sortField: "status",
             sortable: false,
             cell: (row) => {
-                return row.reference_code === "Total" ? (
-                    ""
-                ) : (
-                    <span className="badge bg-light-success">
-                        <span>{getFormattedMessage("cash.label")}</span>
-                    </span>
-                );
+                console.log(row.status);
+                return   row.reference_code != "Total" ? <ReactSelect isRequired multiLanguageOption={statusFilterOptions} name='status'
+                defaultValue={statusDefaultValue[ row.status ]}  onChange={(option) => {  onStatusChange(row.id,option); }} />
+                : '';
             },
         },
-        {
-            name: getFormattedMessage(
-                "globally.react-table.column.created-date.label"
-            ),
-            selector: (row) => row.date,
-            sortField: "date",
-            sortable: true,
-            cell: (row) => {
-                return (
-                    row.date && (
-                        <span className="badge bg-light-info">
-                            <div className="mb-1">{row.time}</div>
-                            <div>{row.date}</div>
-                        </span>
-                    )
-                );
-            },
-        },
+        // {
+        //     name: getFormattedMessage(
+        //         "globally.react-table.column.created-date.label"
+        //     ),
+        //     selector: (row) => row.date,
+        //     sortField: "date",
+        //     sortable: true,
+        //     cell: (row) => {
+        //         return (
+        //             row.date && (
+        //                 <span className="badge bg-light-info">
+        //                     <div className="mb-1">{row.time}</div>
+        //                     <div>{row.date}</div>
+        //                 </span>
+        //             )
+        //         );
+        //     },
+        // },
         {
             name: getFormattedMessage("react-data-table.action.column.label"),
             right: true,
@@ -383,4 +402,5 @@ export default connect(mapStateToProps, {
     fetchAllSuppliers,
     purchasePdfAction,
     fetchFrontSetting,
+    changePurchaseStatus
 })(Product);

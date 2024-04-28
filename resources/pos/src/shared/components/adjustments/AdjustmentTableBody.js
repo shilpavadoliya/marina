@@ -61,6 +61,7 @@ const AdjustmentTableBody = ( props ) => {
             )
         );
     };
+    
     const handleDecrement = () => {
         if ( singleProduct.quantity - 1 > 0.00 ) {
             setUpdateProducts( updateProducts => updateProducts.map( item => item.id === singleProduct.id

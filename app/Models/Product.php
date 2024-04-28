@@ -23,6 +23,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $product_category_id
  * @property int $brand_id
  * @property float $product_cost
+ * @property float $minimum_price
  * @property float $product_price
  * @property string $product_unit
  * @property string|null $sale_unit
@@ -208,7 +209,8 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
             'product_unit_quantity'=> $this->product_unit_quantity,
             'product_type'=> $this->product_type,
             'product_description'=> $this->product_description,
-            'prices' => $this->preparePricesWithLocations() // Modified here
+            'prices' => $this->preparePricesWithLocations(), // Modified here
+            'minimum_price' => $this->minimum_price // Modified here
 
         ];
 
@@ -318,6 +320,7 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
             'sale_unit' => array_values($this->getProductUnitName())[1],
             'remaining_quantity' => $this->stock->quantity ?? 0,
             'images' => $imageUrls['imageUrls'] ?? [],
+            'minimum_price' => $this->minimum_price,
         ];
     }
 
