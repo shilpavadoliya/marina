@@ -54,6 +54,8 @@ const ReactDataTable = (props) => {
         onReportPdfClick,
         importBtnTitle,
         goToImportProduct,
+        outLink,
+        outButton,
     } = props;
     const [perPage, setPerPages] = useState(defaultLimit);
     const [pageSize, setPageSize] = useState(Filters.OBJ.pageSize);
@@ -204,6 +206,8 @@ const ReactDataTable = (props) => {
                         />
                     ) : null}
                     {AddButton}
+                    
+
                     {isPdf ? (
                         <div className="text-end mb-2 ">
                             <Button
@@ -288,6 +292,20 @@ const ReactDataTable = (props) => {
                     {ButtonValue ? (
                         <TableButton ButtonValue={ButtonValue} to={to} />
                     ) : null}
+                    {outButton ? (
+                        <div className="text-end mb-2 ">
+                            <Button
+                                type="button"
+                                variant="primary"
+                                href={outLink}
+                                className="me-3 btn-light-primary"
+                            >
+                                {getFormattedMessage("adjustments.out-stock.title")}
+                            </Button>
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </Col>
             </>
         );

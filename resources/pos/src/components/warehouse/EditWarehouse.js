@@ -23,7 +23,12 @@ const EditWarehouse = ( props ) => {
         city: warehouse.attributes.city,
         email: warehouse.attributes.email,
         zip_code: warehouse.attributes.zip_code,
-        id: warehouse.id
+        id: warehouse.id,
+
+        warehouse_type: {
+            value: warehouse?.attributes.warehouse_type,
+            label: warehouse?.attributes.warehouse_type == 1 ? 'Mother' : warehouse?.attributes.warehouse_type == 2 ? 'Sub' : '',
+        },
     } ) );
 
     return (

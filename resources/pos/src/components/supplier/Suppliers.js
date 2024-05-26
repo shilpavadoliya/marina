@@ -18,6 +18,7 @@ const Suppliers = (props) => {
     const [isDelete, setIsDelete] = useState(null);
     const [importSuppliers, setImportSuppliers] = useState(false);
 
+    console.log(userRole);
     const handleClose = () => {
         setImportSuppliers(!importSuppliers);
     };
@@ -82,7 +83,7 @@ const Suppliers = (props) => {
                 )
             }
         },
-        (userRole === 1 || userRole === 2 || userRole === 4) && {
+        (userRole === 1 || userRole === 3 || userRole === 4) && {
             name: getFormattedMessage("purchase.select.status.label"),
             sortField: 'status',
             cell: row => {
@@ -131,6 +132,7 @@ const mapStateToProps = (state) => {
     const { suppliers, totalRecord, isLoading, allConfigData } = state;
     const userRoleArray = localStorage.getItem('loginUserArray');
     const parsedRoles = JSON.parse(userRoleArray);
+    console.log(userRoleArray.roles);
 
     const userRole = parsedRoles.id;
     return { suppliers, totalRecord, isLoading, allConfigData, userRole }

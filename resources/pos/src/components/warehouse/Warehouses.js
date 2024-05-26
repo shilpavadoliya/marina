@@ -12,7 +12,7 @@ import ActionButton from '../../shared/action-buttons/ActionButton';
 import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 
 const Warehouses = ( props ) => {
-    const { fetchWarehouses, warehouses, totalRecord, isLoading, allConfigData } = props;
+    const { fetchWarehouses, warehouses, totalRecord, isLoading, allConfigData,  userRole } = props;
     const [ deleteModel, setDeleteModel ] = useState( false );
     const [ isDelete, setIsDelete ] = useState( null );
     const navigate = useNavigate();
@@ -99,33 +99,44 @@ const Warehouses = ( props ) => {
             }
 
         },
-        {
+         (userRole === 1 || userRole === 4 || userRole === 5)
+        ? {
+        
             name: getFormattedMessage( 'react-data-table.action.column.label' ),
             right: true,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-            cell: row => <ActionButton isViewIcon={true} item={row} goToDetailScreen={goToProductDetailPage}
+            cell: row => 
+                        <ActionButton isViewIcon={true} item={row} goToDetailScreen={goToProductDetailPage}
                 goToEditProduct={goToEditProduct} isEditMode={true}
                 onClickDeleteModel={onClickDeleteModel} />
-        }
-    ];
+        } : null,
+    ].filter(column => column !== null);
 
     return (
         <MasterLayout>
             <TopProgressBar />
             <TabTitle title={placeholderText( 'warehouse.title' )} />
             <ReactDataTable columns={columns} items={itemsValue} onChange={onChange} isLoading={isLoading}
-                ButtonValue={getFormattedMessage( 'warehouse.create.title' )} totalRows={totalRecord}
-                to='#/app/warehouse/create' />
+            ButtonValue={(userRole === 1 || userRole === 4 || userRole === 5) ? 
+                getFormattedMessage('warehouse.create.title') : undefined}
+                totalRows={totalRecord}
+            to={(userRole === 1 || userRole === 4 || userRole === 5) ? '#/app/warehouse/create' : undefined}
+ />
             <DeleteWarehouse onClickDeleteModel={onClickDeleteModel} deleteModel={deleteModel} onDelete={isDelete} />
         </MasterLayout>
     )
 };
 
 const mapStateToProps = ( state ) => {
+    const userRoleArray = localStorage.getItem('loginUserArray');
+    const parsedRoles = JSON.parse(userRoleArray);
+
+    const userRole = parsedRoles ? parsedRoles.id : null; // Provide a default value or fallback mechanism
+
     const { warehouses, totalRecord, isLoading, allConfigData } = state;
-    return { warehouses, totalRecord, isLoading, allConfigData }
+    return { warehouses, totalRecord, isLoading, allConfigData, userRole }
 };
 
 export default connect( mapStateToProps, { fetchWarehouses } )( Warehouses );

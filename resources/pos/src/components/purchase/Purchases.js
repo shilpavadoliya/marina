@@ -37,6 +37,7 @@ const Product = (props) => {
         frontSetting,
         fetchFrontSetting,
         allConfigData,
+        userRole
     } = props;
     const [deleteModel, setDeleteModel] = useState(false);
     const [isDelete, setIsDelete] = useState(null);
@@ -293,7 +294,7 @@ const Product = (props) => {
             sortField: "status",
             sortable: false,
             cell: (row) => {
-                console.log(row.status);
+                // console.log(status);
                 return   row.reference_code != "Total" ? <ReactSelect isRequired multiLanguageOption={statusFilterOptions} name='status'
                 defaultValue={statusDefaultValue[ row.status ]}  onChange={(option) => {  onStatusChange(row.id,option); }} />
                 : '';
@@ -317,7 +318,9 @@ const Product = (props) => {
         //         );
         //     },
         // },
-        {
+        (userRole === 1 || userRole === 4 || userRole === 5)
+        ? {
+        
             name: getFormattedMessage("react-data-table.action.column.label"),
             right: true,
             ignoreRowClick: true,
@@ -339,8 +342,8 @@ const Product = (props) => {
                         title={getFormattedMessage("purchase.title")}
                     />
                 ),
-        },
-    ];
+        } : null,
+        ].filter(column => column !== null);
 
     return (
         <MasterLayout>
@@ -374,6 +377,10 @@ const Product = (props) => {
 };
 
 const mapStateToProps = (state) => {
+    const userRoleArray = localStorage.getItem('loginUserArray');
+    const parsedRoles = JSON.parse(userRoleArray);
+
+    const userRole = parsedRoles ? parsedRoles.id : null; // Provide a default value or fallback mechanism
     const {
         purchases,
         totalRecord,
@@ -393,6 +400,7 @@ const mapStateToProps = (state) => {
         frontSetting,
         fetchFrontSetting,
         allConfigData,
+        userRole
     };
 };
 

@@ -716,12 +716,12 @@ export const statusOptions = [
 ];
 
 export const saleStatusOptions = [
-    { id: 2, name: "status.filter.pending.label" },
-    { id: 3, name: "status.filter.ordered.label" },
-    { id: 1, name: "status.filter.delivered.label" },
-    { id: 3, name: "status.filter.proceed_for_delivery.label" },
-    { id: 3, name: "status.filter.out_for_delivery.label" },
-    { id: 3, name: "status.filter.canceled.label" },
+    { id: 1, name: "status.filter.pending.label" },
+    { id: 2, name: "status.filter.ordered.label" },
+    { id: 3, name: "status.filter.delivered.label" },
+    { id: 4, name: "status.filter.proceed_for_delivery.label" },
+    { id: 5, name: "status.filter.out_for_delivery.label" },
+    { id: 6, name: "status.filter.canceled.label" },
 ];
 
 export const salePaymentStatusOptions = [

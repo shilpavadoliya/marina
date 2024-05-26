@@ -41,7 +41,7 @@ class SupplierAPIController extends AppBaseController
         
         $suppliers = $this->supplierRepository;
 
-        if(!empty($roleId) && $roleId != 1  ) {
+        if(!empty($roleId) && $roleId == 2) {
             $suppliers->where('user_id', auth()->id());
         }
 

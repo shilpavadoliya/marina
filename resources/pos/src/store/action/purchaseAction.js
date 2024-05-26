@@ -181,7 +181,7 @@ export const deletePurchase = (purchaseId) => async (dispatch) => {
                 dispatch(
                     addToast({
                         text: getFormattedMessage(
-                            "supplier.success.edit.message"
+                            "purchase.success.edit.message"
                         ),
                     })
                 );

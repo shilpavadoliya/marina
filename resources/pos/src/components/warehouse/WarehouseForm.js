@@ -6,10 +6,13 @@ import * as EmailValidator from 'email-validator';
 import {getFormattedMessage, numValidate, placeholderText} from '../../shared/sharedMethod';
 import {editWarehouse, fetchWarehouse} from '../../store/action/warehouseAction';
 import ModelFooter from '../../shared/components/modelFooter';
+import ReactSelect from '../../shared/select/reactSelect';
 
 const WarehouseForm = (props) => {
     const {addWarehouseData, id, editWarehouse, singleWarehouse} = props;
     const navigate = useNavigate();
+
+    // console.log(singleWarehouse);
 
     const [warehouseValue, setWarehouseValue] = useState({
         name: singleWarehouse ? singleWarehouse[0].name : '',
@@ -17,7 +20,8 @@ const WarehouseForm = (props) => {
         phone: singleWarehouse ? singleWarehouse[0].phone : '',
         country: singleWarehouse ? singleWarehouse[0].country : '',
         city: singleWarehouse ? singleWarehouse[0].city : '',
-        zip_code: singleWarehouse ? singleWarehouse[0].zip_code : ''
+        zip_code: singleWarehouse ? singleWarehouse[0].zip_code : '',
+        warehouse_type: singleWarehouse ? singleWarehouse[0].warehouse_type : ''
     });
 
     const [errors, setErrors] = useState({
@@ -26,10 +30,11 @@ const WarehouseForm = (props) => {
         phone: '',
         country: '',
         city: '',
-        zip_code: ''
+        zip_code: '',
+        warehouse_type: ''
     });
 
-    const disabled = singleWarehouse && singleWarehouse[0].name === warehouseValue.name && singleWarehouse[0].phone === warehouseValue.phone && singleWarehouse[0].country === warehouseValue.country && singleWarehouse[0].city === warehouseValue.city && singleWarehouse[0].email === warehouseValue.email && singleWarehouse[0].zip_code === warehouseValue.zip_code
+    // const disabled = singleWarehouse && singleWarehouse[0].name === warehouseValue.name && singleWarehouse[0].phone === warehouseValue.phone && singleWarehouse[0].country === warehouseValue.country && singleWarehouse[0].city === warehouseValue.city && singleWarehouse[0].email === warehouseValue.email && singleWarehouse[0].zip_code === warehouseValue.zip_code
 
     const handleValidation = () => {
         let errorss = {};
@@ -50,7 +55,10 @@ const WarehouseForm = (props) => {
             errorss['city'] = getFormattedMessage('globally.input.city.validate.label');
         } else if (!warehouseValue['zip_code']) {
             errorss['zip_code'] = getFormattedMessage('warehouse.input.zip-code.validate.label');
-        } else {
+        } else if (!warehouseValue['warehouse_type']) {
+            errorss['warehouse_type'] = getFormattedMessage('warehouse.input.warehouse-type.validate.label');
+        }
+         else {
             isValid = true;
         }
         setErrors(errorss);
@@ -63,20 +71,34 @@ const WarehouseForm = (props) => {
         setErrors('');
     };
 
+
+    const onWarehouseTypeChange = (obj) => {
+        setWarehouseValue(inputs => ({ ...inputs, warehouse_type: obj }))
+        setErrors('');
+    };
+
+
     const onSubmit = (event) => {
         event.preventDefault();
         const valid = handleValidation();
-        if (singleWarehouse && valid) {
-            if (!disabled) {
-                editWarehouse(id, warehouseValue, navigate);
-            }
-        } else {
-            if (valid) {
-                setWarehouseValue(warehouseValue);
-                addWarehouseData(warehouseValue);
+        
+        if (valid) {
+            // Ensure that the warehouse_type value is set correctly
+            const warehouseTypeValue = warehouseValue.warehouse_type && warehouseValue.warehouse_type.value ? warehouseValue.warehouse_type.value : '';
+    
+            // Update the warehouseValue with the correct warehouse_type value
+            const updatedWarehouseValue = { ...warehouseValue, warehouse_type: warehouseTypeValue };
+    
+            if (singleWarehouse) {
+                // Edit existing warehouse
+                editWarehouse(id, updatedWarehouseValue, navigate);
+            } else {
+                // Add new warehouse
+                addWarehouseData(updatedWarehouseValue);
             }
         }
     };
+    
 
     return (
         <div className='card'>
@@ -158,7 +180,22 @@ const WarehouseForm = (props) => {
                             <span
                                 className='text-danger d-block fw-400 fs-small mt-2'>{errors['zip_code'] ? errors['zip_code'] : null}</span>
                         </div>
-                        <ModelFooter onEditRecord={singleWarehouse} onSubmit={onSubmit} editDisabled={disabled}
+                        
+                        <div className="col-md-6 mb-3">
+                                        <ReactSelect
+                                            title={getFormattedMessage('warehouse.input.warehouse_type.label')}
+                                            placeholder={placeholderText('warehouse.input.warehouse_type.placeholder.label')}
+                                            defaultValue={warehouseValue.warehouse_type}
+                                            value={warehouseValue.warehouse_type}
+                                            data={[
+                                                { label: 'Mother', value: 1 },
+                                                { label: 'Sub', value: 2 },
+                                            ]}
+                                            onChange={onWarehouseTypeChange}
+                                            errors={errors['warehouse_type']}
+                                        />
+                                    </div>
+                        <ModelFooter onEditRecord={singleWarehouse} onSubmit={onSubmit}
                                      link='/app/warehouse' addDisabled={!warehouseValue.name}/>
                     </div>
                 </Form>

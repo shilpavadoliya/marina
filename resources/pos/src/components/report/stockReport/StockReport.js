@@ -135,24 +135,13 @@ const StockReport = (props) => {
             sortable: false,
         },
         {
-            name: getFormattedMessage("product.product-details.cost.label"),
-            selector: (row) =>
-                currencySymbolHandling(
-                    allConfigData,
-                    row.currency,
-                    row.product_cost
-                ),
-            sortField: "product_cost",
-            sortable: false,
-        },
-        {
             name: getFormattedMessage("product.table.price.column.label"),
             selector: (row) =>
-                currencySymbolHandling(
+                (row.product_price > 0) ? currencySymbolHandling(
                     allConfigData,
                     row.currency,
                     row.product_price
-                ),
+                ) : `${row.currency} ${0}`,
             sortField: "product_price",
             sortable: false,
         },
@@ -167,30 +156,30 @@ const StockReport = (props) => {
                             <span>{row.current_stock}</span>
                         </div>
 
-                        <span className="badge bg-light-success me-2">
+                        {/* <span className="badge bg-light-success me-2">
                             <span>{row.product_unit}</span>
-                        </span>
+                        </span> */}
                     </div>
                 );
             },
         },
-        {
-            name: getFormattedMessage("react-data-table.action.column.label"),
-            right: true,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-            width: "115px",
-            cell: (row) => (
-                <button
-                    className="btn btn-sm btn-primary"
-                    variant="primary"
-                    onClick={() => onReportsClick(row)}
-                >
-                    {getFormattedMessage("reports.title")}
-                </button>
-            ),
-        },
+        // {
+        //     name: getFormattedMessage("react-data-table.action.column.label"),
+        //     right: true,
+        //     ignoreRowClick: true,
+        //     allowOverflow: true,
+        //     button: true,
+        //     width: "115px",
+        //     cell: (row) => (
+        //         <button
+        //             className="btn btn-sm btn-primary"
+        //             variant="primary"
+        //             onClick={() => onReportsClick(row)}
+        //         >
+        //             {getFormattedMessage("reports.title")}
+        //         </button>
+        //     ),
+        // },
     ];
 
     return (

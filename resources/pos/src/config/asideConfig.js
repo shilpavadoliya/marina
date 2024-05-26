@@ -124,14 +124,14 @@ export default [
                 class: "d-flex",
                 permission: Permissions.MANAGE_PRODUCTS,
             },
-            // {
-            //     title: "print.barcode.title",
-            //     name: "print barcode",
-            //     fontIcon: <FontAwesomeIcon icon={faPrint} />,
-            //     to: "/app/print/barcode",
-            //     class: "d-flex",
-            //     permission: Permissions.MANAGE_PRODUCTS,
-            // },
+            {
+                title: "print.barcode.title",
+                name: "print barcode",
+                fontIcon: <FontAwesomeIcon icon={faPrint} />,
+                to: "/app/print/barcode",
+                class: "d-flex",
+                permission: Permissions.MANAGE_PRODUCTS,
+            },
         ],
     },
     {
@@ -140,13 +140,31 @@ export default [
         fontIcon: <FontAwesomeIcon icon={faMapLocation} />,
         to: "/app/adjustments",
         class: "d-flex",
+        is_submenu: "true",
         permission: Permissions.MANAGE_ADJUSTMENTS,
-        items: [
+        subPath: {
+            purchasesSubPath: "/app/purchases",
+            purchasesStockPath: "/app/report/report-stock",
+            // purchaseReturnSubPath: "/app/purchase-return",
+        },
+        subMenu: [
             {
-                title: getFormattedMessage("adjustments.title"),
+                title: "Stock History",
+                name: "adjustments",
+                fontIcon: <FontAwesomeIcon icon={faReceipt} />,
                 to: "/app/adjustments",
+                class: "d-flex",
+                permission: Permissions.MANAGE_ADJUSTMENTS,
             },
-        ],
+            {
+                title: "stock.reports.title",
+                name: "adjustments",
+                fontIcon: <FontAwesomeIcon icon={faReceipt} />,
+                to: "/app/report/report-stock",
+                class: "d-flex",
+                permission: Permissions.MANAGE_ADJUSTMENTS,
+            },
+        ]    
     },
     // {
     //     title: "quotations.title",
@@ -172,6 +190,7 @@ export default [
         permission: Permissions.MANAGE_PURCHASE,
         subPath: {
             purchasesSubPath: "/app/purchases",
+            purchasesStockPath: "/app/report/report-stock",
             // purchaseReturnSubPath: "/app/purchase-return",
         },
         subMenu: [
@@ -340,103 +359,103 @@ export default [
             },
         ],
     },
-    // {
-    //     title: "reports.title",
-    //     name: "reports",
-    //     fontIcon: <FontAwesomeIcon icon={faChartColumn} />,
-    //     to: "/app/report/report-warehouse",
-    //     path: "/app/report/report-sale",
-    //     stockPath: "/app/report/report-stock",
-    //     purchasePath: "/app/report/report-purchase",
-    //     topSellingPath: "/app/report/report-top-selling-products",
-    //     stockDetailPath: "/app/report/report-detail-stock",
-    //     productQuantityAlertPath: "/app/report/report-product-quantity",
-    //     supplierReportPath: "/app/report/suppliers",
-    //     profitLossReportPath: "/app/report/profit-loss",
-    //     supplierReportDetailsPath: "/app/report/suppliers/details",
-    //     bestCustomerReportPath: "/app/report/best-customers",
-    //     customerReportPath: "/app/report/customers",
-    //     customerReportDetailsPath: "/app/report/customers/details",
-    //     registerReportPath: "/app/report/register",
-    //     class: "d-flex",
-    //     isSamePrefix: "true",
-    //     permission: Permissions.MANAGE_REPORTS,
-    //     subTitles: [
-    //         { title: "warehouse.reports.title" },
-    //         { title: "sale.reports.title" },
-    //         { title: "stock.reports.title" },
-    //         { title: "purchase.reports.title" },
-    //         { title: "top-selling-product.reports.title" },
-    //         { title: "product.quantity.alert.reports.title" },
-    //         { title: "supplier.report.title" },
-    //         { title: "best-customer.report.title" },
-    //         { title: "customer.report.title" },
-    //         { title: "customer.report.title" },
-    //         { title: "profit-loss.reports.title" },
-    //         { title: "best-customer.report.title" },
-    //         { title: "register.report.title" },
-    //     ],
-    //     items: [
-    //         {
-    //             title: getFormattedMessage("warehouse.reports.title"),
-    //             to: "/app/report/report-warehouse",
-    //         },
-    //         {
-    //             title: getFormattedMessage("sale.reports.title"),
-    //             to: "/app/report/report-sale",
-    //         },
-    //         {
-    //             title: getFormattedMessage("stock.reports.title"),
-    //             to: "/app/report/report-stock",
-    //             detail: "/app/report/report-detail-stock",
-    //         },
-    //         {
-    //             title: getFormattedMessage("purchase.reports.title"),
-    //             to: "/app/report/report-purchase",
-    //         },
-    //         {
-    //             title: getFormattedMessage("top-selling-product.reports.title"),
-    //             to: "/app/report/report-top-selling-products",
-    //         },
-    //         {
-    //             title: getFormattedMessage(
-    //                 "product.quantity.alert.reports.title"
-    //             ),
-    //             to: "/app/report/report-product-quantity",
-    //         },
-    //         // {
-    //         //     title: "Supplier Report",
-    //         //     to: '/app/report/suppliers',
-    //         // },
-    //         {
-    //             title: getFormattedMessage("supplier.report.title"),
-    //             to: "/app/report/suppliers",
-    //             detail: "/app/report/suppliers/details",
-    //         },
-    //         {
-    //             title: getFormattedMessage("profit-loss.reports.title"),
-    //             to: "/app/report/profit-loss",
-    //         },
-    //         {
-    //             title: getFormattedMessage("best-customer.report.title"),
-    //             to: "/app/report/best-customers",
-    //         },
-    //         {
-    //             title: getFormattedMessage("customer.report.title"),
-    //             to: "/app/report/customers",
-    //             detail: "/app/report/customers/details",
-    //         },
-    //         // {
-    //         //     title: getFormattedMessage( "customer.report.title" ),
-    //         //     to: '/app/report/customers',
-    //         //     detail: '/app/report/customers/details'
-    //         // },
-    //         {
-    //             title: getFormattedMessage("register.report.title"),
-    //             to: "/app/report/register",
-    //         },
-    //     ],
-    // },
+    {
+        title: "reports.title",
+        name: "reports",
+        fontIcon: <FontAwesomeIcon icon={faChartColumn} />,
+        to: "/app/report/report-warehouse",
+        path: "/app/report/report-sale",
+        stockPath: "/app/report/report-stock",
+        purchasePath: "/app/report/report-purchase",
+        topSellingPath: "/app/report/report-top-selling-products",
+        stockDetailPath: "/app/report/report-detail-stock",
+        productQuantityAlertPath: "/app/report/report-product-quantity",
+        supplierReportPath: "/app/report/suppliers",
+        profitLossReportPath: "/app/report/profit-loss",
+        supplierReportDetailsPath: "/app/report/suppliers/details",
+        bestCustomerReportPath: "/app/report/best-customers",
+        customerReportPath: "/app/report/customers",
+        customerReportDetailsPath: "/app/report/customers/details",
+        registerReportPath: "/app/report/register",
+        class: "d-flex",
+        isSamePrefix: "true",
+        permission: Permissions.MANAGE_REPORTS,
+        subTitles: [
+            { title: "warehouse.reports.title" },
+            { title: "sale.reports.title" },
+            { title: "stock.reports.title" },
+            { title: "purchase.reports.title" },
+            { title: "top-selling-product.reports.title" },
+            { title: "product.quantity.alert.reports.title" },
+            { title: "supplier.report.title" },
+            { title: "best-customer.report.title" },
+            { title: "customer.report.title" },
+            { title: "customer.report.title" },
+            { title: "profit-loss.reports.title" },
+            { title: "best-customer.report.title" },
+            { title: "register.report.title" },
+        ],
+        items: [
+            {
+                title: getFormattedMessage("warehouse.reports.title"),
+                to: "/app/report/report-warehouse",
+            },
+            {
+                title: getFormattedMessage("sale.reports.title"),
+                to: "/app/report/report-sale",
+            },
+            {
+                title: getFormattedMessage("stock.reports.title"),
+                to: "/app/report/report-stock",
+                detail: "/app/report/report-detail-stock",
+            },
+            {
+                title: getFormattedMessage("purchase.reports.title"),
+                to: "/app/report/report-purchase",
+            },
+            {
+                title: getFormattedMessage("top-selling-product.reports.title"),
+                to: "/app/report/report-top-selling-products",
+            },
+            {
+                title: getFormattedMessage(
+                    "product.quantity.alert.reports.title"
+                ),
+                to: "/app/report/report-product-quantity",
+            },
+            // {
+            //     title: "Supplier Report",
+            //     to: '/app/report/suppliers',
+            // },
+            {
+                title: getFormattedMessage("supplier.report.title"),
+                to: "/app/report/suppliers",
+                detail: "/app/report/suppliers/details",
+            },
+            {
+                title: getFormattedMessage("profit-loss.reports.title"),
+                to: "/app/report/profit-loss",
+            },
+            {
+                title: getFormattedMessage("best-customer.report.title"),
+                to: "/app/report/best-customers",
+            },
+            {
+                title: getFormattedMessage("customer.report.title"),
+                to: "/app/report/customers",
+                detail: "/app/report/customers/details",
+            },
+            // {
+            //     title: getFormattedMessage( "customer.report.title" ),
+            //     to: '/app/report/customers',
+            //     detail: '/app/report/customers/details'
+            // },
+            {
+                title: getFormattedMessage("register.report.title"),
+                to: "/app/report/register",
+            },
+        ],
+    },
     // {
     //     title: "currencies.title",
     //     name: "currencies",

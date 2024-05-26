@@ -109,7 +109,7 @@ const Adjustments = ( props ) => {
             allowOverflow: true,
             button: true,
             cell: row => <ActionButton isViewIcon={true} goToDetailScreen={onClickDetailsModel} item={row}
-                goToEditProduct={goToEdit} isEditMode={true}
+                goToEditProduct={goToEdit} isEditMode={true} isDeleteMode={false}
                 onClickDeleteModel={onClickDeleteModel} />
         }
     ];
@@ -125,8 +125,11 @@ const Adjustments = ( props ) => {
             {newArray.length > 1 &&
                 <ReactDataTable columns={columns} items={itemsValue} to='#/app/adjustments/create'
                     ButtonValue={getFormattedMessage( 'adjustments.create.title' )} isShowPaymentModel={isShowPaymentModel} isCallSaleApi={isCallSaleApi}
-                    onChange={onChange} totalRows={totalRecord} goToEdit={goToEdit} isShowFilterField
-                    isLoading={isLoading} isWarehouseType={true} warehouseOptions={newArray} warehouses={warehouses} />}
+                    onChange={onChange} totalRows={totalRecord}  isShowFilterField
+                    isLoading={isLoading} isWarehouseType={true} 
+                    warehouseOptions={newArray} warehouses={warehouses} 
+                    outLink='#/app/adjustments/create'
+                    outButton={getFormattedMessage( 'adjustments.create.title' )} />}
             <DeleteSaleAdjustMents onClickDeleteModel={onClickDeleteModel} deleteModel={deleteModel} onDelete={isDelete} />
             <AdjustMentDetail onClickDetailsModel={onClickDetailsModel} detailsModel={detailsModel} onDetails={isDetails} setLgShow={setLgShow} lgShow={lgShow} />
         </MasterLayout>

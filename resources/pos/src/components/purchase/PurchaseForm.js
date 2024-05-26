@@ -68,7 +68,7 @@ const PurchaseForm = ( props ) => {
     }, [ products, quantity, newCost, newDiscount, newTax, subTotal, newPurchaseUnit ] );
 
     useEffect( () => {
-        purchaseValue.warehouse_id.value ? fetchProductsByWarehouse() : null
+        purchaseValue.warehouse_id.value ? fetchProductsByWarehouse(purchaseValue.warehouse_id.value) : null
     }, [ purchaseValue.warehouse_id ] )
 
     useEffect( () => {

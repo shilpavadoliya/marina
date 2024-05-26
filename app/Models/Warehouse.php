@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * App\Models\Warehouse
  *
  * @property int $id
+ * @property int $warehouse_type
  * @property string $name
  * @property string $phone
  * @property string $country
@@ -58,6 +59,7 @@ class Warehouse extends BaseModel
         'city',
         'email',
         'zip_code',
+        'warehouse_type',
     ];
 
     public static $rules = [
@@ -67,6 +69,7 @@ class Warehouse extends BaseModel
         'city' => 'required',
         'email' => 'nullable|email|unique:warehouses',
         'zip_code' => 'nullable|numeric',
+        'warehouse_type' => 'required|numeric',
     ];
 
     public function prepareLinks(): array
@@ -86,6 +89,7 @@ class Warehouse extends BaseModel
             'email' => $this->email,
             'zip_code' => $this->zip_code,
             'created_at' => $this->created_at,
+            'warehouse_type' => $this->warehouse_type,
         ];
 
         return $fields;

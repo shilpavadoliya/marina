@@ -55,6 +55,8 @@ class ProductAPIController extends AppBaseController
             ]);
         }
 
+        // dd($products);
+
         $products = $products->paginate($perPage);
         ProductResource::usingWithCollection();
 
