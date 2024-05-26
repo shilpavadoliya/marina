@@ -175,6 +175,7 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
             'received_amount' => $this->received_amount,
             'notes' => $this->notes,
             'reference_code' => $this->reference_code,
+            'name' => $this->reference_code,
             'created_at' => $this->created_at,
             'status' => $this->status,
             'purchase_items' => $this->purchaseItems,

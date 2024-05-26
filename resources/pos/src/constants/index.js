@@ -242,6 +242,7 @@ export const purchaseActionType = {
     PURCHASE_DETAILS: "PURCHASE_DETAILS",
     PURCHASE_PDF_ACTION: "PURCHASE_PDF_ACTION",
     PURCHASE_STATUS: "purchase-status",
+    FETCH_ALL_PURCHASES: "FETCH_ALL_PURCHASES",
 };
 
 export const transferActionType = {

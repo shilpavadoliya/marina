@@ -12,6 +12,8 @@ export default (state = {}, action) => {
             return state.map(item => item.id === +action.payload.id ? action.payload : item);
         case purchaseActionType.DELETE_PURCHASE:
             return state.filter(item => item.id !== action.payload);
+        case purchaseActionType.FETCH_ALL_PURCHASES:
+                return action.payload;
         default:
             return state;
     }

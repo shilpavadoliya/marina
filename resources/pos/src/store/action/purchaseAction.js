@@ -192,3 +192,19 @@ export const deletePurchase = (purchaseId) => async (dispatch) => {
                 );
             });
     };
+
+    export const fetchAllPurchases = () => async (dispatch) => {
+        apiConfig
+            .get(`purchases?page[size]=0`)
+            .then((response) => {
+                dispatch({
+                    type: purchaseActionType.FETCH_ALL_PURCHASES,
+                    payload: response.data.data,
+                });
+            })
+            .catch(({ response }) => {
+                dispatch(
+                    addToast({ text: response.data.message, type: toastType.ERROR })
+                );
+            });
+    };

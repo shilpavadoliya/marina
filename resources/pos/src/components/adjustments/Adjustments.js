@@ -11,10 +11,11 @@ import { fetchAdjustments } from '../../store/action/adjustMentAction';
 import ActionButton from '../../shared/action-buttons/ActionButton';
 import AdjustMentDetail from './AdjustMentDetail';
 import { fetchAllWarehouses } from '../../store/action/warehouseAction';
+import { fetchAllPurchases } from '../../store/action/purchaseAction';
 import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 
 const Adjustments = ( props ) => {
-    const { adjustments, fetchAdjustments, totalRecord, isLoading, fetchFrontSetting, frontSetting, warehouses, fetchAllWarehouses, isCallSaleApi, allConfigData } = props;
+    const { adjustments, fetchAdjustments, totalRecord, isLoading, fetchFrontSetting, frontSetting, warehouses, fetchAllWarehouses, isCallSaleApi, allConfigData, purchases, fetchAllPurchases } = props;
     const [ deleteModel, setDeleteModel ] = useState( false );
     const [ detailsModel, setDetailsModel ] = useState( false );
     const [ isShowPaymentModel, setIsShowPaymentModel ] = useState( false );
@@ -25,6 +26,7 @@ const Adjustments = ( props ) => {
     useEffect( () => {
         fetchFrontSetting();
         fetchAllWarehouses()
+        fetchAllPurchases()
     }, [] );
 
     const currencySymbol = frontSetting && frontSetting.value && frontSetting.value.currency_symbol
@@ -128,8 +130,10 @@ const Adjustments = ( props ) => {
                     onChange={onChange} totalRows={totalRecord}  isShowFilterField
                     isLoading={isLoading} isWarehouseType={true} 
                     warehouseOptions={newArray} warehouses={warehouses} 
-                    outLink='#/app/adjustments/create'
-                    outButton={getFormattedMessage( 'adjustments.create.title' )} />}
+                    purchasesOptions={newArray} purchases={purchases} 
+                    outLink='#/app/adjustments/out-stock'
+                    outButton={getFormattedMessage( 'adjustments.create.title' )} 
+                    />}
             <DeleteSaleAdjustMents onClickDeleteModel={onClickDeleteModel} deleteModel={deleteModel} onDelete={isDelete} />
             <AdjustMentDetail onClickDetailsModel={onClickDetailsModel} detailsModel={detailsModel} onDetails={isDetails} setLgShow={setLgShow} lgShow={lgShow} />
         </MasterLayout>
@@ -138,8 +142,8 @@ const Adjustments = ( props ) => {
 
 
 const mapStateToProps = ( state ) => {
-    const { adjustments, totalRecord, isLoading, frontSetting, warehouses, isCallSaleApi, allConfigData } = state;
-    return { adjustments, totalRecord, isLoading, frontSetting, warehouses, isCallSaleApi, allConfigData };
+    const { adjustments, totalRecord, isLoading, frontSetting, warehouses, isCallSaleApi, allConfigData,purchases } = state;
+    return { adjustments, totalRecord, isLoading, frontSetting, warehouses, isCallSaleApi, allConfigData, purchases };
 };
 
-export default connect( mapStateToProps, { fetchAdjustments, fetchAllWarehouses, fetchFrontSetting } )( Adjustments );
+export default connect( mapStateToProps, { fetchAdjustments, fetchAllWarehouses, fetchFrontSetting, fetchAllPurchases } )( Adjustments );

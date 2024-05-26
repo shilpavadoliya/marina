@@ -242,6 +242,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //    Route::middleware('permission:manage_adjustments')->group(function () {
     Route::resource('adjustments', AdjustmentAPIController::class);
+    Route::post('out-stock', [SupplierAPIController::class, 'changeActiveStatus']);
+
     //    });
 
     //purchase return routes

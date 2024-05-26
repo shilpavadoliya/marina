@@ -21,6 +21,7 @@ const AdjustmentForm = ( props ) => {
         editAdjustment,
         id,
         warehouses,
+        purchases,
         singleAdjustMent,
         customProducts,
         products,
@@ -29,6 +30,7 @@ const AdjustmentForm = ( props ) => {
         frontSetting,
     } = props;
 
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [ updateProducts, setUpdateProducts ] = useState( [] );
@@ -36,12 +38,14 @@ const AdjustmentForm = ( props ) => {
     const [ adjustMentValue, setAdjustMentValue ] = useState( {
         date: new Date(),
         warehouse_id: '',
+        purchase_id: '',
         notes: singleAdjustMent ? singleAdjustMent.notes : '',
         AdjustmentType: { label: 'Addition', value: 1 }
     } );
     const [ errors, setErrors ] = useState( {
         date: '',
         warehouse_id: '',
+        purchase_id: '',
         AdjustmentType: ''
     } );
 
@@ -66,6 +70,7 @@ const AdjustmentForm = ( props ) => {
             setAdjustMentValue( {
                 date: singleAdjustMent ? moment( singleAdjustMent.date ).toDate() : '',
                 warehouse_id: singleAdjustMent ? singleAdjustMent.warehouse_id : '',
+                purchase_id: singleAdjustMent ? singleAdjustMent.purchase_id : '',
                 AdjustmentType: singleAdjustMent ? singleAdjustMent.AdjustmentType : ''
             } )
         }
@@ -99,6 +104,11 @@ const AdjustmentForm = ( props ) => {
         setErrors( '' );
     };
 
+    const onPurchaseChange = ( obj ) => {
+        setAdjustMentValue( inputs => ( { ...inputs, purchase_id: obj } ) );
+        setErrors( '' );
+    };
+
     const updatedQty = ( qty ) => {
         setQuantity( qty );
     };
@@ -114,6 +124,7 @@ const AdjustmentForm = ( props ) => {
         const formValue = {
             date: moment( prepareData.date ).toDate(),
             warehouse_id: prepareData.warehouse_id.value ? prepareData.warehouse_id.value : prepareData.warehouse_id,
+            purchase_id: prepareData.purchase_id.value ? prepareData.purchase_id.value : prepareData.purchase_id,
             note: prepareData.notes,
             adjustment_items: updateProducts.map( ( item ) => {
                 return {
@@ -143,7 +154,7 @@ const AdjustmentForm = ( props ) => {
     return (
         <div className='card'>
             <div className='card-body'>
-                {/*<Form>*/}
+                {/* <Form> */}
                 <div className='row'>
                     <div className='col-md-4'>
                         <ReactSelect name='warehouse_id' data={warehouses} onChange={onWarehouseChange}
@@ -151,12 +162,20 @@ const AdjustmentForm = ( props ) => {
                             defaultValue={adjustMentValue.warehouse_id} value={adjustMentValue.warehouse_id} addSearchItems={singleAdjustMent}
                             placeholder={placeholderText( 'purchase.select.warehouse.placeholder.label' )} />
                     </div>
+
+                    <div className='col-md-4'>
+                        <ReactSelect name='purchase_id' data={purchases} onChange={onPurchaseChange}
+                            title={getFormattedMessage( 'purchase.select.purchase_order.label' )} errors={errors[ 'purchase_id' ]}
+                            defaultValue={adjustMentValue.purchase_id} value={adjustMentValue.purchase_id} addSearchItems={singleAdjustMent}
+                            placeholder={placeholderText( 'purchase.select.purchase_order.placeholder.label' )} />
+                    </div>
+
                     
                     <div className='mb-10'>
                         <label className='form-label'>
                             {getFormattedMessage( 'product.title' )}:
                         </label>
-                        <ProductSearch values={adjustMentValue} products={products} handleValidation={handleValidation}
+                        <ProductSearch values={purchases} products={products} handleValidation={handleValidation}
                             updateProducts={updateProducts} isAllProducts={true}
                             setUpdateProducts={setUpdateProducts} customProducts={customProducts} />
                     </div>
@@ -171,7 +190,7 @@ const AdjustmentForm = ( props ) => {
                     </div>
                     <ModelFooter onEditRecord={singleAdjustMent} onSubmit={onSubmit} link='/app/adjustments' />
                 </div>
-                {/*</Form>*/}
+                {/* </Form> */}
             </div>
         </div>
     )
