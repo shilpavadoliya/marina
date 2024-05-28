@@ -491,7 +491,7 @@ export const Filters = {
     OBJ: {
         order_By: "",
         page: 1,
-        pageSize: 10,
+        pageSize: 100,
         direction: "asc",
         search: "",
         adminName: "admin",

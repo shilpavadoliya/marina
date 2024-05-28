@@ -28,7 +28,7 @@ const ReactDataTable = (props) => {
         isShowPaymentModel,
         isCallSaleApi,
         isCallBrandApi,
-        paginationRowsPerPageOptions = [10, 15, 25, 50, 100],
+        paginationRowsPerPageOptions = [100],
         isLoading,
         isShowDateRangeField,
         isShowFilterField,

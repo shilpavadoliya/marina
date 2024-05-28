@@ -188,6 +188,15 @@ const SupplierForm = (props) => {
                                 className='text-danger d-block fw-400 fs-small mt-2'>{errors['country'] ? errors['country'] : null}</span>
                         </div>
                         <div className='col-md-6 mb-3'>
+                            <label className='form-label'>
+                                State (Registered Office):
+                            </label>
+                            <input type='text' name='registered_office_state'
+                                className='form-control'
+                                onChange={(e) => onChangeInput(e)}
+                                value={supplierValue.registered_office_state} />
+                        </div>
+                        <div className='col-md-6 mb-3'>
                             <label
                                 className='form-label'>
                                 {getFormattedMessage("City (Registered Office):")}:
@@ -255,15 +264,6 @@ const SupplierForm = (props) => {
                                 className='form-control'
                                 onChange={(e) => onChangeInput(e)}
                                 value={supplierValue.managing_partner} />
-                        </div>
-                        <div className='col-md-6 mb-3'>
-                            <label className='form-label'>
-                                State (Registered Office):
-                            </label>
-                            <input type='text' name='registered_office_state'
-                                className='form-control'
-                                onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.registered_office_state} />
                         </div>
                         <div className='col-md-6 mb-3'>
                             <label className='form-label'>

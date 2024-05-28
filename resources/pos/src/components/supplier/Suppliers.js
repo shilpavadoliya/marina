@@ -132,9 +132,7 @@ const mapStateToProps = (state) => {
     const { suppliers, totalRecord, isLoading, allConfigData } = state;
     const userRoleArray = localStorage.getItem('loginUserArray');
     const parsedRoles = JSON.parse(userRoleArray);
-    console.log(userRoleArray.roles);
-
-    const userRole = parsedRoles.id;
+    const userRole = parsedRoles.roles[0].id;
     return { suppliers, totalRecord, isLoading, allConfigData, userRole }
 };
 
