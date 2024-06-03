@@ -15,6 +15,6 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ftp.qdcom.in
-        username: ${{ secrets.ftp_username }}
-        password: ${{ secrets.ftp_password }}
+        username: qdcom3bc@stagesav.qdcommunications.in
+        password: GTbfI]yfb@lw
         server-dir: public_html/repositories/marina_qd_new/
