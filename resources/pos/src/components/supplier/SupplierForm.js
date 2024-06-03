@@ -533,7 +533,7 @@ const SupplierForm = (props) => {
     )
 };
 
-
+// test
 // export default connect( null, { editSupplier, fetchProductsByWarehouse } )( SupplierForm )
 
 const mapStateToProps = ( state ) => {
