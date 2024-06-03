@@ -3,17 +3,20 @@ import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as EmailValidator from 'email-validator';
-import { editSupplier } from '../../store/action/supplierAction';
+import { editSupplier,fetchCountries } from '../../store/action/supplierAction';
 import { getFormattedMessage, placeholderText, numValidate } from '../../shared/sharedMethod';
 import ModelFooter from '../../shared/components/modelFooter';
 import { fetchAllWarehouses } from '../../store/action/warehouseAction';
 import ReactSelect from '../../shared/select/reactSelect';
+import { fetchState } from '../../store/action/settingAction';
+
 
 const SupplierForm = (props) => {
-    const { addSupplierData, id, editSupplier, singleSupplier,  warehouses, fetchAllWarehouses } = props;
+    const { addSupplierData, id, editSupplier, singleSupplier,  warehouses, fetchAllWarehouses, countries, fetchCountries, fetchState, countryState,defaultCountry } = props;
     const navigate = useNavigate();
 
 
+    console.log(countries);
     const [supplierValue, setSupplierValue] = useState({
         name: singleSupplier ? singleSupplier[0].name : '',
         email: singleSupplier ? singleSupplier[0].email : '',
@@ -50,7 +53,39 @@ const SupplierForm = (props) => {
     });
     useEffect( () => {
         fetchAllWarehouses()
+        fetchCountries()
     }, [] );
+
+    const [ byDefaultCountry, setByDefaultCountry ] = useState( null )
+
+
+    useEffect( () => {
+
+            const countries = defaultCountry && defaultCountry.countries && defaultCountry.countries.filter( ( country ) => country.name === defaultCountry.country )
+            countries && setByDefaultCountry( countries[ 0 ] )
+        
+    }, [] )
+
+    useEffect( () => {
+        byDefaultCountry && fetchState( byDefaultCountry && byDefaultCountry.id )
+    }, [ byDefaultCountry ] )
+
+    const [ checkState, setCheckState ] = useState( false )
+    const [ allState, setAllState ] = useState( null )
+
+    useEffect( () => {
+        if ( countryState.value ) {
+            setCheckState( true )
+            setAllState( countryState )
+        }
+    }, [countryState ] )
+
+    const stateOptions = checkState && allState && allState.value && allState.value.map( ( item ) => {
+        return {
+            id: item,
+            name: item
+        }
+    } )
 
     const [errors, setErrors] = useState({
         name: '',
@@ -108,6 +143,20 @@ const SupplierForm = (props) => {
         e.preventDefault();
         setSupplierValue(inputs => ({ ...inputs, [e.target.name]: e.target.value }))
         // setErrors('');
+    };
+
+    const onCountryChange = ( obj ) => {
+        setDisable( false );
+        setSupplierValue( supplierValue => ( { ...supplierValue, country: obj } ) )
+        setSupplierValue( supplierValue => ( { ...supplierValue, state: null } ) )
+        fetchState( obj.value )
+        setErrors( '' );
+    };
+
+    const onStateChange = ( obj ) => {
+        setDisable( false );
+        setSupplierValue( supplierValue => ( { ...supplierValue, state: obj } ) )
+        setErrors( '' );
     };
 
     const onSubmit = (event) => {
@@ -187,15 +236,29 @@ const SupplierForm = (props) => {
                             <span
                                 className='text-danger d-block fw-400 fs-small mt-2'>{errors['country'] ? errors['country'] : null}</span>
                         </div>
-                        <div className='col-md-6 mb-3'>
-                            <label className='form-label'>
-                                State (Registered Office):
-                            </label>
-                            <input type='text' name='registered_office_state'
-                                className='form-control'
-                                onChange={(e) => onChangeInput(e)}
-                                value={supplierValue.registered_office_state} />
-                        </div>
+
+                        
+                                {/* Country  */}
+                                <div className='col-lg-6 mb-3'>
+                                    <ReactSelect
+                                        title={getFormattedMessage( "globally.input.country.label" )}
+                                        placeholder={placeholderText( "globally.input.country.label" )}
+                                        defaultValue={supplierValue.country ? { label: supplierValue.country.label, value: supplierValue.country.value } : ""}
+                                        name='country'
+                                        data={countries} onChange={onCountryChange}
+                                        errors={errors[ 'country' ]} />                                </div>
+                                {/* state  */}
+                                <div className='col-lg-6 mb-3'>
+                                    <ReactSelect
+                                        title={'State (Registered Office):'}
+                                        placeholder={placeholderText( "setting.state.lable" )}
+                                        name='state'
+                                        value={supplierValue && supplierValue.state !== null ? supplierValue.state : ''}
+                                         onChange={onStateChange}
+                                        errors={errors[ 'state' ]} />
+                                </div>
+                               
+                       
                         <div className='col-md-6 mb-3'>
                             <label
                                 className='form-label'>
@@ -474,8 +537,8 @@ const SupplierForm = (props) => {
 // export default connect( null, { editSupplier, fetchProductsByWarehouse } )( SupplierForm )
 
 const mapStateToProps = ( state ) => {
-    const { warehouses } = state;
-    return {warehouses };
+    const { warehouses, countryState, defaultCountry} = state;
+    return {warehouses, countryState,defaultCountry };
 };
 
-export default connect( mapStateToProps, {fetchAllWarehouses, editSupplier } )( SupplierForm );
+export default connect( mapStateToProps, {fetchAllWarehouses, editSupplier, fetchState,fetchCountries } )( SupplierForm );

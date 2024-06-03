@@ -13,12 +13,12 @@ import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 import { fetchAllPurchases } from '../../store/action/purchaseAction';
 
 const EditAdjustMent = (props) => {
-    const {warehouses, fetchAllWarehouses, isLoading, purchases, fetchAllPurchases} = props;
+    const {warehouses, fetchAllWarehouses, purchases, fetchAllPurchases, isLoading} = props;
 
-
+    
     useEffect(() => {
         fetchAllWarehouses();
-        fetchAllPurchases()
+        fetchAllPurchases();
     }, []);
 
 
@@ -28,14 +28,17 @@ const EditAdjustMent = (props) => {
             <TopProgressBar />
             <HeaderTitle title={getFormattedMessage('adjustments.edit.title')} to='/app/adjustments'/>
             {isLoading ? <Spinner /> :
-                <AdjustmentForm warehouses={warehouses} purchases={purchases}/>}
+                <AdjustmentForm warehouses={warehouses} purchases={purchases} isOutStock={true}/>}
                 
         </MasterLayout>
     )
 };
 
 const mapStateToProps = (state) => {
+    // console.log(state);
     const {warehouses, isLoading, purchases} = state;
+    // console.log(warehouses);
+    // console.log(purchases);
     return {warehouses, isLoading, purchases}
 };
 

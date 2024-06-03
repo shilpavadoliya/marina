@@ -210,7 +210,8 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
             'product_type'=> $this->product_type,
             'product_description'=> $this->product_description,
             'prices' => $this->preparePricesWithLocations(), // Modified here
-            'minimum_price' => $this->minimum_price // Modified here
+            'minimum_price' => $this->minimum_price, // Modified here
+            'stock' => $this->stock
 
         ];
 

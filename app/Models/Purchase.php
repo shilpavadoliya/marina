@@ -178,7 +178,26 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
             'name' => $this->reference_code,
             'created_at' => $this->created_at,
             'status' => $this->status,
-            'purchase_items' => $this->purchaseItems,
+            'purchase_items' =>  $this->purchaseItems->map(function ($purchaseItem) {
+                return [
+                    'product_id' => $purchaseItem->product_id,
+            'product_cost' => $purchaseItem->product_cost,
+            'net_unit_cost' => $purchaseItem->net_unit_cost,
+            'tax_type' => $purchaseItem->tax_type,
+            'tax_value' => $purchaseItem->tax_value,
+            'tax_amount' => $purchaseItem->tax_amount,
+            'discount_type' => $purchaseItem->discount_type,
+            'discount_vale' => $purchaseItem->discount_value,
+            'discount_amount' => $purchaseItem->discount_amount,
+            'purchase_unit' => $purchaseItem->purchase_unit,
+            'quantity' => $purchaseItem->quantity,
+            'sub_total' => $purchaseItem->sub_total,
+            'product_code' => $purchaseItem->product->code,
+            'product_name' => $purchaseItem->product->name,
+            'sales_price' => $purchaseItem->sales_price,
+            'stock' => $purchaseItem->product->stock->toArray()
+                ];
+            }),
         ];
 
         return $fields;

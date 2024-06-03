@@ -35,7 +35,8 @@ class ManageStockAPIController extends AppBaseController
                         ->orWhere('products.product_price', 'like', '%'.$search.'%')
                         ->orWhere('products.product_price', 'like', '%'.$search.'%')
                         ->orWhere('product_categories.name', 'like', '%'.$search.'%');
-                })->where('warehouse_id', $warehouseId)->paginate($perPage);
+                        
+                })->where('warehouse_id', $warehouseId)->orderBy('id', 'asc')->paginate($perPage);
         } else {
             $stocks = $this->manageStockRepository->where('warehouse_id', $warehouseId)->paginate($perPage);
         }

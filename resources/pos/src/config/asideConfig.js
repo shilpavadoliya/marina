@@ -195,7 +195,15 @@ export default [
         },
         subMenu: [
             {
-                title: "purchases.title",
+                title: "purchases.b2b_title",
+                name: "purchases",
+                fontIcon: <FontAwesomeIcon icon={faReceipt} />,
+                to: "/app/purchases",
+                class: "d-flex",
+                permission: Permissions.MANAGE_PURCHASE,
+            },
+            {
+                title: "purchases.b2c_title",
                 name: "purchases",
                 fontIcon: <FontAwesomeIcon icon={faReceipt} />,
                 to: "/app/purchases",

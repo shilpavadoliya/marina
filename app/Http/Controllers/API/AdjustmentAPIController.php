@@ -109,4 +109,12 @@ class AdjustmentAPIController extends AppBaseController
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
     }
+
+    public function outStock(UpdateAdjustmentRequest $request)
+    {
+        $input = $request->all();
+        $adjustment = $this->adjustmentRepository->updateAdjustmentItems($input);
+
+        return $this->sendSuccess('Adjustment updated successfully');
+    }
 }

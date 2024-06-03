@@ -111,7 +111,7 @@ const Adjustments = ( props ) => {
             allowOverflow: true,
             button: true,
             cell: row => <ActionButton isViewIcon={true} goToDetailScreen={onClickDetailsModel} item={row}
-                goToEditProduct={goToEdit} isEditMode={true} isDeleteMode={false}
+                goToEditProduct={goToEdit} isEditMode={false} isDeleteMode={false}
                 onClickDeleteModel={onClickDeleteModel} />
         }
     ];

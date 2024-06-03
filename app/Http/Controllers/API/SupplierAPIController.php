@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Country;
 
 
 /**
@@ -110,6 +111,14 @@ class SupplierAPIController extends AppBaseController
         $supplier->update(['status' => $status]);
 
         return new SupplierResource($supplier);
+    }
+
+    public function fetchCountries(Request $request)
+    {
+        $settings['countries'] = Country::all();
+
+        return $this->sendResponse(['type' => 'settings', 'attributes' => $settings],
+            'Setting data retrieved successfully.');
     }
 
 }

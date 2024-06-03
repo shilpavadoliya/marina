@@ -28,9 +28,11 @@ const AdjustmentForm = ( props ) => {
         fetchProductsByWarehouse,
         fetchFrontSetting,
         frontSetting,
+        isOutStock
     } = props;
 
 
+    console.log(products);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [ updateProducts, setUpdateProducts ] = useState( [] );
@@ -48,6 +50,9 @@ const AdjustmentForm = ( props ) => {
         purchase_id: '',
         AdjustmentType: ''
     } );
+
+    const purchasesArray = Object.values(purchases);
+
 
     useEffect( () => {
         setUpdateProducts( updateProducts )
@@ -104,9 +109,39 @@ const AdjustmentForm = ( props ) => {
         setErrors( '' );
     };
 
-    const onPurchaseChange = ( obj ) => {
-        setAdjustMentValue( inputs => ( { ...inputs, purchase_id: obj } ) );
-        setErrors( '' );
+    
+
+    const onPurchaseChange = (obj) => {
+        // Find the selected purchase by its ID
+        const selectedPurchase = purchasesArray.find(purchase => purchase.id === obj.value);
+        if (selectedPurchase) {
+            // If the purchase is found, extract its warehouse_id and update adjustMentValue
+            const selectedWarehouseId = selectedPurchase.attributes.warehouse_id;
+            const selectedWarehouseName= selectedPurchase.attributes.warehouse_name;
+            setAdjustMentValue(inputs => ({
+                ...inputs,
+                purchase_id: obj,
+                warehouse_id: { label: selectedWarehouseName, value:selectedWarehouseId},
+                AdjustmentType: { label: 'Subtraction', value: 2 }, // Set AdjustmentType to 'Subtraction'
+            }));
+
+            const orderedProducts = selectedPurchase.attributes.purchase_items.map(item => ({
+                product_id: item.product_id,
+                name: item.product_name,
+                code: item.product_code,
+                quantity: item.quantity,
+                isEdit:true,
+                stock: item.stock.quantity, // Convert object to array
+                // You may need to adjust other properties based on your data structure
+            }));
+
+            
+            setUpdateProducts(orderedProducts);
+            setErrors('');
+        } else {
+            // Handle case where selected purchase is not found
+            console.error('Selected purchase not found');
+        }
     };
 
     const updatedQty = ( qty ) => {
@@ -142,8 +177,8 @@ const AdjustmentForm = ( props ) => {
         event.preventDefault();
         const valid = handleValidation();
         if ( valid ) {
-            if ( singleAdjustMent ) {
-                editAdjustment( id, prepareFormData( adjustMentValue ), navigate );
+            if ( isOutStock ) {
+                editAdjustment(prepareFormData( adjustMentValue ), navigate );
             } else {
                 addAdjustmentData( prepareFormData( adjustMentValue ) );
                 setAdjustMentValue( adjustMentValue );
@@ -156,6 +191,16 @@ const AdjustmentForm = ( props ) => {
             <div className='card-body'>
                 {/* <Form> */}
                 <div className='row'>
+
+                {isOutStock ? (
+                               <div className='col-md-4'>
+                               <ReactSelect name='purchase_id' data={purchasesArray} onChange={onPurchaseChange}
+                                   title={getFormattedMessage( 'purchase.select.purchase_order.label' )} errors={errors[ 'purchase_id' ]}
+                                   defaultValue={adjustMentValue.purchase_id} value={adjustMentValue.purchase_id} addSearchItems={singleAdjustMent}
+                                   placeholder={placeholderText( 'purchase.select.purchase_order.placeholder.label' )} />
+                       </div>
+                ): ''}
+        
                     <div className='col-md-4'>
                         <ReactSelect name='warehouse_id' data={warehouses} onChange={onWarehouseChange}
                             title={getFormattedMessage( 'warehouse.title' )} errors={errors[ 'warehouse_id' ]}
@@ -163,19 +208,12 @@ const AdjustmentForm = ( props ) => {
                             placeholder={placeholderText( 'purchase.select.warehouse.placeholder.label' )} />
                     </div>
 
-                    <div className='col-md-4'>
-                        <ReactSelect name='purchase_id' data={purchases} onChange={onPurchaseChange}
-                            title={getFormattedMessage( 'purchase.select.purchase_order.label' )} errors={errors[ 'purchase_id' ]}
-                            defaultValue={adjustMentValue.purchase_id} value={adjustMentValue.purchase_id} addSearchItems={singleAdjustMent}
-                            placeholder={placeholderText( 'purchase.select.purchase_order.placeholder.label' )} />
-                    </div>
-
                     
                     <div className='mb-10'>
                         <label className='form-label'>
                             {getFormattedMessage( 'product.title' )}:
                         </label>
-                        <ProductSearch values={purchases} products={products} handleValidation={handleValidation}
+                        <ProductSearch values={adjustMentValue} products={products} handleValidation={handleValidation}
                             updateProducts={updateProducts} isAllProducts={true}
                             setUpdateProducts={setUpdateProducts} customProducts={customProducts} />
                     </div>

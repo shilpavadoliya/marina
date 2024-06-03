@@ -16,6 +16,8 @@ export default (state = [], action) => {
             return action.payload;
         case supplierActionType.SET_ACTIVE_DE_ACTIVE:
             return state.map(item => item.id === +action.payload.id ? action.payload : item);    
+        case supplierActionType.FETCH_COUNTRIES:
+            return action.payload;
         default:
             return state;
     }

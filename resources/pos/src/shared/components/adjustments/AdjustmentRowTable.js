@@ -21,7 +21,6 @@ const AdjustmentRowTable = (props) => {
                 <th>{getFormattedMessage('product.product-details.code-product.label')}</th>
                 <th>{getFormattedMessage('purchase.order-item.table.stock.column.label')}</th>
                 <th className='text-lg-start text-center'>{getFormattedMessage('purchase.order-item.table.qty.column.label')}</th>
-                <th>{getFormattedMessage('globally.type.label')}</th>
                 <th className="text-center">{getFormattedMessage('react-data-table.action.column.label')}</th>
             </tr>
             </thead>

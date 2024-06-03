@@ -160,6 +160,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('suppliers', SupplierAPIController::class);
     //    });
     Route::get('suppliers', [SupplierAPIController::class, 'index']);
+    Route::get('countries', [SupplierAPIController::class, 'fetchCountries']);
     Route::post('import-suppliers', [SupplierAPIController::class, 'importSuppliers']);
     Route::post('supplier-status/{id}', [SupplierAPIController::class, 'changeActiveStatus']);
 
@@ -242,7 +243,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //    Route::middleware('permission:manage_adjustments')->group(function () {
     Route::resource('adjustments', AdjustmentAPIController::class);
-    Route::post('out-stock', [SupplierAPIController::class, 'changeActiveStatus']);
+    Route::post('adjustments/out-stock', [AdjustmentAPIController::class, 'outStock']);
 
     //    });
 

@@ -359,6 +359,8 @@
     "currency.success.edit.message": "Currency updated successfully",
     "currency.success.delete.message": "Currency deleted successfully",
     "purchases.title": "Orders",
+    "purchases.b2b_title": "B2B Orders",
+    "purchases.b2c_title": "B2C Orders",
     "purchases.purchases-details.title": "Order Details",
     "purchase.title": "Order",
     "purchase.create.title": "Create Order",

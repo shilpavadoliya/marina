@@ -115,10 +115,10 @@ export const addAdjustment = (adjustment, navigate) => async (dispatch) => {
 };
 
 export const editAdjustment =
-    (adjustmentId, adjustment, navigate) => async (dispatch) => {
+    (adjustment, navigate) => async (dispatch) => {
         dispatch(setSavingButton(true));
         await apiConfig
-            .patch(apiBaseURL.ADJUSTMENTS + "/" + adjustmentId, adjustment)
+            .post(apiBaseURL.ADJUSTMENTS + '/out-stock' , adjustment)
             .then((response) => {
                 dispatch(
                     addToast({
@@ -169,3 +169,36 @@ export const deleteAdjustment = (userId) => async (dispatch) => {
             );
         });
 };
+
+
+export const OutStock =
+    (adjustment, navigate) => async (dispatch) => {
+        dispatch(setSavingButton(true));
+        await apiConfig
+            .post(apiBaseURL + "/out-stock" , adjustment)
+            .then((response) => {
+                dispatch(
+                    addToast({
+                        text: getFormattedMessage(
+                            "Adjustment.success.edit.message"
+                        ),
+                    })
+                );
+                navigate("/app/adjustments");
+                dispatch({
+                    type: adjustMentActionType.EDIT_ADJUSTMENTS,
+                    payload: response.data.data,
+                });
+                dispatch(setSavingButton(false));
+            })
+            .catch(({ response }) => {
+                dispatch(setSavingButton(false));
+                response &&
+                    dispatch(
+                        addToast({
+                            text: response.data.message,
+                            type: toastType.ERROR,
+                        })
+                    );
+            });
+    };
