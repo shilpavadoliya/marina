@@ -1,0 +1,105 @@
+footer{
+    position: relative;
+    background-color: var(--clr-neutral-200);
+    margin-top: 100px;
+    z-index: 2;
+    &::before{
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 220px;
+        left: 0;
+        top: -150px;
+        background-image: url('../images/bg/footer-white.svg');
+        background-position: center top;
+        background-repeat: repeat-x;
+        background-size: cover;
+        z-index: -1;
+    }
+
+    .footerBottom{
+        position: relative;
+        width: 100%;
+        height: 230px;
+        margin-top: 30px;
+        left: 0;
+        background-image: url('../images/bg/footer-blue.png');
+        background-position: top center ;
+        background-repeat: repeat-x;
+        background-size: cover;
+    }
+    .footerLink{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .title{
+        position: relative;
+        display: block;
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: var(--fw-bold);
+    }
+    .social{
+        position: relative;
+        ul{
+            position: relative;
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 10px;
+            li{
+                width: 28px;
+                height: 28px;
+            }
+        }
+    }
+    p{
+        font-size: 16px;
+        display: block;
+        text-decoration: none;
+        color: var(--clr-neutral-700);
+        font-weight: var(--fw-medium);
+    }
+    .links{
+        position: relative;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 13px;
+        width: 100%;
+        li{
+            a{
+                font-size: 16px;
+                display: block;
+                text-decoration: none;
+                color: var(--clr-neutral-700);
+                font-weight: var(--fw-medium);
+                transition: all 0.3s;
+                &:hover{
+                    color: var(--clr-neutral-900);
+                }
+            }
+        }
+    }
+    .subscribe{
+        position: relative;
+        input{
+            padding-right: 35px;
+            height: 36px;
+        }
+        .send{
+            position: absolute;
+            width: 18px;
+            z-index: 2;
+            right: 9px;
+            top: 9px;
+            border: none;
+            background: transparent;
+        }
+    }
+}

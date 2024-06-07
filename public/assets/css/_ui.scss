@@ -1,0 +1,179 @@
+.heading1{
+    position: relative;
+    display: block;
+    font-family: var(--ff-primary);
+    font-size: 30px;
+    font-weight: var(--fw-bold);
+    color: var(--clr-primary-500);
+}
+.heading2{
+    position: relative;
+    display: block;
+    font-family: var(--ff-primary);
+    font-size: 24px;
+    font-weight: var(--fw-extrabold);
+    color: var(--clr-neutral-900);
+}
+.subHeading2{
+    position: relative;
+    display: block;
+    font-family: var(--ff-secondary);
+    font-size: 14px;
+    font-weight: var(--fw-semibold);
+    color: var(--clr-neutral-700);
+    margin-top: 10px;
+}
+
+a{
+    color: var(--clr-primary-500);
+    text-decoration: none;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+
+input{
+    position: relative;
+    width: 100%;
+    height: 35px;
+    background-color: var(--clr-neutral-100);
+    font-size: 15px;
+    font-weight: var(--fw-medium);
+    padding: 15px;
+    color: var(--clr-neutral-600);
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    &[type="checkbox"]{
+        width: 15px;
+        height: 15px;
+    }
+}
+.form-check-input:checked{
+    background-color: var(--clr-primary-500);
+    border-color: var(--clr-primary-500);
+}
+.swiper-button-prev, .swiper-button-next{
+    width: 45px;
+    height: 45px;
+    transition: all 0.3s;
+    &:hover{
+        transform: scale(0.9) !important;
+    }
+}
+.swiper-button-prev{
+    margin-left: -20px;
+}
+.swiper-button-next{
+    margin-right: -20px;
+}
+
+.desktopOnly{
+    @media (max-width: 700px) {
+        display: none !important;
+    }
+}
+
+.filter{
+    position: relative;
+    button{
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap:10px;
+        height: 40px;
+        img{
+            position: relative;
+            width: 25px;
+            flex-shrink: 0;
+        }
+        span{
+            color: var(--clr-neutral-700);
+            font-weight: var(--fw-semibold);
+        }
+    }
+    .dropdown-menu{
+        width: 350px;
+        padding: 0;
+        border: none;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px 0px;
+        .nav{
+            width: 160px;
+            border-right: 1px solid var(--clr-neutral-400);
+            padding: 10px 0;
+            .nav-link{
+                position: relative;
+                font-size: 16px;
+                font-weight: var(--fw-semibold);
+                color: var(--clr-neutral-700);
+                padding:10px 25px;
+                text-align: left;
+                &.active{
+                    position: relative;
+                    background-color: transparent;
+                    color: var(--clr-primary-500);
+                    &::before{
+                        position: absolute;
+                        content: '';
+                        width: 8px;
+                        height: 100%;
+                        left: 0;
+                        top: 0;
+                        border-radius: 0 8px 8px 0;
+                        background: var(--clr-primary-500);
+                    }
+                }
+                &.added{
+                    &::after{
+                        position: absolute;
+                        content: '';
+                        width: 7px;
+                        height: 7px;
+                        transform: translateY(-50%);
+                        top: 50%;
+                        left: 12px;
+                        border-radius: 50%;
+                        background: var(--clr-primary-500);
+                    }
+                }
+            }
+        }
+        .tab-content{
+            position: relative;
+            width: 190px;
+            ul{
+                position: relative;
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                li{
+                    position: relative;
+                    width: 100%;
+                    padding: 10px 5px 10px 0;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    border-bottom: 1px solid var(--clr-neutral-400);
+                    input[type=checkbox]{
+                        width: 18px !important;
+                        height: 18px !important;
+                        padding: 0;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+        .fiterButtons{
+            position: relative;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            width: 100%;
+            border-top: 1px solid var(--clr-neutral-400);
+            .btn1, .btn3{
+                width: 150px;
+                flex-shrink: 0;
+            }
+        }
+    }
+}

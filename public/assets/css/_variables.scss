@@ -1,0 +1,53 @@
+:root {
+    --clr-primary-400: #9ff4f4;
+    --clr-primary-500: #009ba0;
+    --clr-primary-600: #004e65;
+  
+    --clr-neutral-100: #fff;
+    --clr-neutral-200: #f0f0f0;
+    --clr-neutral-400 :rgba(218, 218, 218, 1);
+    --clr-neutral-500: #bbbdbd;
+    --clr-neutral-600: #b1b1b1;
+    --clr-neutral-700 :#4d4d4d;
+    --clr-neutral-800 :hsl(232, 12%, 13%);
+    --clr-neutral-900: hsl(0 0% 0%);
+  
+    --ff-primary: "Nunito", sans-serif;
+    --ff-secondary: "Source Sans 3", sans-serif;
+    --ff-rupee: "Hind", sans-serif;
+
+    --ff-body: var(--ff-secondary);
+    --ff-heading: var(--ff-primary);
+    // --ff-rupee: var(--ff-rupee);
+  
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-bold: 700;
+    --fw-extrabold: 800;
+  
+    --fs-12: 12px;
+    --fs-14: 14px;
+    --fs-16: 16px;
+    --fs-18: 18px;
+    --fs-20: 20px;
+    --fs-22: 22px;
+    --fs-24: 24px;
+  
+    --fs-body: var(--fs-400);
+    --fs-primary-heading: var(--fs-800);
+    --fs-secondary-heading: var(--fs-700);
+    --fs-nav: var(--fs-500);
+    --fs-button: var(--fs-300);
+  }
+  
+  @media (min-width: 50em) {
+    :root {
+      --fs-body: var(--fs-500);
+      --fs-primary-heading: var(--fs-900);
+      --fs-secondary-heading: var(--fs-800);
+  
+      --fs-nav: var(--fs-300);
+    }
+  }
+  
