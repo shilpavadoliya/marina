@@ -15,7 +15,7 @@ class CategoryController extends Controller
         
         $getSubCategory = ProductSubCategory::where('category_id', $id)->get();
         
-        $products = Product::where('product_type', 2)->get();
+        $products = Product::where('product_type', 2)->where('product_unit_quantity', '>', 0)->get();
         
         return view('frontend.category',compact('getSubCategory', 'getCategory', 'products'));
     }
