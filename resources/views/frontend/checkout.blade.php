@@ -102,6 +102,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-5">
                     <form method="post" action="{{ route('order-status') }}" id="shiipingForm">
                         {{ csrf_field() }}
@@ -125,7 +126,8 @@
                                 <input type="text" name="city" placeholder="Enter City" value="{{ $userbillingdetails->city?? '' }}">
                             </div>
                             <div class="col-6">
-                                <input type="text" name="pin_code" placeholder="Zip Code" value="{{ $userbillingdetails->pin_code?? '' }}">
+                                <!-- <input type="text" name="pin_code" class="postalCode" placeholder="Zip Code" value="{{ $userbillingdetails->pin_code?? '' }}"> -->
+                                <input type="text" name="pin_code" class="postalCode" placeholder="Zip Code">
                             </div>
                             <div class="col-12 mt-3">
                                 <div class="head">Payment Method </div>

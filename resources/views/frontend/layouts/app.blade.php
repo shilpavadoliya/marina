@@ -14,10 +14,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdC-KsOjDvFCHbgaXfFsvLhjfUzEM5fYY&libraries=places"></script>
+
     @stack('styles')
 
   </head>
   <body>
+    <input type="hidden" class="postalCode" value="360006">
     <form action="{{ route('logout') }}" method="POST" hidden class="logoutForm">
         @csrf
         <button hidden type="submit" class="border-0">Logout</button>
@@ -208,7 +211,7 @@
             $('.jqueryTotal').html(totalPrice);
             $('.jqueryTotalItem').html(itemCount);
             
-          }
+        }
 
      </script>
   </body>

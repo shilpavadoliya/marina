@@ -152,7 +152,8 @@
             <form action="">
                 <div class="group">
                     <button class="search"><img src="{{ asset('assets/images/icons/search.svg') }}" alt=""></button>
-                    <input type="text" placeholder="Search for your location">
+                    <input id="autocomplete" placeholder="Search for your location" type="text">
+                    <div id="output"></div>
                     <button class="currentLocation"><img src="{{ asset('assets/images/icons/current-location.svg') }}" alt=""><span>Use current location</span></button>
                 </div>
             </form>

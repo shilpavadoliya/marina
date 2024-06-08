@@ -9,9 +9,9 @@
                     <div class="icon">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" alt="">
                     </div>
-                    <div class="details">
-                        <div class="title">Mumbai</div>
-                        <p>ABC Road, Mumbai Lorem ipsum</p>
+                    <div class="details" id="detect-location">
+                        <div class="title" id="output">Mumbai</div>
+                        <!-- <p>ABC Road, Mumbai Lorem ipsum</p> -->
                     </div>
                 </div>
                 <div class="search desktopOnly">
@@ -117,3 +117,130 @@
     </header>
 
     @include('frontend.layouts.side-modal')
+
+    @push('scripts')
+        <script>
+            $(".postalCode").val('360006');
+            // Get Current Location
+                $(window).on('load', function () {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(success, error);
+                    } else {
+                        $('#output').html('Geolocation is not supported by this browser.');
+                    }
+                });
+
+                $(".currentLocation").on('click', function () {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(success, error);
+                    } else {
+                        $('#output').html('Geolocation is not supported by this browser.');
+                    }
+                });
+
+                function success(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Call Google Maps API for reverse geocoding
+                    const apiKey = 'AIzaSyCdC-KsOjDvFCHbgaXfFsvLhjfUzEM5fYY';
+                    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+
+                    $.getJSON(geocodeUrl, function(data) {
+                        if (data.status === 'OK') {
+                            const addressComponents = data.results[0].address_components;
+                            let postalCode = '';
+
+                            for (let component of addressComponents) {
+                                if (component.types.includes('postal_code')) {
+                                    postalCode = component.long_name;
+                                    break;
+                                }
+                            }
+
+                            if (postalCode) {
+                                $(".postalCode").val(postalCode);
+                                $('#output').html('Your Postal Code: ' + postalCode);
+                            } else {
+                                $(".postalCode").val('360006');
+                                $('#output').html('Postal code not found.');
+                            }
+                        } else {
+                            $('#output').html('Geocoding failed: ' + data.status);
+                        }
+                    });
+                }
+
+                function error() {
+                    $('#output').html('Unable to retrieve your location.');
+                }
+
+            // Get Current Location
+
+            // autocomplate address
+
+                let autocomplete;
+                let geocoder;
+
+                function initialize() {
+                    autocomplete = new google.maps.places.Autocomplete(
+                        document.getElementById('autocomplete'),
+                        { types: ['geocode'] }
+                    );
+
+                    autocomplete.addListener('place_changed', onPlaceChanged);
+                    geocoder = new google.maps.Geocoder();
+                }
+
+                function onPlaceChanged() {
+                    const place = autocomplete.getPlace();
+
+                    if (!place.geometry) {
+                        $('#output').html('No details available for input: ' + place.name);
+                        return;
+                    }
+
+                    const location = place.geometry.location;
+                    const latitude = location.lat();
+                    const longitude = location.lng();
+
+                    geocodeLatLng(latitude, longitude);
+                }
+
+                function geocodeLatLng(lat, lng) {
+                    const latlng = { lat: lat, lng: lng };
+
+                    geocoder.geocode({ location: latlng }, (results, status) => {
+                        if (status === 'OK') {
+                            if (results[0]) {
+                                const addressComponents = results[0].address_components;
+                                let postalCode = '';
+
+                                for (let component of addressComponents) {
+                                    if (component.types.includes('postal_code')) {
+                                        postalCode = component.long_name;
+                                        break;
+                                    }
+                                }
+
+                                if (postalCode) {
+                                    $(".postalCode").val(postalCode);
+                                    $('#output').html('Your Postal Code: ' + postalCode);
+                                } else {
+                                    $(".postalCode").val('360006');
+                                    $('#output').html('Postal code not found.');
+                                }
+                            } else {
+                                $('#output').html('No results found.');
+                            }
+                        } else {
+                            $('#output').html('Geocoder failed due to: ' + status);
+                        }
+                    });
+                }
+
+                google.maps.event.addDomListener(window, 'load', initialize);
+            
+            // autocomplate address
+        </script>
+    @endpush

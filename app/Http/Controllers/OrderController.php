@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\OrderItem;
 use App\Models\Order;
 use App\Models\Userbillingdetails;
+use App\Models\Supplier;
 
 use Illuminate\Support\Facades\Notification;
 
@@ -57,7 +58,6 @@ class OrderController extends Controller
                 }
                 
                 $userbillingdetails = Userbillingdetails::where('user_id', Auth::user()->id)->first();
-                
 
                 return view('frontend.checkout',compact('order', 'orderItem', 'userbillingdetails'));
             }
@@ -70,8 +70,30 @@ class OrderController extends Controller
     }
 
     public function orderStatus(Request $request){
+        // Update Customer Billing
+        $user = Auth::user();
+
+        $userBillingDetails = Userbillingdetails::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'first_name' => $request->first_name ?? '',
+                'last_name' => $request->last_name ?? '',
+                'company_name' => $request->company_name ?? '',
+                'address' => $userrequest->address ?? '',
+                'city' => $request->city ?? '',
+                'state' => $request->state ?? '',
+                'pin_code' => $request->pin_code ?? '',
+                'phone' => $request->phone ?? '',
+                'email' => $request->email_address ?? '',
+            ]
+        );
+        // Update Order
+        $supplier = Supplier::whereJsonContains('area_pin_code',$request->pin_code??'360006')->first();
+        
         $order = Order::where('order_number', $request->order_number)->first();
+        $order->supplier_id = $supplier->id ?? '1';
         $order->status = 'completed';
+        $order->is_customer = 2;
         $order->save();
 
         $order = Order::where('order_number', $request->order_number)->with('user', 'items')->first();
