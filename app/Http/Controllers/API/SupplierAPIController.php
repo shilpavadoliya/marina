@@ -11,6 +11,7 @@ use App\Imports\SupplierImport;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Repositories\SupplierRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -27,10 +28,12 @@ class SupplierAPIController extends AppBaseController
 {
     /** @var SupplierRepository */
     private $supplierRepository;
+    private $userRepository;
 
-    public function __construct(SupplierRepository $supplierRepository)
+    public function __construct(SupplierRepository $supplierRepository, UserRepository $userRepository)
     {
         $this->supplierRepository = $supplierRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index(Request $request): SupplierCollection
@@ -61,6 +64,18 @@ class SupplierAPIController extends AppBaseController
         $input['user_id'] = auth()->id();
         $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
         $supplier = $this->supplierRepository->create($input);
+
+        $userInput = [];
+        $userInput['first_name'] = $input['name'];
+        $userInput['last_name'] = $input['name'];
+        $userInput['email'] = $input['email'];
+        $userInput['phone'] = $input['phone'];
+        $userInput['password'] = $input['password'];
+        $userInput['status'] = 1;
+        $userInput['language'] = 1;
+        $userInput['role_id'] = 6;
+
+        $user = $this->userRepository->storeUser($input);
 
         return new SupplierResource($supplier);
     }

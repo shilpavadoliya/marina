@@ -553,6 +553,34 @@ const SupplierForm = (props) => {
                             <button type="button" className='btn btn-primary' onClick={handleFileSelect}>Choose Document</button>                       
                         </div>
 
+                        {isEdit ? '' :
+                            <div className='col-md-6 mb-3'>
+                                    <label className='form-label'>
+                                        {getFormattedMessage("user.input.password.label")}:
+                                    </label>
+                                    <span className='required'/>
+                                    <input type='password' name='password'
+                                                  placeholder={placeholderText("user.input.password.placeholder.label")}
+                                                  className='form-control' value={userValue.password}
+                                                  onChange={(e) => onChangeInput(e)}/>
+                                    <span
+                                        className='text-danger d-block fw-400 fs-small mt-2'>{errors['password'] ? errors['password'] : null}</span>
+                            </div>}
+                        {isEdit ? '' :
+                            <div className='col-md-6 mb-3'>
+                                    <label
+                                        className='form-label'>
+                                        {getFormattedMessage("user.input.confirm-password.label")}:
+                                    </label>
+                                    <span className='required'/>
+                                    <input type='password' name='confirm_password' className='form-control'
+                                                  placeholder={placeholderText("user.input.confirm-password.placeholder.label")}
+                                                  onChange={(e) => onChangeInput(e)}
+                                                  value={userValue.confirm_password}/>
+                                    <span
+                                        className='text-danger d-block fw-400 fs-small mt-2'>{errors['confirm_password'] ? errors['confirm_password'] : null}</span>
+                            </div>}
+
                         <div className='col-md-6 mb-3'>
                         <label>Area Pin Code:</label>
                         <div className="tag-input-container">
