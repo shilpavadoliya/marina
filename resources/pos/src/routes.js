@@ -28,6 +28,7 @@ import Expenses from "./components/expense/Expenses";
 import CreateExpense from "./components/expense/CreateExpense";
 import EditExpense from "./components/expense/EditExpense";
 import Purchases from "./components/purchase/Purchases";
+import B2cPurchases from "./components/B2cPurchase/B2cPurchases";
 import CreatePurchase from "./components/purchase/CreatePurchase";
 import EditPurchase from "./components/purchase/EditPurchase";
 import PurchaseDetails from "./components/purchase/PurchaseDetails";
@@ -278,6 +279,11 @@ export const route = [
     {
         path: "purchases",
         ele: <Purchases />,
+        permission: Permissions.MANAGE_PURCHASE,
+    },
+    {
+        path: "b2c-purchases",
+        ele: <B2cPurchases />,
         permission: Permissions.MANAGE_PURCHASE,
     },
     {

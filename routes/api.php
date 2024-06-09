@@ -235,6 +235,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //purchase routes
     Route::resource('purchases', PurchaseAPIController::class);
+    Route::resource('b2c-purchases', PurchaseAPIController::class);
     Route::get('purchase-pdf-download/{purchase}',
         [PurchaseAPIController::class, 'pdfDownload'])->name('purchase-pdf-download');
     Route::get('purchase-info/{purchase}', [PurchaseAPIController::class, 'purchaseInfo'])->name('purchase-info');

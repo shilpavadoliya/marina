@@ -6,7 +6,6 @@ import ReactDataTable from "../../shared/table/ReactDataTable";
 import ActionDropDownButton from "../../shared/action-buttons/ActionDropDownButton";
 import TabTitle from "../../shared/tab-title/TabTitle";
 import { fetchPurchases } from "../../store/action/purchaseAction";
-import DeletePurchase from "./DeletePurchase";
 import { fetchAllSuppliers } from "../../store/action/supplierAction";
 import { fetchAllWarehouses } from "../../store/action/warehouseAction";
 import {
@@ -63,7 +62,7 @@ const Product = (props) => {
     const onChange = (filter) => {
         fetchAllSuppliers();
         fetchAllWarehouses();
-        fetchPurchases(filter, true);
+        fetchPurchases(filter, true, true);
     };
 
     const goToEditProduct = (item) => {
@@ -361,11 +360,10 @@ const Product = (props) => {
                 row.reference_code === "Total" ? null : (
                     <ActionDropDownButton
                         item={row}
-                        goToEditProduct={goToEditProduct}
-                        isEditMode={true}
-                        isPdfIcon={true}
-                        onClickDeleteModel={onClickDeleteModel}
+                        isPdfIcon={false}
+                        isEditMode={false} onClickDeleteModel={false}
                         isViewIcon={true}
+                        isDeleteIcon={false}
                         onPdfClick={onPdfClick}
                         goToDetailScreen={goToDetailScreen}
                         onShowPaymentClick={onShowPaymentClick}
@@ -387,18 +385,12 @@ const Product = (props) => {
                     onChange={onChange}
                     isLoading={isLoading}
                     isShowDateRangeField
-                    ButtonValue={getFormattedMessage("purchase.create.title")}
                     totalRows={totalRecord}
-                    to="#/app/purchases/create"
                     isShowFilterField
                     isStatus
                 />
             </div>
-            <DeletePurchase
-                onClickDeleteModel={onClickDeleteModel}
-                deleteModel={deleteModel}
-                onDelete={isDelete}
-            />
+            
             <ShowPayment
                 onShowPaymentClick={onShowPaymentClick}
                 isShowPaymentModel={isShowPaymentModel}

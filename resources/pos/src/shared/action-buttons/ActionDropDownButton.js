@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 const ActionDropDownButton = (props) => {
     const {
-        goToEditProduct, item, onClickDeleteModel = true, goToDetailScreen, isViewIcon = false, isPdfIcon = false,isCreateSaleReturn,onCreateSaleReturnClick,
+        goToEditProduct, item, onClickDeleteModel = true, goToDetailScreen, isViewIcon = false, isDeleteIcon = false, isPdfIcon = false,isCreateSaleReturn,onCreateSaleReturnClick,
         isCreatePayment = false, onPdfClick, title, isPaymentShow = false, onShowPaymentClick, onCreatePaymentClick, onCreateSaleClick, isCreatesSales
     } = props;
 
@@ -92,6 +92,7 @@ const ActionDropDownButton = (props) => {
                     <FontAwesomeIcon icon={faPenToSquare}
                                      className='me-2'/>{getFormattedMessage('globally.edit.tooltip.label')} {title}
                 </Dropdown.Item>}
+                {isDeleteIcon ?
                 <Dropdown.Item onClick={(e) => {
                     e.stopPropagation();
                     onClickDeleteModel(item);
@@ -99,6 +100,7 @@ const ActionDropDownButton = (props) => {
                     <FontAwesomeIcon icon={faTrash}
                                      className='me-2'/> {getFormattedMessage('globally.delete.tooltip.label')} {title}
                 </Dropdown.Item>
+                : null}
             </Dropdown.Menu>
         </Dropdown>
     )

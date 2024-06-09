@@ -59,6 +59,7 @@ class SupplierAPIController extends AppBaseController
     {
         $input = $request->all();
         $input['user_id'] = auth()->id();
+        $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
         $supplier = $this->supplierRepository->create($input);
 
         return new SupplierResource($supplier);
@@ -77,6 +78,7 @@ class SupplierAPIController extends AppBaseController
     public function update(UpdateSupplierRequest $request, $id): SupplierResource
     {
         $input = $request->all();
+        $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
         $supplier = $this->supplierRepository->update($input, $id);
 
         return new SupplierResource($supplier);

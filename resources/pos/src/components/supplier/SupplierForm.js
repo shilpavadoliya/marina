@@ -11,6 +11,7 @@ import ReactSelect from '../../shared/select/reactSelect';
 import { fetchState } from '../../store/action/settingAction';
 
 
+
 const SupplierForm = (props) => {
     const { addSupplierData, id, editSupplier, singleSupplier,  warehouses, fetchAllWarehouses, countries, fetchCountries, fetchState, countryState,defaultCountry } = props;
     const navigate = useNavigate();
@@ -53,39 +54,58 @@ const SupplierForm = (props) => {
     });
     useEffect( () => {
         fetchAllWarehouses()
-        fetchCountries()
+        // fetchCountries()
     }, [] );
 
-    const [ byDefaultCountry, setByDefaultCountry ] = useState( null )
+    // const [ byDefaultCountry, setByDefaultCountry ] = useState( null )
 
 
-    useEffect( () => {
+    const [areaPinTags, setAreaPinTags] = useState([]);
+    const [areaPinInputValue, setAreaPinInputValue] = useState('');
 
-            const countries = defaultCountry && defaultCountry.countries && defaultCountry.countries.filter( ( country ) => country.name === defaultCountry.country )
-            countries && setByDefaultCountry( countries[ 0 ] )
+    const handleAreaPinCodeChange = (event) => {
+        setAreaPinInputValue(event.target.value);
+    };
+
+    const handleAreaPinInputKeyDown = (event) => {
+        if (event.key === 'Enter' && areaPinInputValue.trim() !== '') {
+            setAreaPinTags([...areaPinTags, areaPinInputValue.trim()]);
+            setAreaPinInputValue('');
+        }
+    };
+
+    const removeAreaPinTag = (tagToRemove) => {
+        const updatedAreaPinTags = areaPinTags.filter(tag => tag !== tagToRemove);
+        setAreaPinTags(updatedAreaPinTags);
+    };
+
+    // useEffect( () => {
+
+    //         const countries = defaultCountry && defaultCountry.countries && defaultCountry.countries.filter( ( country ) => country.name === defaultCountry.country )
+    //         countries && setByDefaultCountry( countries[ 0 ] )
         
-    }, [] )
+    // }, [] )
 
-    useEffect( () => {
-        byDefaultCountry && fetchState( byDefaultCountry && byDefaultCountry.id )
-    }, [ byDefaultCountry ] )
+    // useEffect( () => {
+    //     byDefaultCountry && fetchState( byDefaultCountry && byDefaultCountry.id )
+    // }, [ byDefaultCountry ] )
 
-    const [ checkState, setCheckState ] = useState( false )
-    const [ allState, setAllState ] = useState( null )
+    // const [ checkState, setCheckState ] = useState( false )
+    // const [ allState, setAllState ] = useState( null )
 
-    useEffect( () => {
-        if ( countryState.value ) {
-            setCheckState( true )
-            setAllState( countryState )
-        }
-    }, [countryState ] )
+    // useEffect( () => {
+    //     if ( countryState.value ) {
+    //         setCheckState( true )
+    //         setAllState( countryState )
+    //     }
+    // }, [countryState ] )
 
-    const stateOptions = checkState && allState && allState.value && allState.value.map( ( item ) => {
-        return {
-            id: item,
-            name: item
-        }
-    } )
+    // const stateOptions = checkState && allState && allState.value && allState.value.map( ( item ) => {
+    //     return {
+    //         id: item,
+    //         name: item
+    //     }
+    // } )
 
     const [errors, setErrors] = useState({
         name: '',
@@ -152,6 +172,12 @@ const SupplierForm = (props) => {
         fetchState( obj.value )
         setErrors( '' );
     };
+    useEffect(() => {
+        if (singleSupplier && singleSupplier[0] && singleSupplier[0].areaPinTags) {
+            setAreaPinTags(singleSupplier[0].areaPinTags);
+        }
+    }, [singleSupplier]);
+    
 
     const onStateChange = ( obj ) => {
         setDisable( false );
@@ -161,19 +187,21 @@ const SupplierForm = (props) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        const valid = handleValidation();
-        if (singleSupplier && valid) {
-            if (!disabled) {
-                editSupplier(id, supplierValue, navigate);
-            }
-        } else {
-            if (valid) {
-                setSupplierValue(supplierValue);
-                addSupplierData(supplierValue);
+        const isValid = handleValidation();
+
+        if (isValid) {
+            const formData = {
+                ...supplierValue,
+                areaPinTags: areaPinTags // Include areaPinTags in the form data
+            };
+
+            if (singleSupplier) {
+                editSupplier(id, formData, navigate);
+            } else {
+                addSupplierData(formData);
             }
         }
     };
-
     return (
         <div className='card'>
             <div className='card-body'>
@@ -238,7 +266,7 @@ const SupplierForm = (props) => {
                         </div>
 
                         
-                                {/* Country  */}
+                                {/* Country 
                                 <div className='col-lg-6 mb-3'>
                                     <ReactSelect
                                         title={getFormattedMessage( "globally.input.country.label" )}
@@ -247,7 +275,7 @@ const SupplierForm = (props) => {
                                         name='country'
                                         data={countries} onChange={onCountryChange}
                                         errors={errors[ 'country' ]} />                                </div>
-                                {/* state  */}
+                                state 
                                 <div className='col-lg-6 mb-3'>
                                     <ReactSelect
                                         title={'State (Registered Office):'}
@@ -257,7 +285,7 @@ const SupplierForm = (props) => {
                                          onChange={onStateChange}
                                         errors={errors[ 'state' ]} />
                                 </div>
-                               
+                                */}
                        
                         <div className='col-md-6 mb-3'>
                             <label
@@ -524,6 +552,29 @@ const SupplierForm = (props) => {
 
                             <button type="button" className='btn btn-primary' onClick={handleFileSelect}>Choose Document</button>                       
                         </div>
+
+                        <div className='col-md-6 mb-3'>
+                        <label>Area Pin Code:</label>
+                        <div className="tag-input-container">
+                            <div className="tags">
+                                {areaPinTags.map((tag, index) => (
+                                    <span key={index} className="tag">
+                                        {tag}
+                                        <button type="button" className="tag-close" onClick={() => removeAreaPinTag(tag)}>x</button>
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        <input
+                            type="text"
+                            value={areaPinInputValue}
+                            onChange={handleAreaPinCodeChange}
+                            onKeyDown={handleAreaPinInputKeyDown}
+                            placeholder="Enter area pin code and press Enter"
+                            className="tag-input"
+                        />
+                    </div>
+
                     </div>
                     <ModelFooter onEditRecord={singleSupplier} onSubmit={onSubmit} editDisabled={disabled}
                         link='/app/suppliers' addDisabled={!supplierValue.name} />
@@ -537,8 +588,8 @@ const SupplierForm = (props) => {
 // export default connect( null, { editSupplier, fetchProductsByWarehouse } )( SupplierForm )
 
 const mapStateToProps = ( state ) => {
-    const { warehouses, countryState, defaultCountry} = state;
-    return {warehouses, countryState,defaultCountry };
+    const { warehouses} = state;
+    return {warehouses };
 };
 
-export default connect( mapStateToProps, {fetchAllWarehouses, editSupplier, fetchState,fetchCountries } )( SupplierForm );
+export default connect( mapStateToProps, {fetchAllWarehouses, editSupplier } )( SupplierForm );

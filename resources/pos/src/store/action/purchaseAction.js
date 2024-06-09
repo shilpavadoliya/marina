@@ -12,12 +12,14 @@ import { getFormattedMessage } from "../../shared/sharedMethod";
 import { setSavingButton } from "./saveButtonAction";
 
 export const fetchPurchases =
-    (filter = {}, isLoading = true) =>
+    (filter = {}, isLoading = true, isb2c = null) =>
     async (dispatch) => {
         if (isLoading) {
             dispatch(setLoading(true));
         }
         let url = apiBaseURL.PURCHASES;
+        
+
         if (
             !_.isEmpty(filter) &&
             (filter.page ||
@@ -27,6 +29,12 @@ export const fetchPurchases =
                 filter.created_at)
         ) {
             url += requestParam(filter, null, null, null, url);
+        }
+
+        if (isb2c !== null) {
+            
+            filter.isb2c = isb2c;
+            url+= '&isb2c=true';
         }
         apiConfig
             .get(url)
