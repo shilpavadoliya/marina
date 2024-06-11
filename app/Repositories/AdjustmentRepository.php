@@ -134,96 +134,104 @@ class AdjustmentRepository extends BaseRepository
         }
     }
 
-    public function updateAdjustmentItems($adjustment, $input)
+    public function updateAdjustmentItems($input)
     {
-        $adjustmentItmOldIds = AdjustmentItem::whereAdjustmentId($adjustment->id)->pluck('id')->toArray();
+        // $adjustmentItmOldIds = AdjustmentItem::whereAdjustmentId($adjustment->id)->pluck('id')->toArray();
         $adjustmentItemIds = [];
 
         foreach ($input['adjustment_items'] as $key => $adjustmentItem) {
-            $adjustmentItemIds[$key] = $adjustmentItem['adjustment_item_id'];
+            // $adjustmentItemIds[$key] = $adjustmentItem['adjustment_item_id'];
 
-            $product = ManageStock::whereWarehouseId($adjustment->warehouse_id)->whereProductId($adjustmentItem['product_id'])->first();
+            // $product = ManageStock::whereWarehouseId($adjustment->warehouse_id)->whereProductId($adjustmentItem['product_id'])->first();
 
-            if (is_null($adjustmentItem['adjustment_item_id'])) {
-                $adjustmentItem['adjustment_id'] = $adjustment->id;
+            // if (is_null($adjustmentItem['adjustment_item_id'])) {
+            //     $adjustmentItem['adjustment_id'] = $adjustment->id;
 
-                AdjustmentItem::Create($adjustmentItem);
+            //     AdjustmentItem::Create($adjustmentItem);
 
-                if (! empty($product)) {
-                    if ($adjustmentItem['method_type'] == AdjustmentItem::METHOD_ADDITION) {
-                        $totalQuantity = $product->quantity + $adjustmentItem['quantity'];
-                        $product->update([
-                            'quantity' => $totalQuantity,
-                        ]);
-                    } else {
-                        $totalQuantity = $product->quantity - $adjustmentItem['quantity'];
-                        if ($totalQuantity < 0) {
-                            throw new UnprocessableEntityHttpException('Quantity exceeds quantity available in stock.');
-                        }
-                        $product->update([
-                            'quantity' => $totalQuantity,
-                        ]);
-                    }
-                } else {
-                    if ($adjustmentItem['method_type'] == AdjustmentItem::METHOD_ADDITION) {
-                        ManageStock::create([
-                            'warehouse_id' => $adjustment->warehouse_id,
-                            'product_id' => $adjustmentItem['product_id'],
-                            'quantity' => $adjustmentItem['quantity'],
-                        ]);
-                    }
-                }
-            } else {
-                $exitAdjustmentItem = AdjustmentItem::whereId($adjustmentItem['adjustment_item_id'])->firstOrFail();
+            //     if (! empty($product)) {
+            //         if ($adjustmentItem['method_type'] == AdjustmentItem::METHOD_ADDITION) {
+            //             $totalQuantity = $product->quantity + $adjustmentItem['quantity'];
+            //             $product->update([
+            //                 'quantity' => $totalQuantity,
+            //             ]);
+            //         } else {
+            //             $totalQuantity = $product->quantity - $adjustmentItem['quantity'];
+            //             if ($totalQuantity < 0) {
+            //                 throw new UnprocessableEntityHttpException('Quantity exceeds quantity available in stock.');
+            //             }
+            //             $product->update([
+            //                 'quantity' => $totalQuantity,
+            //             ]);
+            //         }
+            //     } else {
+            //         if ($adjustmentItem['method_type'] == AdjustmentItem::METHOD_ADDITION) {
+            //             ManageStock::create([
+            //                 'warehouse_id' => $adjustment->warehouse_id,
+            //                 'product_id' => $adjustmentItem['product_id'],
+            //                 'quantity' => $adjustmentItem['quantity'],
+            //             ]);
+            //         }
+            //     }
+            // } else {
+            //     $exitAdjustmentItem = AdjustmentItem::whereId($adjustmentItem['adjustment_item_id'])->firstOrFail();
 
-                if ($exitAdjustmentItem['method_type'] == AdjustmentItem::METHOD_ADDITION) {
-                    $existQuantity = $product->quantity - $exitAdjustmentItem->quantity;
-                } else {
-                    $existQuantity = $product->quantity + $exitAdjustmentItem->quantity;
-                }
+            //     if ($exitAdjustmentItem['method_type'] == AdjustmentItem::METHOD_ADDITION) {
+            //         $existQuantity = $product->quantity - $exitAdjustmentItem->quantity;
+            //     } else {
+            //         $existQuantity = $product->quantity + $exitAdjustmentItem->quantity;
+            //     }
 
-                if ($adjustmentItem['method_type'] == AdjustmentItem::METHOD_ADDITION) {
-                    $totalQuantity = $existQuantity + $adjustmentItem['quantity'];
-                    $product->update([
-                        'quantity' => $totalQuantity,
-                    ]);
-                } else {
-                    $totalQuantity = $existQuantity - $adjustmentItem['quantity'];
-                    if ($totalQuantity < 0) {
-                        throw new UnprocessableEntityHttpException('Quantity exceeds quantity available in stock.');
-                    }
-                    $product->update([
-                        'quantity' => $totalQuantity,
-                    ]);
-                }
+            //     if ($adjustmentItem['method_type'] == AdjustmentItem::METHOD_ADDITION) {
+            //         $totalQuantity = $existQuantity + $adjustmentItem['quantity'];
+            //         $product->update([
+            //             'quantity' => $totalQuantity,
+            //         ]);
+            //     } else {
+            //         $totalQuantity = $existQuantity - $adjustmentItem['quantity'];
+            //         if ($totalQuantity < 0) {
+            //             throw new UnprocessableEntityHttpException('Quantity exceeds quantity available in stock.');
+            //         }
+            //         $product->update([
+            //             'quantity' => $totalQuantity,
+            //         ]);
+            //     }
 
-                $exitAdjustmentItem->update([
-                    'quantity' => $adjustmentItem['quantity'],
-                    'method_type' => $adjustmentItem['method_type'],
-                ]);
-            }
-        }
+            //     $exitAdjustmentItem->update([
+            //         'quantity' => $adjustmentItem['quantity'],
+            //         'method_type' => $adjustmentItem['method_type'],
+            //     ]);
+            // }
+        
 
-        $removeItemIds = array_diff($adjustmentItmOldIds, $adjustmentItemIds);
+        // $removeItemIds = array_diff($adjustmentItmOldIds, $adjustmentItemIds);
 
-        if (! empty(array_values($removeItemIds))) {
-            foreach ($removeItemIds as $removeItemId) {
-                $oldItem = AdjustmentItem::whereId($removeItemId)->firstOrFail();
-                $existProductStock = ManageStock::whereWarehouseId($adjustment->warehouse_id)->whereProductId($oldItem->product_id)->first();
+        // if (! empty(array_values($removeItemIds))) {
+            // foreach ($removeItemIds as $removeItemId) {
+                try{
+                // $oldItem = AdjustmentItem::whereId($removeItemId)->firstOrFail();
+                $existProductStock = ManageStock::whereWarehouseId($input['warehouse_id'])->whereProductId($adjustmentItem['product_id'])->first();
 
-                if ($oldItem->method_type == AdjustmentItem::METHOD_ADDITION) {
-                    $totalQuantity = $existProductStock->quantity - $oldItem['quantity'];
-                } else {
-                    $totalQuantity = $existProductStock->quantity + $oldItem['quantity'];
-                }
+                if ($existProductStock !== null) {
 
+                
+                    $totalQuantity = $existProductStock->quantity - $adjustmentItem['quantity'];
+                 
+                    
                 $existProductStock->update([
                     'quantity' => $totalQuantity,
                 ]);
+                // dd('come');
+
+                }else{
+                    dd('come');
+                }
+                } catch(\Exeption $e) {
+                    dd($e);
+                }
             }
-            AdjustmentItem::whereIn('id', array_values($removeItemIds))->delete();
+            // AdjustmentItem::whereIn('id', array_values($removeItemIds))->delete();
+            return true;
         }
 
-        return $adjustment;
-    }
 }

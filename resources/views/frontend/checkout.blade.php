@@ -34,7 +34,7 @@
                     <div class="mt-3">
                         <table class="table align-middle">
                             <tbody>
-                                @foreach($orderItem as $item)
+                                @foreach($orderItems as $item)
                                 
                                 <tr>
                                     <td>
@@ -43,12 +43,12 @@
                                                 <div class="thumb">
                                                     <img src="{{ asset('assets/images/products/pro1.jpg') }}" alt="">
                                                 </div>
-                                                <div class="count"><span>{{ $item->quantity }}</span></div>
+                                                <div class="count"><span>{{ $item->quantity ?? 0 }}</span></div>
                                             </div>
                                             <div class="details">
-                                                <h1>{{ $item->product_name }}</h1>
+                                                <h1>{{ $item->product_name ?? 0 }}</h1>
                                                 <ul class="tags">
-                                                    <li><strong>{{ $item->product_unit }} g</strong></li>
+                                                    <li><strong>{{ $item->product_unit ?? 0 }} g</strong></li>
                                                     <li>4-5 pcs</li>
                                                     <li>Serves 3</li>
                                                 </ul>
@@ -58,7 +58,7 @@
                                     <td>
                                         <div class="price">
                                             <span class="rupee">₹</span>
-                                            {{ $item->product_price * $item->quantity }}
+                                            {{ $item->product_price ?? 1 * $item->quantity ?? 1 }}
                                         </div>
                                     </td>
                                 </tr>

@@ -48,6 +48,8 @@ const Product = (props) => {
         frontSetting.value &&
         frontSetting.value.currency_symbol;
     const [tableArray, setTableArray] = useState([]);
+    const [disabledOptions, setDisabledOptions] = useState([]);
+
 
     useEffect(() => {
         fetchFrontSetting();
@@ -161,6 +163,7 @@ const Product = (props) => {
     }, [purchases]);
 
     useEffect(() => {
+        updateDisabledOptions(statusDefaultValue);
         if (purchases.length === 0) {
             setTableArray([]);
         }
@@ -174,6 +177,33 @@ const Product = (props) => {
             label: option.name
         }
     } )
+
+
+    const updateDisabledOptions = (selectedStatus) => {
+        let disabledOptions = [];
+        switch (selectedStatus) {
+            case 1:
+                disabledOptions = [2, 3, 4, 5];
+                break;
+            case 2:
+                disabledOptions = [1];
+                break;
+            case 3:
+                disabledOptions = [1, 2];
+                break;
+            case 4:
+                disabledOptions = [1, 2, 3];
+                break;
+            case 5:
+                disabledOptions = [1, 2, 3, 4];
+                break;
+            default:
+                break;
+        }
+        console.log(disabledOptions);
+        setDisabledOptions(disabledOptions);
+    };
+
     console.log(statusDefaultValue);
     const columns = [
         {
@@ -296,7 +326,8 @@ const Product = (props) => {
             cell: (row) => {
                 // console.log(status);
                 return   row.reference_code != "Total" ? <ReactSelect isRequired multiLanguageOption={statusFilterOptions} name='status'
-                defaultValue={statusDefaultValue[ row.status ]}  onChange={(option) => {  onStatusChange(row.id,option); }} />
+                defaultValue={statusDefaultValue[ row.status ]}  onChange={(option) => {  onStatusChange(row.id,option); }} 
+                isOptionDisabled={disabledOptions.includes(row.status)}/>
                 : '';
             },
         },

@@ -16,12 +16,15 @@ export const fetchSetting =
             dispatch(setLoading(true));
         }
         let url = apiBaseURL.SETTINGS;
+
         if (!_.isEmpty(filter) && (filter.page || filter.pageSize)) {
             url += requestParam(filter, null, null, null, url);
         }
+        console.log(url);
         apiConfig
             .get(url)
             .then((response) => {
+                console.log(response);
                 dispatch({
                     type: settingActionType.FETCH_SETTING,
                     payload: response.data.data,

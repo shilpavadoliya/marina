@@ -18,7 +18,9 @@ const AdjustmentTableBody = ( props ) => {
         setUpdateProducts,
         posAllProduct, posAllProducts, warehouse
     } = props;
+    
 
+    console.log(singleProduct);
     const onDeleteCartItem = ( id ) => {
         const newProduct = updateProducts.filter( ( item ) => item.id !== id );
         setUpdateProducts( newProduct );
@@ -98,13 +100,12 @@ const AdjustmentTableBody = ( props ) => {
             </td>
             <td>
                 {singleProduct.isEdit ?
-                    singleProduct.stock.length >= 1 && singleProduct.stock.map( ( item ) => {
-                        return (
+                (
                             <span className='badge bg-light-warning'>
-                                <span>{item.quantity}&nbsp;{singleProduct.short_name}</span>
+                                <span>{singleProduct.stock}</span>
                             </span>
                         )
-                    } )
+                
                     :
                     singleProduct.stock >= 0 ? <span className='badge bg-light-warning'>
                         <span>{singleProduct.stock}&nbsp;{singleProduct.short_name}</span>

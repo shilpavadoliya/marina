@@ -11,12 +11,14 @@ use App\Imports\SupplierImport;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Repositories\SupplierRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Country;
 
 
 /**
@@ -26,10 +28,12 @@ class SupplierAPIController extends AppBaseController
 {
     /** @var SupplierRepository */
     private $supplierRepository;
+    private $userRepository;
 
-    public function __construct(SupplierRepository $supplierRepository)
+    public function __construct(SupplierRepository $supplierRepository, UserRepository $userRepository)
     {
         $this->supplierRepository = $supplierRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index(Request $request): SupplierCollection
@@ -58,7 +62,20 @@ class SupplierAPIController extends AppBaseController
     {
         $input = $request->all();
         $input['user_id'] = auth()->id();
+        $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
         $supplier = $this->supplierRepository->create($input);
+
+        $userInput = [];
+        $userInput['first_name'] = $input['name'];
+        $userInput['last_name'] = $input['name'];
+        $userInput['email'] = $input['email'];
+        $userInput['phone'] = $input['phone'];
+        $userInput['password'] = $input['password'];
+        $userInput['status'] = 1;
+        $userInput['language'] = 1;
+        $userInput['role_id'] = 6;
+
+        $user = $this->userRepository->storeUser($userInput);
 
         return new SupplierResource($supplier);
     }
@@ -76,6 +93,7 @@ class SupplierAPIController extends AppBaseController
     public function update(UpdateSupplierRequest $request, $id): SupplierResource
     {
         $input = $request->all();
+        $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
         $supplier = $this->supplierRepository->update($input, $id);
 
         return new SupplierResource($supplier);
@@ -110,6 +128,14 @@ class SupplierAPIController extends AppBaseController
         $supplier->update(['status' => $status]);
 
         return new SupplierResource($supplier);
+    }
+
+    public function fetchCountries(Request $request)
+    {
+        $settings['countries'] = Country::all();
+
+        return $this->sendResponse(['type' => 'settings', 'attributes' => $settings],
+            'Setting data retrieved successfully.');
     }
 
 }

@@ -80,7 +80,8 @@ class Supplier extends BaseModel
         'claim_periodicity',
         'registered_office_state',
         'status',
-        'user_id'
+        'user_id',
+        'area_pin_code'
 
     ];
 
@@ -110,7 +111,35 @@ class Supplier extends BaseModel
             'city' => $this->city,
             'address' => $this->address,
             'created_at' => $this->created_at,
-            'status' => $this->status
+            'status' => $this->status,
+            'business_constitution' => $this->business_constitution,
+            'distributor_category' => $this->distributor_category,
+            'managing_partner'  => $this->managing_partner,
+            'contact_person'  => $this->contact_person,
+            'phone_number'  => $this->phone_number,
+            'mobile_number'  => $this->mobile_number,
+            'principal_address'  => $this->principal_address,
+            'brands_handled'  => $this->brands_handled,
+            'cst_number'  => $this->cst_number,
+            'vat_number'  => $this->vat_number,
+            'gstin'  => $this->gstin,
+            'service_tax_number'  => $this->service_tax_number,
+            'pan'  => $this->pan,
+            'bank_name'  => $this->bank_name,
+            'bank_branch'  => $this->bank_branch,
+            'account_number'  => $this->account_number,
+            'ifsc_code'  => $this->ifsc_code,
+            'appointment_type'  => $this->appointment_type,
+            'distributor_margin'  => $this->distributor_margin,
+            'payment_terms'  => $this->payment_terms,
+            'security_required'  => $this->security_required,
+            'territory_assigned'  => $this->territory_assigned,
+            'customers_covered'  => $this->customers_covered,
+            'claim_periodicity'  => $this->claim_periodicity,
+            'registered_office_state'  => $this->registered_office_state,
+            'status'  => $this->status,
+            'user_id'  => $this->user_id,
+            'area_pin_code' => explode(',', $this->area_pin_code)
         ];
 
         return $fields;

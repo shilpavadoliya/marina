@@ -143,14 +143,9 @@
                 <div class="col-md-3 products subcategory-{{ $product->sub_category_id }}">
                     <div class="productBox">
                         <a href="{{ route('productDetails', $product->id ) }}"class="thumb">
-                            @if (array_key_exists('imageUrls', $product->image_url)) 
-                                @foreach($product->image_url['imageUrls'] as $images)
-                                
-                                <div class="swiper-slide">
-                                    <img src="{{ $images }}" alt="">
-                                </div>
-                                @endforeach
-                            @endif
+                            <div class="swiper-slide">
+                                <img src="{{ $product->getMainImageUrlAttribute() }}" alt="">
+                            </div>
                         </a>
                         <div class="details">
                             <h2>{{ $product->name }}</h2>
@@ -166,6 +161,16 @@
                                 <span class="rupee">₹</span>
                                 {{ $product->product_price }} 
                             </div>
+
+                            @if($product->product_unit_quantity < 1)
+                            <div class="addToCart">
+                                <button class="w-100">
+                                    <div>
+                                        <span style="font-size:14px">Out of Stock</span>
+                                    </div>
+                                </button>
+                            </div>
+                            @else
                             <div class="addToCart">
                                 <button class="mainBtn" @if(countProductInCart($product->name) != 0)style="display: none;" @endif data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit }}">
                                     <div>
@@ -180,6 +185,8 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
+                            
                         </div>
                     </div>
                 </div>

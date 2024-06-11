@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdC-KsOjDvFCHbgaXfFsvLhjfUzEM5fYY&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIbT604Qu4iEfcB3AQRTxR5ubxdsusFbE&libraries=places"></script>
 
     @stack('styles')
 

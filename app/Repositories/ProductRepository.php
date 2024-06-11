@@ -94,7 +94,7 @@ class ProductRepository extends BaseRepository
                 config('app.media_disc'));
             }
 
-            if (!empty($input['prices']) && is_array($input['prices'])) {
+            if (isset($input['prices']) && is_array($input['prices'])) {
                 $pricesData = [];
     
                 foreach ($input['prices'] as $price) {
@@ -143,7 +143,7 @@ class ProductRepository extends BaseRepository
                
             }
 
-            if (!empty($input['prices']) && is_array($input['prices'])) {
+            if (isset($input['prices']) && is_array($input['prices'])) {
 
                 $updatedPricesData = [];
 

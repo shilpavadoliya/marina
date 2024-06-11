@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-
+use App\Models\User;
 /**
  * Class PurchaseAPIController
  */
@@ -64,6 +64,18 @@ class PurchaseAPIController extends AppBaseController
 
         if ($request->get('status')) {
             $purchases->where('status', $request->get('status'));
+        }
+
+
+        if ($request->get('isb2c')) {
+            
+            $user = User::where('id', auth()->id())->first();
+            $roleId = $user->roles()->first()->id;
+            
+            $purchases->where('is_customer', 1);
+            if(!empty($roleId)) {
+                $purchases->where('supplier_id', auth()->id());
+            }
         }
 
         $purchases = $purchases->paginate($perPage);

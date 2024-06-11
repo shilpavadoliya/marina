@@ -11,6 +11,7 @@ import { setLoading } from "./loadingAction";
 import { getFormattedMessage } from "../../shared/sharedMethod";
 import { setSavingButton } from "./saveButtonAction";
 import { callImportProductApi } from "./importProductApiAction";
+import { setDefaultCountry } from "../defaultCountryAction";
 
 export const fetchSuppliers =
     (filter = {}, isLoading = true) =>
@@ -222,3 +223,48 @@ export const activeInactiveSupplier = (Id) => async (dispatch) => {
             );
         });
 };
+
+export const fetchCountries =
+    (filter = {}, isLoading = true) =>
+    async (dispatch) => {
+        if (isLoading) {
+            dispatch(setLoading(true));
+        }
+        let url = 'countries';
+
+        if (!_.isEmpty(filter) && (filter.page || filter.pageSize)) {
+            url += requestParam(filter, null, null, null, url);
+        }
+        console.log(url);
+        apiConfig
+            .get(url)
+            .then((response) => {
+                console.log(response);
+                dispatch({
+                    type: supplierActionType.FETCH_COUNTRIES,
+                    payload: response.data.data,
+                });
+                if (isLoading) {
+                    dispatch(setLoading(false));
+                }
+                response &&
+                    dispatch(
+                        setDateFormat(response.data.data.attributes.date_format)
+                    );
+                response &&
+                    dispatch(
+                        setDefaultCountry({
+                            countries: response.data.data.attributes.countries,
+                            country: response.data.data.attributes.country,
+                        })
+                    );
+            })
+            .catch(({ response }) => {
+                dispatch(
+                    addToast({
+                        text: response.data.message,
+                        type: toastType.ERROR,
+                    })
+                );
+            });
+    };

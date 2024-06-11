@@ -163,18 +163,4 @@ class User extends Authenticatable implements HasMedia, JsonResourceful, CanRese
     {
         return $this->hasMany(Sale::class);
     }
-
-    public function userBillingDetails()
-    {
-        return $this->hasOne(Userbillingdetails::class);
-    }
-
-    public function userShippingDetails()
-    {
-        return $this->hasOne(Usershippingdetails::class);
-    }
-    public function ordeRdetails()
-    {
-        return $this->hasMany(Order::class);
-    }
 }
