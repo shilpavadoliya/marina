@@ -30,10 +30,7 @@ const AvaialbleLocation = ( props ) => {
 
     const onChange = ( filter ) => {
         fetchAvailableLocations( filter, true );
-    };
-
-    console.log(availableLocations);
-    
+    };    
 
     const itemsValue = availableLocations.length >= 0 && availableLocations.map( unit => {
         return {

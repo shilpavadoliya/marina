@@ -20,7 +20,6 @@ const AdjustmentTableBody = ( props ) => {
     } = props;
     
 
-    console.log(singleProduct);
     const onDeleteCartItem = ( id ) => {
         const newProduct = updateProducts.filter( ( item ) => item.id !== id );
         setUpdateProducts( newProduct );

@@ -20,11 +20,9 @@ export const fetchSetting =
         if (!_.isEmpty(filter) && (filter.page || filter.pageSize)) {
             url += requestParam(filter, null, null, null, url);
         }
-        console.log(url);
         apiConfig
             .get(url)
             .then((response) => {
-                console.log(response);
                 dispatch({
                     type: settingActionType.FETCH_SETTING,
                     payload: response.data.data,
@@ -131,6 +129,19 @@ export const fetchState = (id) => async (dispatch) => {
         .get("states/" + id)
         .then((response) => {
             dispatch({ type: "FETCH_STATE_DATA", payload: response.data.data });
+        })
+        .catch(({ response }) => {
+            dispatch(
+                addToast({ text: response.data.message, type: toastType.ERROR })
+            );
+        });
+};
+
+export const fetchCity = (id) => async (dispatch) => {
+    apiConfig
+        .get("cities/" + id)
+        .then((response) => {
+            dispatch({ type: "FETCH_CITY_DATA", payload: response.data.data });
         })
         .catch(({ response }) => {
             dispatch(

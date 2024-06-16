@@ -72,6 +72,7 @@ import allSalePurchaseReducer from "./allSalePurchaseReducer";
 import allConfigReducer from "./allConfigReducer";
 import transferDetailsReducer from "./transferDetailsReducer";
 import countryStateReducer from './countryStateReducer';
+import cityStateReducer from './cityStateReducer';
 import productUnitIdReducer from "./productUnitIdReducer";
 import emailTemplatesReducer from "./emailTemplatesReducer";
 import posRegisterDetailsReducer from "./pos/posRegisterDetailsReducer";
@@ -173,6 +174,7 @@ export default combineReducers( {
     adjustmentsDetails: adjustMentDetailsReducer,
     allConfigData: allConfigReducer,
     countryState: countryStateReducer,
+    cityState: cityStateReducer,
     productUnitId: productUnitIdReducer,
     emailTemplates: emailTemplatesReducer,
     posAllTodaySaleOverAllReport: posRegisterDetailsReducer,

@@ -5,7 +5,7 @@ import moment from "moment";
 import ReactDataTable from "../../shared/table/ReactDataTable";
 import ActionDropDownButton from "../../shared/action-buttons/ActionDropDownButton";
 import TabTitle from "../../shared/tab-title/TabTitle";
-import { fetchPurchases } from "../../store/action/purchaseAction";
+import { fetchPurchases,fetchOrders } from "../../store/action/purchaseAction";
 import { fetchAllSuppliers } from "../../store/action/supplierAction";
 import { fetchAllWarehouses } from "../../store/action/warehouseAction";
 import {
@@ -25,6 +25,7 @@ import { changePurchaseStatus } from '../../store/action/purchaseAction';
 const Product = (props) => {
     const {
         fetchPurchases,
+        fetchOrders,
         fetchAllWarehouses,
         fetchAllSuppliers,
         purchases,
@@ -62,7 +63,8 @@ const Product = (props) => {
     const onChange = (filter) => {
         fetchAllSuppliers();
         fetchAllWarehouses();
-        fetchPurchases(filter, true, true);
+        // fetchPurchases(filter, true, true);
+        fetchOrders(filter, true);
     };
 
     const goToEditProduct = (item) => {
@@ -71,7 +73,7 @@ const Product = (props) => {
     };
 
     const goToDetailScreen = (ProductId) => {
-        window.location.href = "#/app/purchases/detail/" + ProductId;
+        window.location.href = "#/app/b2c-purchases/detail/" + ProductId;
     };
 
     const onShowPaymentClick = () => {
@@ -84,7 +86,6 @@ const Product = (props) => {
     };
     
     const onStatusChange = (selectedPurchaseId, selectedOption) => {
-        console.log(selectedPurchaseId,selectedOption.value);
         changePurchaseStatus(selectedPurchaseId, selectedOption);
             // Handle success if needed
         
@@ -199,11 +200,9 @@ const Product = (props) => {
             default:
                 break;
         }
-        console.log(disabledOptions);
         setDisabledOptions(disabledOptions);
     };
 
-    console.log(statusDefaultValue);
     const columns = [
         {
             name: getFormattedMessage("dashboard.recentSales.reference.label"),
@@ -225,12 +224,6 @@ const Product = (props) => {
             name: getFormattedMessage("supplier.title"),
             selector: (row) => row.supplier,
             sortField: "supplier",
-            sortable: false,
-        },
-        {
-            name: getFormattedMessage("warehouse.title"),
-            selector: (row) => row.warehouse,
-            sortField: "warehouse",
             sortable: false,
         },
         // {
@@ -323,7 +316,6 @@ const Product = (props) => {
             sortField: "status",
             sortable: false,
             cell: (row) => {
-                // console.log(status);
                 return   row.reference_code != "Total" ? <ReactSelect isRequired multiLanguageOption={statusFilterOptions} name='status'
                 defaultValue={statusDefaultValue[ row.status ]}  onChange={(option) => {  onStatusChange(row.id,option); }} 
                 isOptionDisabled={disabledOptions.includes(row.status)}/>
@@ -348,7 +340,7 @@ const Product = (props) => {
         //         );
         //     },
         // },
-        (userRole === 1 || userRole === 4 || userRole === 5)
+        (userRole === 1 || userRole === 4 || userRole === 5 || userRole === 6)
         ? {
         
             name: getFormattedMessage("react-data-table.action.column.label"),
@@ -360,8 +352,8 @@ const Product = (props) => {
                 row.reference_code === "Total" ? null : (
                     <ActionDropDownButton
                         item={row}
-                        isPdfIcon={false}
-                        isEditMode={false} onClickDeleteModel={false}
+                        isPdfIcon={true}
+                        isEditMode={true} onClickDeleteModel={false}
                         isViewIcon={true}
                         isDeleteIcon={false}
                         onPdfClick={onPdfClick}
@@ -402,8 +394,9 @@ const Product = (props) => {
 const mapStateToProps = (state) => {
     const userRoleArray = localStorage.getItem('loginUserArray');
     const parsedRoles = JSON.parse(userRoleArray);
+    const userRole = parsedRoles.roles[0].id;
 
-    const userRole = parsedRoles ? parsedRoles.id : null; // Provide a default value or fallback mechanism
+    // const userRole = parsedRoles ? parsedRoles.id : null; // Provide a default value or fallback mechanism
     const {
         purchases,
         totalRecord,
@@ -429,6 +422,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     fetchPurchases,
+    fetchOrders,
     fetchAllWarehouses,
     fetchAllSuppliers,
     purchasePdfAction,

@@ -44,7 +44,6 @@ const ProductModal = ( props ) => {
 
     useEffect( () => {
         setProductModalData( product );
-        console.log(netUnitCost);
         setNetUnitCost( netUnitCost ? ( netUnitCost ).toFixed( 2 ) : parseFloat( product.net_unit_cost ).toFixed( 2 ) );
         setTaxType( product.tax_type === '1' || product.tax_type === 1 ? { value: 1, label: getFormattedMessage( 'tax-type.filter.exclusive.label' ) } : {
             value: 2, label: getFormattedMessage( 'tax-type.filter.inclusive.label' )

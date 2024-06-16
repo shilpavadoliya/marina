@@ -4,6 +4,8 @@ export default (state = [], action) => {
     switch (action.type) {
         case supplierActionType.FETCH_SUPPLIERS:
             return action.payload;
+            case supplierActionType.FETCH_STATES:
+                return action.payload;
         case supplierActionType.FETCH_SUPPLIER:
             return [action.payload];
         case supplierActionType.ADD_SUPPLIER:

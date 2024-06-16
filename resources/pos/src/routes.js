@@ -89,6 +89,7 @@ import EditLanguageData from "./components/languages/EditLanguageData";
 import BaseUnits from "./components/base-unit/BaseUnits";
 import AvailableLocation from "./components/available-location/AvaialbleLocation";
 import RegisterReport from "./components/report/registerReport/RegisterReport";
+import B2cPurchaseDetails from "./components/B2cPurchase/B2cPurchaseDetails";
 
 export const route = [
     {
@@ -284,6 +285,11 @@ export const route = [
     {
         path: "b2c-purchases",
         ele: <B2cPurchases />,
+        permission: Permissions.MANAGE_PURCHASE,
+    },
+    {
+        path: "b2c-purchases/detail/:id",
+        ele: <B2cPurchaseDetails />,
         permission: Permissions.MANAGE_PURCHASE,
     },
     {

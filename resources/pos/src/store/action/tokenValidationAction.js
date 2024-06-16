@@ -7,7 +7,6 @@ export const tokenValidation = (token) => async (dispatch) => {
             dispatch({ type: tokenValidationActionType.FETCH_VALIDATION, payload: response.data });
         })
         .catch(({ response }) => {
-            // console.log(response)
         }
         );
 }

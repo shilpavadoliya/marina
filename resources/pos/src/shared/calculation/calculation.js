@@ -69,7 +69,6 @@ export const calculateSubTotal = (carts) => {
 }
 
 export const calculateCartTotalAmount = (carts, inputValue) => {
-    console.log(carts);
     let finalTotalAmount = 0; // 
     const value = inputValue || {};
     const subtotal = calculateSubTotal(carts);

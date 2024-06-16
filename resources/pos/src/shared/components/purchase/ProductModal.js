@@ -22,7 +22,6 @@ const ProductModal = ( props ) => {
         updatePurchaseUnit,
         setIsOpen, frontSetting
     } = props;
-    console.log(product.net_unit_cost);
     const [ netUnitCost, setNetUnitCost ] = useState( product.net_unit_cost );
     const [ productModalData, setProductModalData ] = useState( product );
     const [ taxValue, setTaxValue ] = useState( product.tax_value );

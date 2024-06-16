@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Traits\HasJsonResourcefulData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * App\Models\Supplier
@@ -39,13 +42,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @mixin \Eloquent
  */
-class Supplier extends BaseModel
+class Supplier extends BaseModel  implements HasMedia
+
 {
-    use HasFactory, HasJsonResourcefulData;
+    use HasFactory, InteractsWithMedia, HasJsonResourcefulData;
 
     protected $table = 'suppliers';
 
     const JSON_API_TYPE = 'suppliers';
+
+    public const SUPPLIER_DOC = 'supplier_docs';
+
 
     protected $fillable = [
         'name',
@@ -78,10 +85,11 @@ class Supplier extends BaseModel
         'territory_assigned',
         'customers_covered',
         'claim_periodicity',
-        'registered_office_state',
+        'state',
         'status',
         'user_id',
-        'area_pin_code'
+        'area_pin_code',
+        'warehouse_id'
 
     ];
 
@@ -101,14 +109,43 @@ class Supplier extends BaseModel
         ];
     }
 
+    public function getDocument($docName): string
+    {
+        /** @var Media $media */
+        $media = $this->getMedia(Supplier::SUPPLIER_DOC)->where('name', $docName)->first();
+        if (! empty($media)) {
+            return $media->getFullUrl();
+        }
+
+        return '';
+    }
+
+    public function warehouse()
+{
+    return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
+}
+
+    public function cityName()
+    {
+        return $this->belongsTo(City::class, 'city', 'id');
+    }
+
+    public function countryName()
+    {
+        return $this->belongsTo(Country::class, 'country', 'id');
+    }
+
+    public function stateName()
+{
+        return $this->belongsTo(State::class, 'state', 'id');
+    }
+
     public function prepareAttributes(): array
     {
         $fields = [
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'country' => $this->country,
-            'city' => $this->city,
             'address' => $this->address,
             'created_at' => $this->created_at,
             'status' => $this->status,
@@ -136,10 +173,22 @@ class Supplier extends BaseModel
             'territory_assigned'  => $this->territory_assigned,
             'customers_covered'  => $this->customers_covered,
             'claim_periodicity'  => $this->claim_periodicity,
-            'registered_office_state'  => $this->registered_office_state,
+            
             'status'  => $this->status,
             'user_id'  => $this->user_id,
-            'area_pin_code' => explode(',', $this->area_pin_code)
+            'area_pin_code' => explode(',', $this->area_pin_code),
+            'pan_card' => $this->getDocument('panCard'),
+            'aadhar_card' => $this->getDocument('aadharCard'),
+            'fssai_license' => $this->getDocument('fssaiLicense'),
+            'gst_certificate' => $this->getDocument('gstCertificate'),
+            'warehouse_id' => $this->warehouse_id,
+            'warehouse_name' => $this->warehouse ? $this->warehouse->name : null,
+            'country_id' => $this->country,
+            'country_name' => $this->countryName->name,
+            'state_id' => $this->state,
+            'state_name' => $this->stateName->name,
+            'city_id' => $this->city,
+            'city_name' => $this->cityName->name,
         ];
 
         return $fields;
@@ -148,5 +197,5 @@ class Supplier extends BaseModel
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class, 'supplier_id', 'id');
-    }
+    }    
 }

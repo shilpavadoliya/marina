@@ -27,6 +27,8 @@ const StockReport = (props) => {
         warehouses,
         stockReportAction,
         allConfigData,
+        userRole,
+        warehouseId
     } = props;
     const [warehouseValue, setWarehouseValue] = useState({
         label: "All",
@@ -37,12 +39,15 @@ const StockReport = (props) => {
         frontSetting &&
         frontSetting.value &&
         frontSetting.value.currency_symbol;
-    const array = warehouses && warehouses;
-    const selectWarehouseArray =
-        frontSetting &&
-        array.filter(
-            (item) => item.id === Number(frontSetting?.value?.default_warehouse)
-        );
+    const array = userRole === 6 ? 
+    warehouses.filter((item) => item.id === Number(warehouseId)): warehouses;    
+  
+    const selectWarehouseArray = userRole === 6 ? 
+    warehouses.filter((item) => item.id === Number(warehouseId))
+    : 
+    warehouses.filter((item) => item.id === Number(frontSetting?.value?.default_warehouse));
+
+    console.log(selectWarehouseArray);
 
     useEffect(() => {
         stockReportAction(
@@ -224,6 +229,13 @@ const StockReport = (props) => {
     );
 };
 const mapStateToProps = (state) => {
+    const userRoleArray = localStorage.getItem('loginUserArray');
+    const parsedRoles = JSON.parse(userRoleArray);
+    const userRole = parsedRoles.roles[0].id;
+    
+    const supplierArray = localStorage.getItem('loginSupplierArray');
+    const parsedSupplier = JSON.parse(supplierArray);
+    const warehouseId = parsedSupplier.warehouse_id;    
     const {
         isLoading,
         totalRecord,
@@ -239,6 +251,8 @@ const mapStateToProps = (state) => {
         frontSetting,
         stockReports,
         allConfigData,
+        userRole,
+        warehouseId
     };
 };
 

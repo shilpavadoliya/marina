@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Sanctum;
+use App\Models\Supplier;
 
 class AuthController extends AppBaseController
 {
@@ -80,11 +81,14 @@ class AuthController extends AppBaseController
         $token = $user->createToken('token')->plainTextToken;
         $user->last_name = $user->last_name ?? '';
 
+        $supplier = Supplier::where('email',$email)->first();
+
         return response()->json([
             'data' => [
                 'token' => $token,
                 'user' => $user,
                 'permissions' => $userPermissions,
+                'supplier' => $supplier ? $supplier : []
             ],
             'message' => 'Logged in successfully.',
         ]);

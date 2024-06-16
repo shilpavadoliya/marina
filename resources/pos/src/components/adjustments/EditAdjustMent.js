@@ -35,10 +35,7 @@ const EditAdjustMent = (props) => {
 };
 
 const mapStateToProps = (state) => {
-    // console.log(state);
     const {warehouses, isLoading, purchases} = state;
-    // console.log(warehouses);
-    // console.log(purchases);
     return {warehouses, isLoading, purchases}
 };
 

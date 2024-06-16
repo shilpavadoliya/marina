@@ -34,7 +34,6 @@ const PurchaseTable = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [modalId, setModalId] = useState(null);
 
-    console.log();
     useEffect(() => {
         singleProduct.newItem !== "" &&
             productUnitDropdown(singleProduct.product_unit);

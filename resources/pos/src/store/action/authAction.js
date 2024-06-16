@@ -23,6 +23,7 @@ export const loginAction = (user, navigate, setLoading) => async (dispatch) => {
             localStorage.setItem(Tokens.LANGUAGE, response.data.data.user.language);
             localStorage.setItem(Tokens.LAST_NAME, response.data.data.user.last_name);
             localStorage.setItem('loginUserArray', JSON.stringify(response.data.data.user));
+            localStorage.setItem('loginSupplierArray', JSON.stringify(response.data.data.supplier));
             dispatch({type: authActionType.LOGIN_USER, payload: response.data.data});
             dispatch(setLanguage(response.data.data.user.language));
             localStorage.setItem(Tokens.UPDATED_LANGUAGE, response.data.data.user.language);

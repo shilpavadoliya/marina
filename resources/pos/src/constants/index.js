@@ -48,6 +48,7 @@ export const apiBaseURL = {
     YEAR_TOP_PRODUCT: "yearly-top-selling",
     TOP_CUSTOMERS: "top-customers",
     PURCHASE_DETAILS: "purchase-info",
+    B2C_PURCHASE_DETAILS: "b2c-purchase-info",
     SALE_DETAILS: "sale-info",
     SALE_RETURN: "sales-return",
     SALE_PDF: "sale-pdf-download",
@@ -181,7 +182,8 @@ export const supplierActionType = {
     FETCH_ALL_SUPPLIERS: "FETCH_ALL_SUPPLIERS",
     FETCH_SUPPLIERS_REPORT: "FETCH_SUPPLIERS_REPORT",
     SET_ACTIVE_DE_ACTIVE: "SET_ACTIVE_DE_ACTIVE",
-    FETCH_COUNTRIES:"FETCH_COUNTRIES"
+    FETCH_COUNTRIES:"FETCH_COUNTRIES",
+    FETCH_STATES:"FETCH_STATES"
 };
 
 export const smsApiActionType = {

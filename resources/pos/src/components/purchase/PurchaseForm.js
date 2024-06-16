@@ -64,7 +64,6 @@ const PurchaseForm = ( props ) => {
 
     useEffect( () => {
         setUpdateProducts( customProducts );
-        console.log(updateProducts);
     }, [ products, quantity, newCost, newDiscount, newTax, subTotal, newPurchaseUnit ] );
 
     useEffect( () => {

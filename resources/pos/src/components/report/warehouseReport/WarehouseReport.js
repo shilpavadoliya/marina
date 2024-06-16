@@ -31,11 +31,11 @@ const WarehouseReport = (props) => {
         fetchWarehouseReport,
         warehouseReportData,
         allConfigData,
+        userRole,
+        warehouseId
     } = props;
-    const [warehouseValue, setWarehouseValue] = useState({
-        label: getFormattedMessage("unit.filter.all.label"),
-        value: null,
-    });
+
+    const [warehouseValue, setWarehouseValue] = useState(null);
     const [key, setKey] = useState("sales");
 
     useEffect(() => {
@@ -43,45 +43,54 @@ const WarehouseReport = (props) => {
     }, []);
 
     useEffect(() => {
-        fetchWarehouseReport(warehouseValue.value);
-    }, [warehouseValue]);
+        if (warehouseId && warehouses.length > 0) {
+            const warehouse = warehouses.find(warehouse => warehouse.id === warehouseId);
+            if (warehouse) {
+                setWarehouseValue({
+                    label: warehouse.attributes.name,
+                    value: warehouse.id,
+                });
+                // Fetch warehouse report for the selected warehouse
+                fetchWarehouseReport(warehouse.id);
+            }
+        }
+    }, [warehouses, warehouseId]);
 
     const onWarehouseChange = (obj) => {
         setWarehouseValue(obj);
+        fetchWarehouseReport(obj.value);
     };
 
-    const array = warehouses;
-    const newFirstElement = {
-        attributes: { name: getFormattedMessage("report-all.warehouse.label") },
-        id: null,
+    const renderWarehouseSelect = () => {
+        const array = userRole === 6 ? 
+            warehouses.filter((item) => item.id === Number(warehouseId)) : warehouses;
+
+        const newArray = userRole === 6 ? array : [
+            { attributes: { name: getFormattedMessage("report-all.warehouse.label") }, id: null },
+            ...array
+        ];
+
+        return (
+            <ReactSelect
+                data={newArray}
+                onChange={onWarehouseChange}
+                value={warehouseValue}
+                title={getFormattedMessage("warehouse.title")}
+                errors={""}
+                isRequired
+                placeholder={placeholderText(
+                    "purchase.select.warehouse.placeholder.label"
+                )}
+            />
+        );
     };
-    const newArray = [newFirstElement].concat(array);
 
     return (
         <MasterLayout>
             <TopProgressBar />
             <TabTitle title={placeholderText("warehouse.reports.title")} />
             <Col md={4} className="mx-auto mb-5 col-12">
-                {newArray && (
-                    <ReactSelect
-                        data={newArray}
-                        onChange={onWarehouseChange}
-                        defaultValue={
-                            newArray[0]
-                                ? {
-                                      label: newArray[0].attributes.name,
-                                      value: newArray[0].id,
-                                  }
-                                : ""
-                        }
-                        title={getFormattedMessage("warehouse.title")}
-                        errors={""}
-                        isRequired
-                        placeholder={placeholderText(
-                            "purchase.select.warehouse.placeholder.label"
-                        )}
-                    />
-                )}
+                {renderWarehouseSelect()}
             </Col>
             <Row className="g-4">
                 <Widget
@@ -234,8 +243,15 @@ const WarehouseReport = (props) => {
 };
 
 const mapStateToProps = (state) => {
+    const userRoleArray = localStorage.getItem('loginUserArray');
+    const parsedRoles = JSON.parse(userRoleArray);
+    const userRole = parsedRoles.roles[0].id;
+    
+    const supplierArray = localStorage.getItem('loginSupplierArray');
+    const parsedSupplier = JSON.parse(supplierArray);
+    const warehouseId = parsedSupplier.warehouse_id;  
     const { warehouses, warehouseReportData, allConfigData } = state;
-    return { warehouses, warehouseReportData, allConfigData };
+    return { warehouses, warehouseReportData, allConfigData, userRole, warehouseId };
 };
 
 export default connect(mapStateToProps, {

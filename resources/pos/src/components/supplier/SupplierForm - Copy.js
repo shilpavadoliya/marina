@@ -69,7 +69,6 @@ const SupplierForm = (props) => {
         warehouse_id: singleSupplier ? singleSupplier[0].warehouse : '',
 
     });
-    console.log(supplierValue);
     useEffect( () => {
         fetchSetting();
         fetchAllWarehouses();
@@ -157,7 +156,7 @@ const SupplierForm = (props) => {
     const onCountryChange = ( obj ) => {
         setDisable( false );
         setSupplierValue( supplierValue => ( { ...supplierValue, country: obj } ) )
-        // setSupplierValue( supplierValue => ( { ...supplierValue, state: null } ) )
+        setSupplierValue( supplierValue => ( { ...supplierValue, state: null } ) )
         fetchState( obj.value )
         setErrors( '' );
     };
@@ -252,106 +251,61 @@ const SupplierForm = (props) => {
     }, [singleSupplier]);
 
 
-    const prepareFormData = (data) => {
-        
-        // console.log(data);
-        // const formValue = {
-        //     name: data.name,
-        //     email: data.email,
-        //     business_constitution: data.business_constitution,
-        //     distributor_category: data.distributor_category,
-        //     managing_partner: data.managing_partner,
-        //     phone: data.phone,
-        //     country: data.country.value,
-        //     city: data.city.value,
-        //     address: data.address,
-        //     state: data.state.value,
-        //     contact_person: data.contact_person,
-        //     mobile_number: data.mobile_number,
-        //     pin_code: data.pin_code,
-        //     principal_address: data.principal_address,
-        //     brands_handled: data.brands_handled,
-        //     cst_number: data.cst_number,
-        //     vat_number: data.vat_number,
-        //     gstin: data.gstin,
-        //     service_tax_number: data.service_tax_number,
-        //     pan: data.pan,
-        //     bank_name: data.bank_name,
-        //     bank_branch: data.bank_branch,
-        //     account_number: data.account_number,
-        //     ifsc_code: data.ifsc_code,
-        //     appointment_type: data.appointment_type,
-        //     distributor_margin: data.distributor_margin,
-        //     payment_terms: data.payment_terms,
-        //     security_required: data.security_required,
-        //     territory_assigned: data.territory_assigned,
-        //     customers_covered: data.customers_covered,
-        //     claim_periodicity: data.claim_periodicity,
-        //     warehouse_id: data.warehouse_id.value,
-        //     areaPinTags: areaPinTags, // Assuming areaPinTags is an array of tags
-        //     panCard: panCard, // Assuming areaPinTags is an array of tags
-        //     aadharCard: aadharCard, // Assuming areaPinTags is an array of tags
-        //     gstCertificate: gstCertificate, // Assuming areaPinTags is an array of tags
-        //     fssaiLicense: fssaiLicense // Assuming areaPinTags is an array of tags
-        // };
-
-        const formValue = new FormData();
-    formValue.append('name', data.name);
-    formValue.append('email', data.email);
-    formValue.append('business_constitution', data.business_constitution);
-    formValue.append('distributor_category', data.distributor_category);
-    formValue.append('managing_partner', data.managing_partner);
-    formValue.append('phone', data.phone);
-    formValue.append('country', data.country.value);
-    formValue.append('city', data.city.value);
-    formValue.append('address', data.address);
-    formValue.append('state', data.state.value);
-    formValue.append('contact_person', data.contact_person);
-    formValue.append('mobile_number', data.mobile_number);
-    formValue.append('pin_code', data.pin_code);
-    formValue.append('principal_address', data.principal_address);
-    formValue.append('brands_handled', data.brands_handled);
-    formValue.append('cst_number', data.cst_number);
-    formValue.append('vat_number', data.vat_number);
-    formValue.append('gstin', data.gstin);
-    formValue.append('service_tax_number', data.service_tax_number);
-    formValue.append('pan', data.pan);
-    formValue.append('bank_name', data.bank_name);
-    formValue.append('bank_branch', data.bank_branch);
-    formValue.append('account_number', data.account_number);
-    formValue.append('ifsc_code', data.ifsc_code);
-    formValue.append('appointment_type', data.appointment_type);
-    formValue.append('distributor_margin', data.distributor_margin);
-    formValue.append('payment_terms', data.payment_terms);
-    formValue.append('security_required', data.security_required);
-    formValue.append('territory_assigned', data.territory_assigned);
-    formValue.append('customers_covered', data.customers_covered);
-    formValue.append('claim_periodicity', data.claim_periodicity);
-    formValue.append('warehouse_id', data.warehouse_id.value);
-
-    
-        console.log(formValue); // Optional: Log the formValue to inspect it before returning
-    
-        return formValue;
-    };
     
 
     const onSubmit = (event) => {
         event.preventDefault();
         const isValid = handleValidation();
-    
+
         if (isValid) {
+            console.log('come');
+            const formData = new FormData();
+
+            // Append file inputs to formData
+            if (panCard) formData.append('panCard', panCard);
+            if (aadharCard) formData.append('aadharCard', aadharCard);
+            if (fssaiLicense) formData.append('fssaiLicense', fssaiLicense);
+            if (gstCertificate) formData.append('gstCertificate', gstCertificate);
+
             
-            // Debugging: Log formData before sending the request
+
+            // Append other form fields to formData
+            for (const [key, value] of Object.entries(supplierValue)) {
+                if (value !== null && value !== undefined) {
+                    if(key == 'city'){
+                        formData.append('city', supplierValue.city.value);
+                    }
+                    
+                    if(key == 'country'){
+                        formData.append('country', supplierValue.country.value);
+                    }
+                    
+                    if(key == 'state'){
+                        formData.append('state', supplierValue.state.value);
+                    }
+                    
+                    
+                    if(key == 'warehouse_id'){
+                        formData.append('warehouse_id', supplierValue.warehouse_id.value);
+                    }
+                    
+                    formData.append(key, value);
+                }
+            }
+
+            // Append areaPinTags to formData
+            areaPinTags.forEach((tag, index) => {
+                formData.append(`areaPinTags[${index}]`, tag);
+            });
+            
             if (singleSupplier) {
-                editSupplier(id, prepareFormData(supplierValue), navigate); // Assuming this sends formData to backend
+                console.log(formData);
+                editSupplier(id, formData, navigate);
             } else {
-                addSupplierData(prepareFormData(supplierValue)); // Assuming this sends formData to backend
+                addSupplierData(formData);
             }
         }
     };
-    
-
     return (
         <div className='card'>
             <div className='card-body'>

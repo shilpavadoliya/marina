@@ -85,7 +85,6 @@ const Product = (props) => {
     };
     
     const onStatusChange = (selectedPurchaseId, selectedOption) => {
-        console.log(selectedPurchaseId,selectedOption.value);
         changePurchaseStatus(selectedPurchaseId, selectedOption);
             // Handle success if needed
         
@@ -200,11 +199,9 @@ const Product = (props) => {
             default:
                 break;
         }
-        console.log(disabledOptions);
         setDisabledOptions(disabledOptions);
     };
 
-    console.log(statusDefaultValue);
     const columns = [
         {
             name: getFormattedMessage("dashboard.recentSales.reference.label"),
@@ -324,7 +321,6 @@ const Product = (props) => {
             sortField: "status",
             sortable: false,
             cell: (row) => {
-                // console.log(status);
                 return   row.reference_code != "Total" ? <ReactSelect isRequired multiLanguageOption={statusFilterOptions} name='status'
                 defaultValue={statusDefaultValue[ row.status ]}  onChange={(option) => {  onStatusChange(row.id,option); }} 
                 isOptionDisabled={disabledOptions.includes(row.status)}/>
@@ -380,6 +376,7 @@ const Product = (props) => {
         <MasterLayout>
             <TopProgressBar />
             <TabTitle title={placeholderText("purchases.title")} />
+            
             <div className="purchases_table">
                 <ReactDataTable
                     columns={columns}
@@ -387,9 +384,12 @@ const Product = (props) => {
                     onChange={onChange}
                     isLoading={isLoading}
                     isShowDateRangeField
-                    ButtonValue={getFormattedMessage("purchase.create.title")}
-                    totalRows={totalRecord}
-                    to="#/app/purchases/create"
+                    ButtonValue={
+                        userRole === 6
+                            ? null
+                            : getFormattedMessage("purchase.create.title")
+                    }                    totalRows={totalRecord}
+                    to={userRole === 6 ? null : "#/app/purchases/create"}
                     isShowFilterField
                     isStatus
                 />
@@ -408,10 +408,11 @@ const Product = (props) => {
 };
 
 const mapStateToProps = (state) => {
+
     const userRoleArray = localStorage.getItem('loginUserArray');
     const parsedRoles = JSON.parse(userRoleArray);
+    const userRole = parsedRoles.roles[0].id;
 
-    const userRole = parsedRoles ? parsedRoles.id : null; // Provide a default value or fallback mechanism
     const {
         purchases,
         totalRecord,

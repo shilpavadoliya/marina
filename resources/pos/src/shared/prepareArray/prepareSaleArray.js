@@ -1,5 +1,4 @@
 export const prepareSaleProductArray = (products) => {
-    console.log(products);
     let saleProductRowArray = [];
     products.forEach(product => {
         saleProductRowArray.push({

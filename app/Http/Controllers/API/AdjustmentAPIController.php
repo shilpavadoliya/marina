@@ -14,6 +14,8 @@ use App\Repositories\AdjustmentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use App\Models\User;
+use App\Models\Supplier;
 
 class AdjustmentAPIController extends AppBaseController
 {
@@ -33,6 +35,15 @@ class AdjustmentAPIController extends AppBaseController
 
         if ($request->get('warehouse_id')) {
             $adjustments->where('warehouse_id', $request->get('warehouse_id'));
+        }
+
+        
+        $user = User::where('id', auth()->id())->first();
+        $roleId = $user->roles()->first()->id;
+        
+        if($roleId == 6) {
+            $supplier = Supplier::where('email',$user->email)->first();
+            $adjustments->where('warehouse_id', $supplier->warehouse_id);
         }
 
         $adjustments = $adjustments->paginate($perPage);

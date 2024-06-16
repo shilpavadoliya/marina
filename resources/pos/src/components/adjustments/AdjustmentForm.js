@@ -32,7 +32,6 @@ const AdjustmentForm = ( props ) => {
     } = props;
 
 
-    console.log(products);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [ updateProducts, setUpdateProducts ] = useState( [] );

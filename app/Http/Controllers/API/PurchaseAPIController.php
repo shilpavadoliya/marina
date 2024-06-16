@@ -67,11 +67,16 @@ class PurchaseAPIController extends AppBaseController
         }
 
 
+        $user = User::where('id', auth()->id())->first();
+        $roleId = $user->roles()->first()->id;
+        
+        if($roleId == 6) {
+            $supplier = Supplier::where('email',$user->email)->first();
+            $purchases->where('warehouse_id', $supplier->warehouse_id);
+            $purchases->where('supplier_id', $supplier->id);
+        }
+        
         if ($request->get('isb2c')) {
-            
-            $user = User::where('id', auth()->id())->first();
-            $roleId = $user->roles()->first()->id;
-            
             $purchases->where('is_customer', 1);
             if(!empty($roleId)) {
                 $purchases->where('supplier_id', auth()->id());

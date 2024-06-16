@@ -36,6 +36,7 @@ use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\API\WarehouseAPIController;
 use App\Http\Controllers\MailTemplateAPIController;
 use App\Http\Controllers\API\AvailableLocationAPIController;
+use App\Http\Controllers\API\OrderAPIController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -160,7 +161,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('suppliers', SupplierAPIController::class);
     //    });
     Route::get('suppliers', [SupplierAPIController::class, 'index']);
-    Route::get('countries', [SupplierAPIController::class, 'fetchCountries']);
     Route::post('import-suppliers', [SupplierAPIController::class, 'importSuppliers']);
     Route::post('supplier-status/{id}', [SupplierAPIController::class, 'changeActiveStatus']);
 
@@ -215,6 +215,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('settings', SettingAPIController::class);
     Route::post('settings', [SettingAPIController::class, 'update']);
     Route::get('states/{id}', [SettingAPIController::class, 'getStates']);
+    Route::get('cities/{id}', [SettingAPIController::class, 'getCities']);
     Route::get('mail-settings', [SettingAPIController::class, 'getMailSettings']);
     Route::post('mail-settings/update', [SettingAPIController::class, 'updateMailSettings']);
     //    });
@@ -235,10 +236,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //purchase routes
     Route::resource('purchases', PurchaseAPIController::class);
-    Route::resource('b2c-purchases', PurchaseAPIController::class);
+    Route::resource('b2c-purchases', OrderAPIController::class);
     Route::get('purchase-pdf-download/{purchase}',
         [PurchaseAPIController::class, 'pdfDownload'])->name('purchase-pdf-download');
     Route::get('purchase-info/{purchase}', [PurchaseAPIController::class, 'purchaseInfo'])->name('purchase-info');
+    Route::get('b2c-purchase-info/{order}', [OrderAPIController::class, 'purchaseInfo'])->name('purchase-info');
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('/purchase-status/{purchase}', [PurchaseAPIController::class, 'updateStatus'])->name('update-status');
 

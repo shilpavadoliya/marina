@@ -19,7 +19,7 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Country;
-
+use App\Models\State;
 
 /**
  * Class SupplierAPIController
@@ -63,7 +63,19 @@ class SupplierAPIController extends AppBaseController
         $input = $request->all();
         $input['user_id'] = auth()->id();
         $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
+
+        
         $supplier = $this->supplierRepository->create($input);
+
+        $documents = ['panCard', 'aadharCard', 'fssaiLicense', 'gstCertificate'];
+
+        foreach ($documents as $document) {
+            if ($request->hasFile($document)) {
+                $supplier->addMedia($request->file($document))
+                        ->usingName($document)
+                        ->toMediaCollection(Supplier::SUPPLIER_DOC, config('app.media_disc'));
+            }
+        }
 
         $userInput = [];
         $userInput['first_name'] = $input['name'];
@@ -75,7 +87,7 @@ class SupplierAPIController extends AppBaseController
         $userInput['language'] = 1;
         $userInput['role_id'] = 6;
 
-        $user = $this->userRepository->storeUser($input);
+        $user = $this->userRepository->storeUser($userInput);
 
         return new SupplierResource($supplier);
     }
@@ -93,9 +105,26 @@ class SupplierAPIController extends AppBaseController
     public function update(UpdateSupplierRequest $request, $id): SupplierResource
     {
         $input = $request->all();
+
+        if(!empty($input['areaPinTags'])){
         $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
+        }
+
+        
         $supplier = $this->supplierRepository->update($input, $id);
 
+        $documents = ['panCard', 'aadharCard', 'fssaiLicense', 'gstCertificate'];
+
+        
+        foreach ($documents as $document) {
+            if ($request->hasFile($document)) {
+                $supplier->clearMediaCollection(Supplier::SUPPLIER_DOC);
+
+                $supplier->addMedia($request->file($document))
+                        ->usingName($document)
+                        ->toMediaCollection(Supplier::SUPPLIER_DOC, config('app.media_disc'));
+            }
+        }
         return new SupplierResource($supplier);
     }
 
@@ -128,14 +157,6 @@ class SupplierAPIController extends AppBaseController
         $supplier->update(['status' => $status]);
 
         return new SupplierResource($supplier);
-    }
-
-    public function fetchCountries(Request $request)
-    {
-        $settings['countries'] = Country::all();
-
-        return $this->sendResponse(['type' => 'settings', 'attributes' => $settings],
-            'Setting data retrieved successfully.');
     }
 
 }

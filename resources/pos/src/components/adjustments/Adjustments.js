@@ -15,7 +15,8 @@ import { fetchAllPurchases } from '../../store/action/purchaseAction';
 import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 
 const Adjustments = ( props ) => {
-    const { adjustments, fetchAdjustments, totalRecord, isLoading, fetchFrontSetting, frontSetting, warehouses, fetchAllWarehouses, isCallSaleApi, allConfigData, purchases, fetchAllPurchases } = props;
+    const { adjustments, fetchAdjustments, totalRecord, isLoading, fetchFrontSetting, frontSetting, warehouses, 
+        fetchAllWarehouses, isCallSaleApi, allConfigData, purchases, fetchAllPurchases,userRole } = props;
     const [ deleteModel, setDeleteModel ] = useState( false );
     const [ detailsModel, setDetailsModel ] = useState( false );
     const [ isShowPaymentModel, setIsShowPaymentModel ] = useState( false );
@@ -125,8 +126,14 @@ const Adjustments = ( props ) => {
             <TopProgressBar />
             <TabTitle title={placeholderText( 'adjustments.title' )} />
             {newArray.length > 1 &&
-                <ReactDataTable columns={columns} items={itemsValue} to='#/app/adjustments/create'
-                    ButtonValue={getFormattedMessage( 'adjustments.create.title' )} isShowPaymentModel={isShowPaymentModel} isCallSaleApi={isCallSaleApi}
+                <ReactDataTable columns={columns} items={itemsValue}
+                    ButtonValue={
+                        userRole === 6
+                            ? null
+                            : getFormattedMessage("adjustments.create.title")
+                    }
+                    to={userRole === 6 ? null : "#/app/adjustments/create"}
+                    isShowPaymentModel={isShowPaymentModel} isCallSaleApi={isCallSaleApi}
                     onChange={onChange} totalRows={totalRecord}  isShowFilterField
                     isLoading={isLoading} isWarehouseType={true} 
                     warehouseOptions={newArray} warehouses={warehouses} 
@@ -142,8 +149,11 @@ const Adjustments = ( props ) => {
 
 
 const mapStateToProps = ( state ) => {
+    const userRoleArray = localStorage.getItem('loginUserArray');
+    const parsedRoles = JSON.parse(userRoleArray);
+    const userRole = parsedRoles.roles[0].id;
     const { adjustments, totalRecord, isLoading, frontSetting, warehouses, isCallSaleApi, allConfigData,purchases } = state;
-    return { adjustments, totalRecord, isLoading, frontSetting, warehouses, isCallSaleApi, allConfigData, purchases };
+    return { adjustments, totalRecord, isLoading, frontSetting, warehouses, isCallSaleApi, allConfigData, purchases, userRole };
 };
 
 export default connect( mapStateToProps, { fetchAdjustments, fetchAllWarehouses, fetchFrontSetting, fetchAllPurchases } )( Adjustments );
