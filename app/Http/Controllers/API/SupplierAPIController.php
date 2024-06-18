@@ -107,7 +107,8 @@ class SupplierAPIController extends AppBaseController
         $input = $request->all();
 
         if(!empty($input['areaPinTags'])){
-        $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
+         
+            $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
         }
 
         
@@ -115,11 +116,8 @@ class SupplierAPIController extends AppBaseController
 
         $documents = ['panCard', 'aadharCard', 'fssaiLicense', 'gstCertificate'];
 
-        
         foreach ($documents as $document) {
             if ($request->hasFile($document)) {
-                $supplier->clearMediaCollection(Supplier::SUPPLIER_DOC);
-
                 $supplier->addMedia($request->file($document))
                         ->usingName($document)
                         ->toMediaCollection(Supplier::SUPPLIER_DOC, config('app.media_disc'));

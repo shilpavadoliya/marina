@@ -55,6 +55,8 @@ const EditSupplier = (props) => {
         aadhar_card: supplier?.attributes.aadhar_card.replace(/\\/g, '/'),
         fssai_license: supplier?.attributes.fssai_license.replace(/\\/g, '/'),
         gst_certificate: supplier?.attributes.gst_certificate.replace(/\\/g, '/'),
+        images: supplier?.attributes.images,
+
         
         city: {
             value: supplier?.attributes.city_id,

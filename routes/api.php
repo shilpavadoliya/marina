@@ -161,6 +161,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('suppliers', SupplierAPIController::class);
     //    });
     Route::get('suppliers', [SupplierAPIController::class, 'index']);
+    Route::post('suppliers/{supplier}',
+    [SupplierAPIController::class, 'update']);
     Route::post('import-suppliers', [SupplierAPIController::class, 'importSuppliers']);
     Route::post('supplier-status/{id}', [SupplierAPIController::class, 'changeActiveStatus']);
 

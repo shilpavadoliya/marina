@@ -120,6 +120,7 @@ export const editSupplier =
         apiConfig
             .post(apiBaseURL.SUPPLIERS + "/" + supplierId, supplier)
             .then((response) => {
+                console.log(response);
                 dispatch({
                     type: supplierActionType.EDIT_SUPPLIER,
                     payload: response.data.data,
@@ -135,6 +136,7 @@ export const editSupplier =
                 dispatch(setSavingButton(false));
             })
             .catch(({ response }) => {
+               
                 dispatch(setSavingButton(false));
                 dispatch(
                     addToast({

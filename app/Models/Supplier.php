@@ -142,6 +142,8 @@ class Supplier extends BaseModel  implements HasMedia
 
     public function prepareAttributes(): array
     {
+        $imageUrls = $this->image_url;
+
         $fields = [
             'name' => $this->name,
             'email' => $this->email,
@@ -189,6 +191,7 @@ class Supplier extends BaseModel  implements HasMedia
             'state_name' => $this->stateName->name,
             'city_id' => $this->city,
             'city_name' => $this->cityName->name,
+            'images' => $imageUrls['imageUrls'] ?? [],
         ];
 
         return $fields;
@@ -198,4 +201,24 @@ class Supplier extends BaseModel  implements HasMedia
     {
         return $this->hasMany(Purchase::class, 'supplier_id', 'id');
     }    
+
+    /**
+     * @return array|string
+     */
+    public function getImageUrlAttribute()
+    {
+        /** @var Media $media */
+        $medias = $this->getMedia(Supplier::SUPPLIER_DOC);
+        $images = [];
+        if (! empty($medias)) {
+            foreach ($medias as $key => $media) {
+                $images['imageUrls'][$key] = $media->getFullUrl();
+                $images['id'][$key] = $media->id;
+            }
+
+            return $images;
+        }
+
+        return '';
+    }
 }

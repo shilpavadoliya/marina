@@ -10,6 +10,7 @@ import { fetchAllWarehouses } from '../../store/action/warehouseAction';
 import ReactSelect from '../../shared/select/reactSelect';
 // import { fetchSetting } from "../../store/action/settingAction";
 import { fetchSetting, editSetting, fetchCacheClear, fetchState,fetchCity } from '../../store/action/settingAction';
+import MultipleImage from './MultipleImage';
 
 
 
@@ -69,7 +70,6 @@ const SupplierForm = (props) => {
         warehouse_id: singleSupplier ? singleSupplier[0].warehouse : '',
 
     });
-    console.log(supplierValue);
     useEffect( () => {
         fetchSetting();
         fetchAllWarehouses();
@@ -86,6 +86,10 @@ const SupplierForm = (props) => {
     const [aadharCard, setAadharCard] = useState(null);
     const [fssaiLicense, setFssaiLicense] = useState(null);
     const [gstCertificate, setGstCertificate] = useState(null);
+    const [removedImage, setRemovedImage] = useState([])
+
+
+    const [multipleFiles, setMultipleFiles] = useState([]);
 
     const handleFileChange = (event, setter) => {
         setter(event.target.files[0]);
@@ -93,19 +97,23 @@ const SupplierForm = (props) => {
 
 
     const handleAreaPinCodeChange = (event) => {
+       
+
         setAreaPinInputValue(event.target.value);
     };
 
-    const handleAreaPinInputKeyDown = (event) => {
-        if (event.key === 'Enter' && areaPinInputValue.trim() !== '') {
-            setAreaPinTags([...areaPinTags, areaPinInputValue.trim()]);
-            setAreaPinInputValue('');
+    const handleAreaPinInputKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (areaPinInputValue && !areaPinTags.includes(areaPinInputValue)) {
+                setAreaPinTags([...areaPinTags, areaPinInputValue]);
+                setAreaPinInputValue('');
+            }
         }
     };
 
-    const removeAreaPinTag = (tagToRemove) => {
-        const updatedAreaPinTags = areaPinTags.filter(tag => tag !== tagToRemove);
-        setAreaPinTags(updatedAreaPinTags);
+    const removeAreaPinTag = (tag) => {
+        setAreaPinTags(areaPinTags.filter(t => t !== tag));
     };
 
     useEffect( () => {
@@ -178,6 +186,15 @@ const SupplierForm = (props) => {
 
     };
 
+    const onChangeFiles = (file) => {
+        setMultipleFiles(file);
+    };
+
+    const transferImage = (item) => {
+        setRemovedImage(item);
+        setMultipleFiles([])
+    };
+
     const [errors, setErrors] = useState({
         name: '',
         email: '',
@@ -246,14 +263,19 @@ const SupplierForm = (props) => {
     };
 
     useEffect(() => {
-        if (singleSupplier && singleSupplier[0] && singleSupplier[0].areaPinTags) {
-            setAreaPinTags(singleSupplier[0].areaPinTags);
+        try {
+            if (singleSupplier?.[0]?.areaPinTags) {
+                setAreaPinTags(singleSupplier[0].areaPinTags);
+            }
+        } catch (error) {
+            console.error('Error setting areaPinTags', error);
         }
     }, [singleSupplier]);
 
 
     const prepareFormData = (data) => {
         
+        // console.log(areaPinTags);
         // console.log(data);
         // const formValue = {
         //     name: data.name,
@@ -328,10 +350,22 @@ const SupplierForm = (props) => {
     formValue.append('customers_covered', data.customers_covered);
     formValue.append('claim_periodicity', data.claim_periodicity);
     formValue.append('warehouse_id', data.warehouse_id.value);
+    // formValue.append('areaPinTags', areaPinTags);
 
+    areaPinTags.forEach((tag, index) => {
+        formValue.append(`areaPinTags[${index}]`, tag);
+    });
+
+    if (panCard) formValue.append('panCard', panCard);
+    if (aadharCard) formValue.append('aadharCard', aadharCard);
+    if (fssaiLicense) formValue.append('fssaiLicense', fssaiLicense);
+    if (gstCertificate) formValue.append('gstCertificate', gstCertificate);
     
-        console.log(formValue); // Optional: Log the formValue to inspect it before returning
-    
+    if (multipleFiles) {
+        multipleFiles.forEach((image, index) => {
+            formValue.append(`images[${index}]`, image);
+        })
+    }
         return formValue;
     };
     
@@ -342,6 +376,8 @@ const SupplierForm = (props) => {
     
         if (isValid) {
             
+            supplierValue.images = multipleFiles;
+
             // Debugging: Log formData before sending the request
             if (singleSupplier) {
                 editSupplier(id, prepareFormData(supplierValue), navigate); // Assuming this sends formData to backend
@@ -777,12 +813,14 @@ const SupplierForm = (props) => {
                             </Form.Group>
                         </div>
 
+                        
                         <div className='col-md-6 mb-3'>
                                         <label className='form-label'>
                                             {getFormattedMessage('product.input.multiple-image.label')}: </label>
-                                        {/* <MultipleImage product={singleProduct} fetchFiles={onChangeFiles}
-                                            transferImage={transferImage} /> */}
+                                        <MultipleImage product={singleSupplier} fetchFiles={onChangeFiles}
+                                            transferImage={transferImage} />
                                     </div>
+                                    
                         {isEdit ? '' :
                             <div className='col-md-6 mb-3'>
                                     <label className='form-label'>
