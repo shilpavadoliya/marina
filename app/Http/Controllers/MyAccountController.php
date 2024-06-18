@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\OrderItem;
-use App\Models\Order;   
+use App\Models\Order;  
+use App\Models\Purchase;
+use App\Models\PurchaseItem; 
 
 class MyAccountController extends Controller
 {
@@ -20,16 +22,16 @@ class MyAccountController extends Controller
 
     public function myAccountOrder()
     {
-        $order = Order::where('user_id', Auth()->user()->id)->with('items')->get();
+        $order = Purchase::where('user_id', Auth()->user()->id)->with('purchaseItems')->get();
 
         return view('frontend.myAccount.my-account-orders', compact('order'));
     }
 
     public function myAccountOrderDetails($orderId)
     {
-        $order = OrderItem::where('order_id', $orderId)->get();
+        $orderItems = PurchaseItem::where('purchase_id', $orderId)->with('product')->get();
         
-        return view('frontend.myAccount.my-account-order-details', compact('order'));
+        return view('frontend.myAccount.my-account-order-details', compact('orderItems'));
     }
 
     public function myAccountDetails()

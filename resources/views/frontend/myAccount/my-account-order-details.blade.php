@@ -29,8 +29,9 @@
                             </thead>
                             <tbody>
                                 @php($total = 0 )
-                                @foreach ($order as $order)
-                                @php($total += $order->product_price * $order->quantity)
+                                
+                                @foreach ($orderItems as $order)
+                                @php($total += $order->sub_total)
                                 <tr class="">
                                     <td>
                                         <div class="product">
@@ -38,9 +39,9 @@
                                                 <img src="assets/images/products/pro1.jpg" alt="">
                                             </div>
                                             <div class="details">
-                                                <h1>{{ $order->productName }}</h1>
+                                                <h1>{{ $order->product->name }}</h1>
                                                 <ul class="tags">
-                                                    <li><strong>{{ $order->productUnit }} g</strong></li>
+                                                    <li><strong>{{ $order->product->product_unit }} g</strong></li>
                                                     <li>4-5 pcs</li>
                                                     <li>Serves 3</li>
                                                 </ul>
@@ -50,7 +51,7 @@
                                     <td>
                                         <div class="price">
                                             <span class="rupee">₹</span>
-                                            {{ $order->product_price }}
+                                            {{ $order->product_cost }}
                                         </div>
                                     </td>
                                     <td>
@@ -61,10 +62,11 @@
                                     <td>
                                         <div class="price itemTotal">
                                             <span class="rupee">₹</span>
-                                            {{ $order->product_price * $order->quantity }}
+                                            {{ $order->sub_total }}
                                         </div>
                                     </td>
                                 </tr>
+
                                 @endforeach
                                 
                             </tbody>

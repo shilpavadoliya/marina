@@ -17,13 +17,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($order as $order)
+                                    @foreach($order as $orderData)
                                     <tr>
-                                        <td>{{ $order->order_number }}</td>
-                                        <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order->updated_at)->format('F d, Y') }}</td>
-                                        <td>{{ $order->status }}</td>
-                                        <td>{{ countOrderItemWithPrice($order->items)}}</td>
-                                        <td><a href="{{ route('myaccount-order-details', $order->id )}}" class="btn-small d-block">View</a></td>
+                                        <td>{{ $orderData->reference_code??'' }}</td>
+                                        <td>{{ $orderData->date??'' }}</td>
+                                        <td>{{ $orderData->status??'' }}</td>
+                                        <td>{{ $orderData->grand_total??'' }}</td>
+                                        <td><a href="{{ route('myaccount-order-details', $orderData->id )}}" class="btn-small d-block">View</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -350,6 +350,8 @@ const SupplierForm = (props) => {
     formValue.append('customers_covered', data.customers_covered);
     formValue.append('claim_periodicity', data.claim_periodicity);
     formValue.append('warehouse_id', data.warehouse_id.value);
+
+    if(data.password) formValue.append('password', data.password);
     // formValue.append('areaPinTags', areaPinTags);
 
     areaPinTags.forEach((tag, index) => {

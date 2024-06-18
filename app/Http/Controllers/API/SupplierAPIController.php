@@ -62,8 +62,9 @@ class SupplierAPIController extends AppBaseController
     {
         $input = $request->all();
         $input['user_id'] = auth()->id();
-        $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
-
+        if(!empty($input['areaPinTags'])){
+            $input['area_pin_code'] = implode(', ', $input['areaPinTags']);
+        }
         
         $supplier = $this->supplierRepository->create($input);
 
