@@ -34,6 +34,7 @@
                     <div class="mt-3">
                         <table class="table align-middle">
                             <tbody>
+                                
                                 @foreach($orderItems as $item)
                                 
                                 <tr>
@@ -46,9 +47,9 @@
                                                 <div class="count"><span>{{ $item->quantity ?? 0 }}</span></div>
                                             </div>
                                             <div class="details">
-                                                <h1>{{ $item->product_name ?? 0 }}</h1>
+                                                <h1>{{ $item->product->name ?? 0 }}</h1>
                                                 <ul class="tags">
-                                                    <li><strong>{{ $item->product_unit ?? 0 }} g</strong></li>
+                                                    {{--<li><strong>{{ $item->purchase_unit }} g</strong></li>--}}
                                                     <li>4-5 pcs</li>
                                                     <li>Serves 3</li>
                                                 </ul>
@@ -58,7 +59,7 @@
                                     <td>
                                         <div class="price">
                                             <span class="rupee">₹</span>
-                                            {{ $item->product_price ?? 1 * $item->quantity ?? 1 }}
+                                            {{ $item->sub_total ?? 1 }}
                                         </div>
                                     </td>
                                 </tr>
@@ -74,7 +75,7 @@
                                     <div class="title">Subtotal :</div>
                                     <div class="price">
                                         <span class="rupee">₹</span>
-                                        {{ $order->total_amount }}
+                                        {{ $order->grand_total }}
                                     </div>
                                 </li>
                                 <li>
@@ -95,7 +96,7 @@
                                     <div class="title">Grand Total :</div>
                                     <div class="total">
                                         <span class="rupee">₹</span>
-                                        {{ $order->total_amount }}
+                                        {{ $order->grand_total }}
                                     </div>
                                 </li>
                             </ul>
@@ -107,7 +108,7 @@
                     <form method="post" action="{{ route('order-status') }}" id="shiipingForm">
                         {{ csrf_field() }}
                         <input type="hidden" name="paymentID" id="paymentID" value="">
-                        <input type="hidden" name="order_number" value="{{ $order->order_number }}">
+                        <input type="hidden" name="order_number" value="{{ $order->reference_code }}">
 
                         <div class="row row-gap-3">
                             <div class="col-12">
@@ -181,7 +182,7 @@
             if (first_name == "" || address == "" || city == "" || pin_code == "" || email_address == "") {
                 alert("Please fill out required fields");
             }else{
-                let totalAmout = "{{ $order->total_amount * 100 }} "; //Price should be * 100
+                let totalAmout = "{{ $order->grand_total * 100 }} "; //Price should be * 100
                 let currency = "INR";
                 let name = first_name;
                 let description = "Food Order";
