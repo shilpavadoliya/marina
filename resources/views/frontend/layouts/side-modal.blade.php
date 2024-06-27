@@ -149,12 +149,12 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content py-2">
       <div class="modal-body ">
-            <form action="">
+            <form action="javascript:void(0)">
                 <div class="group">
                     <button class="search"><img src="{{ asset('assets/images/icons/search.svg') }}" alt=""></button>
-                    <input id="autocomplete" placeholder="Search for your location" type="text">
+                    <input id="pincode" placeholder="Enter Your Pincode" type="text">
                     <div id="output"></div>
-                    <button class="currentLocation"><img src="{{ asset('assets/images/icons/current-location.svg') }}" alt=""><span>Use current location</span></button>
+                    <button type="button" class="currentLocation"></button>
                 </div>
             </form>
       </div>

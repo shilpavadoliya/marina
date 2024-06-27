@@ -10,7 +10,7 @@
                         <img src="{{ asset('assets/images/icons/location.svg') }}" alt="">
                     </div>
                     <div class="details" id="detect-location">
-                        <div class="title" id="output">Mumbai</div>
+                        <div class="title" id="output">{{  session()->get('pincode') }}</div>
                         <!-- <p>ABC Road, Mumbai Lorem ipsum</p> -->
                     </div>
                 </div>
@@ -121,126 +121,47 @@
     @push('scripts')
         <script>
             $(".postalCode").val('360006');
-            // Get Current Location
-                $(window).on('load', function () {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(success, error);
-                    } else {
-                        $('#output').html('Geolocation is not supported by this browser.');
-                    }
-                });
-
-                $(".currentLocation").on('click', function () {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(success, error);
-                    } else {
-                        $('#output').html('Geolocation is not supported by this browser.');
-                    }
-                });
-
-                function success(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-
-                    // Call Google Maps API for reverse geocoding
-                    const apiKey = 'AIzaSyCdC-KsOjDvFCHbgaXfFsvLhjfUzEM5fYY';
-                    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
-
-                    $.getJSON(geocodeUrl, function(data) {
-                        if (data.status === 'OK') {
-                            const addressComponents = data.results[0].address_components;
-                            let postalCode = '';
-
-                            for (let component of addressComponents) {
-                                if (component.types.includes('postal_code')) {
-                                    postalCode = component.long_name;
-                                    break;
-                                }
-                            }
-
-                            if (postalCode) {
-                                $(".postalCode").val(postalCode);
-                                $('#output').html('Your Postal Code: ' + postalCode);
+            $.ajaxSetup({
+                headers: {   
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+            function checkPincode() {
+                var pincode = $('#pincode').val();
+                
+                if (pincode) {
+                    $.ajax({
+                        url: '{{ route("pincode-check") }}', // Replace with your API endpoint
+                        type: 'POST',
+                        data: { pincode: pincode },
+                        success: function(response) {
+                            if (response.available) {
+                                location.reload(); 
                             } else {
-                                $(".postalCode").val('360006');
-                                $('#output').html('Postal code not found.');
+                                alert('Pincode is not available for delivery');
                             }
-                        } else {
-                            $('#output').html('Geocoding failed: ' + data.status);
+                        },
+                        error: function() {
+                            alert('Error checking pincode');
                         }
                     });
+                } else {
+                    alert('Please enter a pincode');
                 }
+            }
 
-                function error() {
-                    $('#output').html('Unable to retrieve your location.');
+            $('#pincode').keypress(function(event) {
+                if (event.which == 13) { // Enter key pressed
+                    checkPincode();
                 }
-
-            // Get Current Location
-
-            // autocomplate address
-
-                let autocomplete;
-                let geocoder;
-
-                function initialize() {
-                    autocomplete = new google.maps.places.Autocomplete(
-                        document.getElementById('autocomplete'),
-                        { types: ['geocode'] }
-                    );
-
-                    autocomplete.addListener('place_changed', onPlaceChanged);
-                    geocoder = new google.maps.Geocoder();
-                }
-
-                function onPlaceChanged() {
-                    const place = autocomplete.getPlace();
-
-                    if (!place.geometry) {
-                        $('#output').html('No details available for input: ' + place.name);
-                        return;
-                    }
-
-                    const location = place.geometry.location;
-                    const latitude = location.lat();
-                    const longitude = location.lng();
-
-                    geocodeLatLng(latitude, longitude);
-                }
-
-                function geocodeLatLng(lat, lng) {
-                    const latlng = { lat: lat, lng: lng };
-
-                    geocoder.geocode({ location: latlng }, (results, status) => {
-                        if (status === 'OK') {
-                            if (results[0]) {
-                                const addressComponents = results[0].address_components;
-                                let postalCode = '';
-
-                                for (let component of addressComponents) {
-                                    if (component.types.includes('postal_code')) {
-                                        postalCode = component.long_name;
-                                        break;
-                                    }
-                                }
-
-                                if (postalCode) {
-                                    $(".postalCode").val(postalCode);
-                                    $('#output').html('Your Postal Code: ' + postalCode);
-                                } else {
-                                    $(".postalCode").val('360006');
-                                    $('#output').html('Postal code not found.');
-                                }
-                            } else {
-                                $('#output').html('No results found.');
-                            }
-                        } else {
-                            $('#output').html('Geocoder failed due to: ' + status);
-                        }
-                    });
-                }
-
-                google.maps.event.addDomListener(window, 'load', initialize);
+            });
             
-            // autocomplate address
+            let currentRoute = "{{ Route::currentRouteName() }}"
+            if ("{{session()->get('pincode')}}" == "") {
+               if (currentRoute !== "home") {
+                    alert('Pincode is required to access');
+                    window.location.href = "{{ route('home') }}";
+               }
+            }
         </script>
     @endpush

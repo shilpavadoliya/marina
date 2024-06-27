@@ -69,7 +69,7 @@
                 </div>
             </div>
         </section>
-        <section class="padding-top-main">
+        {{--<section class="padding-top-main">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -384,7 +384,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section>--}}
         <section class="padding-top-main">
             <div class="container">
                 <div class="row">

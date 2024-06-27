@@ -7,31 +7,10 @@
                     <div class="col-md-6">
                         <div class="swiper productPageSwiper">
                             <div class="swiper-wrapper">
-                                @if (array_key_exists('imageUrls', $product->image_url))
-                                    @foreach($product->image_url['imageUrls'] as $images)
-                                    
                                     <div class="swiper-slide">
-                                        <img src="{{ $images }}" alt="">
+                                        <img src="{{ $product->getMainImageUrlAttribute() }}" alt="">
                                     </div>
-                                    @endforeach
-                                @endif
                             </div>
-                        </div>
-                        <div class="position-relative">
-                            <div class="swiper productPageThumbSwiper">
-                                <div class="swiper-wrapper">
-                                    @if (array_key_exists('imageUrls', $product->image_url))
-                                        @foreach($product->image_url['imageUrls'] as $images)
-                                        
-                                        <div class="swiper-slide">
-                                            <img src="{{ $images }}" alt="">
-                                        </div>
-                                        @endforeach
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="wyp-prev swiper-button-prev"><img src="{{ asset('assets/images/icons/left-arrow.svg') }}" alt=""></div>
-                            <div class="wym-next swiper-button-next"><img src="{{ asset('assets/images/icons/right-arrow.svg') }}" alt=""></div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -48,7 +27,7 @@
                             </div>
                             <h1 class="mt-4">{{ $product->name }}</h1>
                             <ul class="tags">
-                                <li><strong>{{ $product->product_unit }} g</strong></li>
+                                <li><strong>{{ $product->product_unit_quantity }} g</strong></li>
                                 <!-- <li>4-5 pcs</li>
                                 <li>Serves 3</li> -->
                             </ul>
@@ -82,7 +61,7 @@
                             </div>
                             <div class="pickup">
                                 <div class="icon"><img src="{{ asset('assets/images/icons/check.svg') }}" alt=""></div>
-                                <p><span class="text-primary-500">Pickup available at</span> 7 Waverley Farm, Waverley Lane Usually ready in 24 hours</p>
+                                <p><span class="text-primary-500">Delivery Available by {{ $supplier->name }}</span> Usually Delivered in 24 hours</p>
                             </div>
                             <!-- <a href="" class="textLink">View store information</a> -->
                         </div>
@@ -91,7 +70,7 @@
             </div>
         </section>
         <section class="padding-top-main margin-bottom-max">
-            <div class="container">
+            {{--<div class="container">
                 <div class="row">
                     <div class="col-12">
                         <h1 class="heading2 text-center border-top padding-top-main border-secondary">You may also like</h1>
@@ -138,7 +117,7 @@
                     </div>
                     
                 </div>
-            </div>
+            </div>--}}
         </section>
 
 @endsection

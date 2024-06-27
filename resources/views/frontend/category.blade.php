@@ -152,7 +152,7 @@
                                     {!! $product->product_description !!}
                                 </div>--}}
                                 <ul class="tags">
-                                    <li><strong>{{ $product->product_unit }} g</strong></li>
+                                    <li><strong>{{ $product->product_unit_quantity }} g</strong></li>
                                 </ul>
                             </div>
                             <div class="cartDetails">

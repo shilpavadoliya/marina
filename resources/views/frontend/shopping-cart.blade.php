@@ -43,12 +43,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                
                                 @foreach (session()->get('cart') as $cart=>$item)
+
+                                @php
+                                    $product = App\Models\Product::whereId($cart)->first();
+                                @endphp
+
                                 <tr class="removeDiv_{{$cart}}">
                                     <td>
                                         <div class="product">
                                             <div class="thumb">
-                                                <img src="assets/images/products/pro1.jpg" alt="">
+                                                <img src="{{ $product->getMainImageUrlAttribute() }}" alt="">
                                             </div>
                                             <div class="details">
                                                 <h1>{{ $item['productName'] }}</h1>

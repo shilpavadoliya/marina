@@ -123,4 +123,18 @@ class OrderController extends Controller
     {
         return view('frontend.thankyou')->with('orderId', $orderId);
     }
+
+    public function pincodeCheck(Request $request) 
+    {
+        $supplier = Supplier::where('area_pin_code', 'LIKE', '%'.$request->pincode.'%')->first();
+
+        if ($supplier) {
+            
+            $pincode = session()->put('pincode',$request->pincode);
+            return response()->json(['available' => true]);
+        } else {
+            return response()->json(['available' => false]);
+        }
+
+    }
 }

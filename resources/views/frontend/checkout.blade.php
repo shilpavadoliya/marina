@@ -34,7 +34,6 @@
                     <div class="mt-3">
                         <table class="table align-middle">
                             <tbody>
-                                
                                 @foreach($orderItems as $item)
                                 
                                 <tr>
@@ -42,7 +41,7 @@
                                         <div class="product">
                                             <div class="position-relative">
                                                 <div class="thumb">
-                                                    <img src="{{ asset('assets/images/products/pro1.jpg') }}" alt="">
+                                                    <img src="{{ $item->product->getMainImageUrlAttribute() }}" alt="">
                                                 </div>
                                                 <div class="count"><span>{{ $item->quantity ?? 0 }}</span></div>
                                             </div>

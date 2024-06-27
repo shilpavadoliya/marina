@@ -48,6 +48,8 @@ Route::get('/thank-you/{orderId}', [OrderController::class, 'thankyou'])->name('
 
 Route::get('/search', [ProductDetailsController::class, 'search'])->name('product.search');
 
+Route::post('/pincode-check', [OrderController::class, 'pincodeCheck'])->name('pincode-check');
+
 
 include 'upgrade.php';
 
