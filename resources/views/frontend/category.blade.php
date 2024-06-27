@@ -137,7 +137,7 @@
                 </div>
             </div>
             <div class="row row-gap-5 margin-top-main">
-
+                
                 @foreach($products as $product)
                     <div class="col-md-3 products subcategory-{{ $product->sub_category_id }}">
                         <div class="productBox">
@@ -148,9 +148,9 @@
                             </a>
                             <div class="details">
                                 <h2>{{ $product->name }}</h2>
-                                <div class="des">
-                                    {!! substr($product->product_description, 0, 20) !!}
-                                </div>
+                                {{--<div class="des">
+                                    {!! $product->product_description !!}
+                                </div>--}}
                                 <ul class="tags">
                                     <li><strong>{{ $product->product_unit }} g</strong></li>
                                 </ul>
@@ -160,8 +160,8 @@
                                     <span class="rupee">₹</span>
                                     {{ $product->product_price }} 
                                 </div>
-
-                                @if($product->stock < 1)
+                                
+                                @if($product->stock == null)
                                 <div class="addToCart">
                                     <button class="w-100">
                                         <div>

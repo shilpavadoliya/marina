@@ -143,7 +143,7 @@
                     const longitude = position.coords.longitude;
 
                     // Call Google Maps API for reverse geocoding
-                    const apiKey = 'AIzaSyAIbT604Qu4iEfcB3AQRTxR5ubxdsusFbE';
+                    const apiKey = 'AIzaSyCdC-KsOjDvFCHbgaXfFsvLhjfUzEM5fYY';
                     const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
 
                     $.getJSON(geocodeUrl, function(data) {
