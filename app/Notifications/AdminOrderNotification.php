@@ -13,10 +13,13 @@ class AdminOrderNotification extends Notification
     use Queueable;
 
     public $order;
+    public $orderItem;
 
-    public function __construct($order)
+    public function __construct($order, $orderItem, $user)
     {
         $this->order = $order;
+        $this->orderItem = $orderItem;
+        $this->user = $user;
     }
 
     public function via($notifiable)
@@ -28,6 +31,10 @@ class AdminOrderNotification extends Notification
     {
         return (new MailMessage)
             ->subject('New Order Notification')
-            ->markdown('emails.admin_order_notification', ['order' => $this->order]);
+            ->markdown('emails.admin_order_notification', [
+                'order' => $this->order,
+                'orderItem' => $this->orderItem,
+                'user' => $this->user
+            ]);
     }
 }

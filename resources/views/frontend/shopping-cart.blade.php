@@ -58,11 +58,7 @@
                                             </div>
                                             <div class="details">
                                                 <h1>{{ $item['productName'] }}</h1>
-                                                <ul class="tags">
-                                                    <li><strong>{{ $item['productUnit'] }} g</strong></li>
-                                                    <li>4-5 pcs</li>
-                                                    <li>Serves 3</li>
-                                                </ul>
+                                                <p>{{ $item['productUnit'] }} g</p>
                                             </div>
                                         </div>
                                     </td>

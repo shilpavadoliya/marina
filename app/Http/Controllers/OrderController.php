@@ -9,13 +9,25 @@ use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Userbillingdetails;
 use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderPlacedNotification;
 use App\Notifications\AdminOrderNotification;
+
+use SendinBlue\Client\Api\TransactionalEmailsApi;
+use SendinBlue\Client\Model\SendSmtpEmail;
+
 use Auth;
 
 class OrderController extends Controller
 {
+    protected $brevo;
+
+    public function __construct(TransactionalEmailsApi $brevo)
+    {
+        $this->brevo = $brevo;
+    }
+
     public function index(Request $request)
     {
         if (!auth()->check()) {
@@ -112,10 +124,15 @@ class OrderController extends Controller
         $order->save();
 
         $order = Purchase::where('reference_code', $request->order_number)->with('purchaseItems')->first();
+        $orderItem = PurchaseItem::where('purchase_id', $order->id)->with('product')->get();
+        $user = User::where('id', $order->user_id)->first();
+        
+        $this->sendOrderCustomerEmail($order, $user);
 
-        Notification::route('mail', Auth()->user()->email)->notify(new OrderPlacedNotification($order));
-        // Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new AdminOrderNotification($order));
-
+        // Notification::route('mail', Auth()->user()->email)->notify(new OrderPlacedNotification($order));
+        // Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new AdminOrderNotification($order, $orderItem, $user));
+        // Notification::route('mail', $supplier->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
+        @dd('success');
         return redirect()->route('thankyou', ['orderId' => $request->order_number]);
     }
 
@@ -136,5 +153,24 @@ class OrderController extends Controller
             return response()->json(['available' => false]);
         }
 
+    }
+
+    protected function sendOrderCustomerEmail($order, $user)
+    {
+        $email = new SendSmtpEmail();
+        $email['to'] = [['email' => "mihirprajapatiji1234@gmail.com"]];
+        $email['templateId'] = 1;
+        $email['params'] = [
+            'ORDER_ID' => $order->id,
+            'ORDER_TOTAL' => $order->total,
+            'customer_name' => $user->first_name,
+        ];
+
+        try {
+            $this->brevo->sendTransacEmail($email);
+        } catch (Exception $e) {
+            // Handle the exception
+            \Log::error('Error sending email: ' . $e->getMessage());
+        }
     }
 }

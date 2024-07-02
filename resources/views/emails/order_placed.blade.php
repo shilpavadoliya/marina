@@ -7,7 +7,7 @@ We are delighted to inform you that your order has been successfully placed! Tha
 
 **Date of Order:** {{ $order->created_at }}
 
-**Total Amount:** {{ $order->total_amount }}
+**Total Amount:** {{ $order->grand_total }}
 
 Your order is now being processed, and you will receive a confirmation email once it has been dispatched. If you have any questions or concerns regarding your order, feel free to reach out to our customer support team at {{ env('MAIL_ADMIN_ADDRESS') }} or by replying to this email.
 

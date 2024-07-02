@@ -82,9 +82,9 @@
                                     </div>
                                     <div class="addToCart" >
                                         <div class="number">
-                                            <span class="minus border-end-0" data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['productUnit'] }}">-</span>
+                                            <span class="minus border-end-0" data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['product_unit_quantity'] }}">-</span>
                                             <input type="text" value="{{ $item['quantity'] }}"/>
-                                            <span class="plus border-start-0" data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['productUnit'] }}">+</span>
+                                            <span class="plus border-start-0" data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['product_unit_quantity'] }}">+</span>
                                         </div>
                                     </div>
                                 </div>

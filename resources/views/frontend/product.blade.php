@@ -41,20 +41,20 @@
                                 <p>(Price will be very as per type & quantity picked)</p>
                             </div>
                             <div class="actionButtons mt-4">
-                                <a href="javascript:void(0)" class="btn1 mainBtn buyNow" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit }}">
+                                <a href="javascript:void(0)" class="btn1 mainBtn buyNow" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">
                                     <span>Buy Now</span>
                                 </a>
                                 <div class="addToCart">
-                                    <button class="mainBtn" style="display:block" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit }}">
+                                    <button class="mainBtn" style="display:block" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">
                                         <div>
                                             <span>Add to Cart</span>
                                         </div>
                                     </button>
                                     <div class="counterWrapper" style="display: none;">
                                         <div class="number">
-                                            <span class="minus border-end-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit }}">-</span>
+                                            <span class="minus border-end-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">-</span>
                                             <input type="text" value="1"/>
-                                            <span class="plus border-start-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit }}">+</span>
+                                            <span class="plus border-start-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">+</span>
                                         </div>
                                     </div>
                                 </div>

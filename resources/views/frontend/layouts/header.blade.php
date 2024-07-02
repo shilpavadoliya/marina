@@ -10,7 +10,7 @@
                         <img src="{{ asset('assets/images/icons/location.svg') }}" alt="">
                     </div>
                     <div class="details" id="detect-location">
-                        <div class="title" id="output">{{  session()->get('pincode') }}</div>
+                        <div class="title" id="output">{{  session()->get('pincode')?? 'Enter Your Pincode' }}</div>
                         <!-- <p>ABC Road, Mumbai Lorem ipsum</p> -->
                     </div>
                 </div>

@@ -48,9 +48,7 @@
                                             <div class="details">
                                                 <h1>{{ $item->product->name ?? 0 }}</h1>
                                                 <ul class="tags">
-                                                    {{--<li><strong>{{ $item->purchase_unit }} g</strong></li>--}}
-                                                    <li>4-5 pcs</li>
-                                                    <li>Serves 3</li>
+                                                    <li><strong>{{ $item->product->product_unit_quantity }} g</strong></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -134,16 +132,17 @@
                                 <div class="row mt-2 gx-5">
                                     <div class="col-5 d-flex flex-column align-items-center">
                                         <label for="razorpay" class="mb-2">
-                                            <img src="{{ asset('assets/images/icons/Razorpay_logo.svg') }}" style="width: 150px;" alt="">
+                                            <!-- <img src="{{ asset('assets/images/icons/Razorpay_logo.svg') }}" style="width: 150px;" alt=""> -->
+                                            Cash On Delivery
                                         </label>
                                         <input type="radio" name="paymentMethod" id="razorpay" checked  />
                                     </div>
-                                    <div class="col-5 d-flex flex-column align-items-center">
+                                    <!-- <div class="col-5 d-flex flex-column align-items-center">
                                         <label for="paytm" class="mb-2">
                                             <img src="{{ asset('assets/images/icons/Paytm_Logo.svg') }}" style="width: 100px;" alt="">
                                         </label>
                                         <input type="radio" name="paymentMethod" id="paytm" />
-                                    </div>
+                                    </div> -->
                                 </div>
                                 
                                 
@@ -186,24 +185,25 @@
                 let name = first_name;
                 let description = "Food Order";
 
+                $("#paymentID").val('COD');
+                $("#shiipingForm").submit();
                 
-                var options = {
-                    key: '{{ env("RAZORPAY_KEY_ID") }}',
-                    amount: totalAmout, // Example: 50000 paise = INR 500
-                    currency: currency,
-                    name: name,
-                    description: description,
-                    handler: function(response) {
-                        $("#paymentID").val(response.razorpay_payment_id);
-                        // capturePayment(response.razorpay_payment_id);
-                        $("#shiipingForm").submit();
-                    },
-                };
+                // var options = {
+                //     key: '{{ env("RAZORPAY_KEY_ID") }}',
+                //     amount: totalAmout, // Example: 50000 paise = INR 500
+                //     currency: currency,
+                //     name: name,
+                //     description: description,
+                //     handler: function(response) {
+                //         $("#paymentID").val(response.razorpay_payment_id);
+                //         $("#shiipingForm").submit();
+                //     },
+                // };
 
-                var rzp = new Razorpay(options);
+                // var rzp = new Razorpay(options);
 
-                rzp.open();
-                e.preventDefault();
+                // rzp.open();
+                // e.preventDefault();
                 
             }
 

@@ -171,16 +171,16 @@
                                 </div>
                                 @else
                                 <div class="addToCart">
-                                    <button class="mainBtn" @if(countProductInCart($product->name) != 0)style="display: none;" @endif data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit }}">
+                                    <button class="mainBtn" @if(countProductInCart($product->name) != 0)style="display: none;" @endif data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">
                                         <div>
                                             <span>Add</span> <img src="{{ asset('assets/images/icons/plus.svg') }}" alt="">
                                         </div>
                                     </button>
                                     <div class="counterWrapper" @if(countProductInCart($product->name) == 0)style="display: none;" @endif>
                                         <div class="number">
-                                            <span class="minus border-end-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit }}">-</span>
+                                            <span class="minus border-end-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">-</span>
                                             <input type="text" value="{{ countProductInCart($product->name) }}"/>
-                                            <span class="plus border-start-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit }}">+</span>
+                                            <span class="plus border-start-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">+</span>
                                         </div>
                                     </div>
                                 </div>
