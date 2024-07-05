@@ -14,19 +14,22 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderPlacedNotification;
 use App\Notifications\AdminOrderNotification;
 
-// use SendinBlue\Client\Api\TransactionalEmailsApi;
-// use SendinBlue\Client\Model\SendSmtpEmail;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
+use SendinBlue\Client\Model\SendSmtpEmail;
+use App\Services\BrevoSmsService;
 
 use Auth;
 
 class OrderController extends Controller
 {
     protected $brevo;
+    protected $brevoSmsService;
 
-    // public function __construct(TransactionalEmailsApi $brevo)
-    // {
-    //     $this->brevo = $brevo;
-    // }
+    public function __construct(TransactionalEmailsApi $brevo, BrevoSmsService $brevoSmsService)
+    {
+        $this->brevo = $brevo;
+        $this->brevoSmsService = $brevoSmsService;
+    }
 
     public function index(Request $request)
     {
@@ -128,12 +131,19 @@ class OrderController extends Controller
         $orderItem = PurchaseItem::where('purchase_id', $order->id)->with('product')->get();
         $user = User::where('id', $order->user_id)->with('Userbillingdetail')->first();
         
-        // $this->sendOrderCustomerEmail($order, $user);
+        $phone = "917486079917";
+        $message = "Test";
 
-        Notification::route('mail', Auth()->user()->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
-        Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new AdminOrderNotification($order, $orderItem, $user));
-        Notification::route('mail', $supplier->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
+        $response = $this->brevoSmsService->sendSms($phone, $message);
 
+        $this->sendOrderCustomerEmail(Auth()->user()->email, $order, $orderItem, $user);
+        $this->sendOrderCustomerEmail(env('MAIL_ADMIN_ADDRESS'), $order, $orderItem, $user);
+        $this->sendOrderCustomerEmail($supplier->email, $order, $orderItem, $user);
+
+        // Notification::route('mail', Auth()->user()->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
+        // Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new AdminOrderNotification($order, $orderItem, $user));
+        // Notification::route('mail', $supplier->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
+        
         return redirect()->route('thankyou', ['orderId' => $request->order_number]);
     }
 
@@ -156,21 +166,34 @@ class OrderController extends Controller
 
     }
 
-    // protected function sendOrderCustomerEmail($order, $user)
-    // {
-    //     $email = new SendSmtpEmail();
-    //     $email['to'] = [['email' => "mihirprajapatiji1234@gmail.com"]];
-    //     $email['templateId'] = 1;
-    //     $email['params'] = [
-    //         'ORDER_ID' => $order->id,
-    //         'ORDER_TOTAL' => $order->total,
-    //     ];
+    protected function sendOrderCustomerEmail($email, $order, $orderItem, $user)
+    {
+        $orderItems = [];
+        foreach ($orderItem as $item) {
+            $orderItems = [
+                'name' => $item->product->name,
+                'quantity' => $item->quantity??1,
+                'price' => $item->product_cost,
+            ];
+        }
 
-    //     try {
-    //         $this->brevo->sendTransacEmail($email);
-    //     } catch (Exception $e) {
-    //         // Handle the exception
-    //         \Log::error('Error sending email: ' . $e->getMessage());
-    //     }
-    // }
+        $email = new SendSmtpEmail();
+        $email['to'] = [['email' => "mihirprajapatiji1234@gmail.com"]];
+        $email['templateId'] = 1;
+        $email['params'] = [
+            'CUSTOMER_NAME' => $user->first_name,
+            'ORDER_ID' => $order->reference_code,
+            'ORDER_DATE' => date('Y-m-d'),
+            'CUSTOMER_ADDRESS' => $user->Userbillingdetail->address,
+            'ORDER_ITEMS' => $orderItems,
+            'GRAND_TOTAL' => $order->grand_total,
+        ];
+
+        try {
+            $this->brevo->sendTransacEmail($email);
+        } catch (Exception $e) {
+            // Handle the exception
+            \Log::error('Error sending email: ' . $e->getMessage());
+        }
+    }
 }

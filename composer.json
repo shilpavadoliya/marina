@@ -13,7 +13,7 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "brotzka/laravel-dotenv-editor": "^2.1",
         "doctrine/dbal": "^3.5",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "infyomlabs/adminlte-templates": "^6.0",
         "infyomlabs/laravel-generator": "^6.0",
         "laravel/framework": "^10.23",

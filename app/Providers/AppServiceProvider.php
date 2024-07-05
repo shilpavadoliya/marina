@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
+use SendinBlue\Client\Configuration;
+use App\Services\BrevoSmsService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(BrevoSmsService::class, function ($app) {
+            return new BrevoSmsService();
+        });
     }
 
     /**
@@ -19,5 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', env('BREVO_API_KEY'));
+        $this->app->singleton(TransactionalEmailsApi::class, function () use ($config) {
+            return new TransactionalEmailsApi(null, $config);
+        });
     }
 }
