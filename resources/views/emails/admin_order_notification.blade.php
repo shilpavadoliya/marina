@@ -11,6 +11,8 @@ We're excited to inform you that a new order has been successfully placed on our
 
 **Customer Email:** {{ $user->email }}
 
+**Customer Address:** {{ $user->Userbillingdetail->address }}
+
 **Items Ordered:**
 @foreach($orderItem as $item)
 **Product Name:** {{ $item->product->name }}

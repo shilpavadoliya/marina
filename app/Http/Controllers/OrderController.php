@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderPlacedNotification;
 use App\Notifications\AdminOrderNotification;
 
-use SendinBlue\Client\Api\TransactionalEmailsApi;
-use SendinBlue\Client\Model\SendSmtpEmail;
+// use SendinBlue\Client\Api\TransactionalEmailsApi;
+// use SendinBlue\Client\Model\SendSmtpEmail;
 
 use Auth;
 
@@ -23,10 +23,10 @@ class OrderController extends Controller
 {
     protected $brevo;
 
-    public function __construct(TransactionalEmailsApi $brevo)
-    {
-        $this->brevo = $brevo;
-    }
+    // public function __construct(TransactionalEmailsApi $brevo)
+    // {
+    //     $this->brevo = $brevo;
+    // }
 
     public function index(Request $request)
     {
@@ -70,14 +70,14 @@ class OrderController extends Controller
     
             }
             
-            $pendingOrder = Purchase::where('user_id', Auth::user()->id)
-                ->where('status', '2')
-                ->first();
+            // $pendingOrder = Purchase::where('user_id', Auth::user()->id)
+            //     ->where('status', '2')
+            //     ->first();
             
-            if($pendingOrder) {
-                $order = $pendingOrder;
-                $orderItems = PurchaseItem::where('purchase_id', $order->id)->with('product')->get();
-            }
+            // if($pendingOrder) {
+            //     $order = $pendingOrder;
+            //     $orderItems = PurchaseItem::where('purchase_id', $order->id)->with('product')->get();
+            // }
 
             $userbillingdetails = Userbillingdetails::where('user_id', Auth::user()->id)->first();
     
@@ -114,25 +114,26 @@ class OrderController extends Controller
         );
         
         // Update Order
-        $supplier = Supplier::where('area_pin_code', 'LIKE', '%'.$request->pin_code??'360006'.'%')->first();
+        $pincode = session()->get('pincode') ?? '360006';
+        $supplier = Supplier::whereRaw("FIND_IN_SET('$pincode', area_pin_code)")->first();
         
         $order = Purchase::where('reference_code', $request->order_number)->first();
         $order->supplier_id = $supplier->id ?? '1';
         $order->warehouse_id = $user_id->id ?? '1';
-        $order->status = 3;
+        $order->status = 1;
         $order->is_customer = 2;
         $order->save();
 
         $order = Purchase::where('reference_code', $request->order_number)->with('purchaseItems')->first();
         $orderItem = PurchaseItem::where('purchase_id', $order->id)->with('product')->get();
-        $user = User::where('id', $order->user_id)->first();
+        $user = User::where('id', $order->user_id)->with('Userbillingdetail')->first();
         
-        $this->sendOrderCustomerEmail($order, $user);
+        // $this->sendOrderCustomerEmail($order, $user);
 
-        // Notification::route('mail', Auth()->user()->email)->notify(new OrderPlacedNotification($order));
-        // Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new AdminOrderNotification($order, $orderItem, $user));
-        // Notification::route('mail', $supplier->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
-        @dd('success');
+        Notification::route('mail', Auth()->user()->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
+        Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new AdminOrderNotification($order, $orderItem, $user));
+        Notification::route('mail', $supplier->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
+
         return redirect()->route('thankyou', ['orderId' => $request->order_number]);
     }
 
@@ -143,7 +144,7 @@ class OrderController extends Controller
 
     public function pincodeCheck(Request $request) 
     {
-        $supplier = Supplier::where('area_pin_code', 'LIKE', '%'.$request->pincode.'%')->first();
+        $supplier = Supplier::whereRaw("FIND_IN_SET('$request->pincode', area_pin_code)")->first();
 
         if ($supplier) {
             
@@ -155,22 +156,21 @@ class OrderController extends Controller
 
     }
 
-    protected function sendOrderCustomerEmail($order, $user)
-    {
-        $email = new SendSmtpEmail();
-        $email['to'] = [['email' => "mihirprajapatiji1234@gmail.com"]];
-        $email['templateId'] = 1;
-        $email['params'] = [
-            'ORDER_ID' => $order->id,
-            'ORDER_TOTAL' => $order->total,
-            'customer_name' => $user->first_name,
-        ];
+    // protected function sendOrderCustomerEmail($order, $user)
+    // {
+    //     $email = new SendSmtpEmail();
+    //     $email['to'] = [['email' => "mihirprajapatiji1234@gmail.com"]];
+    //     $email['templateId'] = 1;
+    //     $email['params'] = [
+    //         'ORDER_ID' => $order->id,
+    //         'ORDER_TOTAL' => $order->total,
+    //     ];
 
-        try {
-            $this->brevo->sendTransacEmail($email);
-        } catch (Exception $e) {
-            // Handle the exception
-            \Log::error('Error sending email: ' . $e->getMessage());
-        }
-    }
+    //     try {
+    //         $this->brevo->sendTransacEmail($email);
+    //     } catch (Exception $e) {
+    //         // Handle the exception
+    //         \Log::error('Error sending email: ' . $e->getMessage());
+    //     }
+    // }
 }
