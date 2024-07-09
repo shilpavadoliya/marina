@@ -27,7 +27,7 @@
                                     <div class="details">
                                         <h2>{{ $product->name }}</h2>
                                         <div class="des">
-                                            {!! substr($product->product_description, 0, 20) !!}
+                                            <p>{!! substr($product->product_description, 0, 20) !!}</p>
                                         </div>
                                         <ul class="tags">
                                             <li><strong>{{ $product->product_unit }} g</strong></li>

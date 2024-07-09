@@ -46,13 +46,13 @@
 
                                         <ul class="links">
 
-                                            <li><a href="">Why Marina?</a></li>
+                                            <li><a href="{{ route('why-choose-us') }}">Why Marina?</a></li>
 
-                                            <li><a href="">Careers</a></li>
+                                            <!--<li><a href="">Careers</a></li>--> 
 
-                                            <li><a href="">Contact Us</a></li>
+                                            <!--<li><a href="">Contact Us</a></li>--> 
 
-                                            <li><a href="">About Us</a></li>
+                                            <li><a href="{{ route('about-us') }}">About Us</a></li>
 
                                             <li><a href="">Login</a></li>
 
@@ -60,15 +60,14 @@
 
                                         <ul class="links">
 
-                                            <li><a href="">T&C</a></li>
+                                            <li><a href="{{ route('faq') }}">FAQ's</a></li>
 
-                                            <li><a href="">FAQ's</a></li>
-
-                                            <li><a href="">Privacy Policy</a></li>
+                                            <li><a href="{{ route('terms-conditions') }}">Terms & Conditions</a></li>                                        
+                                            <li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
 
                                             <li><a href="">Certification</a></li>
 
-                                            <li><a href="">Offers</a></li>
+                                        <!--   <li><a href="">Offers</a></li> --> 
 
                                         </ul>
 

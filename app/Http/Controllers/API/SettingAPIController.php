@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\SettingResource;
 use App\Models\Country;
+use App\Models\City;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\Setting;
@@ -75,10 +76,18 @@ class SettingAPIController extends AppBaseController
 
     public function getStates($countryId): JsonResponse
     {
-        $states = State::whereCountryId($countryId)->pluck('name');
+        $states = State::select('id','name')->whereCountryId($countryId)->get()->toArray();
 
         return $this->sendResponse(new SettingResource(['type' => 'states', 'value' => $states]),
             'States retrieved successfully.');
+    }
+
+    public function getCities($stateId): JsonResponse
+    {
+        $cities = City::select('id','name')->whereStateId($stateId)->get()->toArray();
+
+        return $this->sendResponse(new SettingResource(['type' => 'cities', 'value' => $cities]),
+            'Cities retrieved successfully.');
     }
 
     public function getMailSettings()

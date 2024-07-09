@@ -2,9 +2,12 @@
                     
         <div class="container">
             <div class="wrapper">
+
+                <a href="" class="mobileMenu" data-toggle="modal" data-target="#left_modal_sm"><img src="{{ asset('assets/images/icons/menu.svg')}}" alt=""></a>
                 <a href="{{ route('home') }}" class="logo">
                     <img src="{{ asset('assets/images/logo.svg') }}" alt="">
                 </a>
+
                 <div class="location" data-bs-toggle="modal" data-bs-target="#locationchange">
                     <div class="icon">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" alt="">
@@ -21,9 +24,9 @@
                         <button class="search" type="submit"><img src="{{ asset('assets/images/icons/search.svg') }}" alt=""></button>
                     </form>
                 </div>
-                <div class="navWrapper desktopOnly">
+                <div class="navWrapper">
                     
-                    <div class="categories">
+                    <div class="categories desktopOnly">
                         <button type="button" class="link" data-bs-toggle="dropdown" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.9 15"><defs></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M7.8,9.5a3.6,3.6,0,0,1-2-.6L1.4,6.1a2.3,2.3,0,0,1-1-1.9A2.1,2.1,0,0,1,1.7,2.5L6.4.4a4.3,4.3,0,0,1,4.1.3l4.4,2.7a2.3,2.3,0,0,1,1,1.9A2.4,2.4,0,0,1,14.7,7L9.9,9.2a3.9,3.9,0,0,1-2.1.3m.6-8.3a4,4,0,0,0-1.5.3L2.1,3.6a1.3,1.3,0,0,0-.5.7,1.2,1.2,0,0,0,.4.8L6.5,7.8a3,3,0,0,0,2.9.3l4.8-2.2a1.3,1.3,0,0,0,.5-.7,1.2,1.2,0,0,0-.4-.8L9.8,1.7a2.4,2.4,0,0,0-1.4-.5M9.5,14.6l5.6-2.5a.6.6,0,0,0,.3-.8.7.7,0,0,0-.8-.3L9,13.5a3,3,0,0,1-2.9-.2L.9,10.1a.5.5,0,0,0-.8.2.5.5,0,0,0,.2.8l5.1,3.2a5.3,5.3,0,0,0,2,.7,5.2,5.2,0,0,0,2.1-.4m.2-2.7,5.6-2.5a.6.6,0,0,0,.3-.8.7.7,0,0,0-.8-.3L9.2,10.8a3.3,3.3,0,0,1-2.9-.2L1.1,7.4a.5.5,0,0,0-.8.2.6.6,0,0,0,.2.8l5.1,3.2a4.8,4.8,0,0,0,2,.7,5.2,5.2,0,0,0,2.1-.4"/></g></g></svg>
                             <div class="title">Categories</div>
@@ -65,13 +68,13 @@
                             </ul>
                         </div>
                     </div>
-                    <a href="" class="link new">
+                    <a href="" class="link new desktopOnly">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.4 15"><defs></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M14.3,8.8l-.6-1.1a.3.3,0,0,1,0-.4l.6-1.1a1.4,1.4,0,0,0-.6-1.8l-1.1-.6c-.2,0-.2-.1-.3-.3l-.2-1.2a1.2,1.2,0,0,0-1.4-1.1l-1.3.2H9L8.1.4A1.3,1.3,0,0,0,6.3.4l-.9.9H5L3.7,1.2A1.2,1.2,0,0,0,2.3,2.3L2.1,3.5q-.2.3-.3.3L.7,4.4A1.4,1.4,0,0,0,.1,6.2L.7,7.3a.3.3,0,0,1,0,.4L.1,8.8a1.4,1.4,0,0,0,.6,1.8l1.1.6.3.3.2,1.2a1.2,1.2,0,0,0,1.3,1.1h.1L5,13.6h.4l.9.9a1.1,1.1,0,0,0,.9.4,1.1,1.1,0,0,0,.9-.4l.9-.9h.4l1.3.2a1.2,1.2,0,0,0,1.4-1.1l.2-1.2c.1-.2.1-.3.3-.3l1.1-.6a1.4,1.4,0,0,0,.6-1.8m-1,1-1.1.6a1.3,1.3,0,0,0-.7.9l-.2,1.3c-.1.2-.3.4-.5.3H9.5a1.1,1.1,0,0,0-1.1.3l-.9.9a.4.4,0,0,1-.6,0L6,13.1l-.9-.3H3.6c-.2.1-.4-.1-.5-.3l-.2-1.3a1.3,1.3,0,0,0-.7-.9L1.1,9.8a.5.5,0,0,1-.2-.6l.6-1.1a2.4,2.4,0,0,0,0-1.2L.9,5.8a.5.5,0,0,1,.2-.6l1.1-.6a1.3,1.3,0,0,0,.7-.9l.2-1.3c.1-.2.3-.4.5-.3H4.9A1.1,1.1,0,0,0,6,1.9L6.9,1a.4.4,0,0,1,.6,0l.9.9a1.1,1.1,0,0,0,1.1.3h1.3c.2-.1.4.1.5.3l.2,1.3a1.3,1.3,0,0,0,.7.9l1.1.6a.5.5,0,0,1,.2.6l-.6,1.1a1.3,1.3,0,0,0,0,1.2l.6,1.1a.5.5,0,0,1-.2.6"/><path class="cls-1" d="M10.4,4.3H9.7L4,10a.9.9,0,0,0,0,.7h.6L10.4,5a.9.9,0,0,0,0-.7"/><path class="cls-1" d="M5.5,6.8A1.6,1.6,0,0,0,7.1,5.2,1.6,1.6,0,0,0,5.5,3.6a1.6,1.6,0,0,0,0,3.2m0-2.3a.7.7,0,0,1,0,1.4.8.8,0,0,1-.8-.7.8.8,0,0,1,.8-.7"/><path class="cls-1" d="M8.9,8.2a1.6,1.6,0,0,0,0,3.2,1.6,1.6,0,0,0,0-3.2m0,2.3a.7.7,0,1,1,.7-.7.7.7,0,0,1-.7.7"/></g></g></svg>
                         <div class="title">Offers</div>
                     </a>
                     @if (Auth::check())
                         <!-- User is logged in -->
-                         <div class="btn-group account">
+                        <div class="btn-group account desktopOnly">
                             <button class="link border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="profile">
                                     <img src="{{ asset('assets/images/user.png') }}" alt="">
@@ -88,7 +91,7 @@
                             </ul>
                         </div>
                     @else
-                    <a href="" class="link" data-toggle="modal" data-target="#account_modal">
+                    <a href="" class="link desktopOnly" data-toggle="modal" data-target="#account_modal">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.6 14"><defs></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M6.8,9.2a.5.5,0,0,0,0,.7h.7L10,7.3h.2c0-.2,0-.3-.2-.4L7.5,4.1a.5.5,0,0,0-.7.7L8.6,6.5H.5a.5.5,0,0,0,0,1H8.6Z"/><path class="cls-1" d="M7.6,0A6.9,6.9,0,0,0,1.1,4.4a.5.5,0,0,0,.3.7c.2.1.5-.1.6-.3A6,6,0,0,1,7.6,1a6,6,0,0,1,6.1,6,6,6,0,0,1-6.1,6A6,6,0,0,1,2,9.2c-.1-.2-.4-.4-.6-.3a.5.5,0,0,0-.3.7A6.9,6.9,0,0,0,7.6,14a7,7,0,0,0,7-7,7,7,0,0,0-7-7"/></g></g></svg>
                         <div class="title">Login</div>
                     </a>
@@ -113,6 +116,15 @@
 
                 </div>
             </div>
+
+            <div class="search mobileOnly">
+                <form action="{{ route('product.search') }}" method="GET">
+                    <div class="mic"><img src="{{ asset('assets/images/icons/mic.svg') }}" alt=""></div>
+                    <input type="text" name="query" value="{{ $query ?? '' }}" placeholder="Search for Any Product">
+                    <button class="search" type="submit"><img src="{{ asset('assets/images/icons/search.svg') }}" alt=""></button>
+                </form>
+            </div>
+
         </div>
     </header>
 

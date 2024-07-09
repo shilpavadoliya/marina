@@ -265,6 +265,15 @@ body {
   color: var(--clr-neutral-900);
 }
 
+.heading4 {
+  position: relative;
+  display: block;
+  font-family: var(--ff-primary);
+  font-size: 18px;
+  font-weight: var(--fw-extrabold);
+  color: var(--clr-neutral-900);
+}
+
 .subHeading2 {
   position: relative;
   display: block;
@@ -338,6 +347,15 @@ input[type=checkbox] {
 @media (max-width: 700px) {
   .desktopOnly {
     display: none !important;
+  }
+}
+
+.mobileOnly {
+  display: none;
+}
+@media (max-width: 700px) {
+  .mobileOnly {
+    display: block;
   }
 }
 
@@ -441,6 +459,27 @@ input[type=checkbox] {
 .filter .dropdown-menu .fiterButtons .btn1, .filter .dropdown-menu .fiterButtons .btn3 {
   width: 150px;
   flex-shrink: 0;
+}
+
+.liststyele1 {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.liststyele1 li {
+  position: relative;
+  margin-left: 15px;
+}
+.liststyele1 li::before {
+  position: absolute;
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background-color: var(--clr-primary-500);
+  margin-top: 5px;
+  left: -15px;
 }
 
 .addToCart {
@@ -679,6 +718,7 @@ header .wrapper .logo img {
 @media (max-width: 700px) {
   header .wrapper .logo {
     margin-right: 20px;
+    width: 80px;
   }
 }
 header .wrapper .location {
@@ -712,30 +752,10 @@ header .wrapper .location p {
   overflow: hidden;
   white-space: nowrap;
 }
-header .wrapper .search {
-  position: relative;
-  width: 285px;
-  box-shadow: rgba(50, 50, 93, 0.15) 0px 13px 27px -5px, rgba(0, 0, 0, 0.2) 0px 8px 16px -8px;
-}
-header .wrapper .search input {
-  padding-left: 35px;
-  padding-right: 35px;
-}
-header .wrapper .search .mic {
-  position: absolute;
-  width: 18px;
-  z-index: 2;
-  left: 9px;
-  top: 9px;
-}
-header .wrapper .search .search {
-  position: absolute;
-  width: 18px;
-  z-index: 2;
-  right: 9px;
-  top: 9px;
-  border: none;
-  background: transparent;
+@media (max-width: 700px) {
+  header .wrapper .location p {
+    width: 90px;
+  }
 }
 header .wrapper .navWrapper {
   position: relative;
@@ -785,6 +805,10 @@ header .wrapper .navWrapper .link.cartAdded {
   border: 2px solid var(--clr-primary-500);
   border-radius: 7px;
   padding: 5px 10px;
+}
+header .wrapper .navWrapper .link.cartAdded svg {
+  width: 17px;
+  min-width: 17px;
 }
 header .wrapper .navWrapper .link.cartAdded .title {
   display: none;
@@ -857,6 +881,12 @@ header .account .profile > img {
   -o-object-fit: cover;
      object-fit: cover;
 }
+@media (max-width: 700px) {
+  header .account .profile {
+    width: 32px;
+    height: 32px;
+  }
+}
 header .account .dropdown-menu {
   left: 50% !important;
   top: 40px !important;
@@ -881,6 +911,39 @@ header .account .dropdown-menu .dropdown-item {
 header .account .dropdown-menu .dropdown-item:hover {
   color: var(--clr-neutral-100);
   background-color: var(--clr-primary-500);
+}
+header .search {
+  position: relative;
+  width: 285px;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 13px 27px -5px, rgba(0, 0, 0, 0.2) 0px 8px 16px -8px;
+}
+@media (max-width: 700px) {
+  header .search {
+    width: 100%;
+    top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+  }
+}
+header .search input {
+  padding-left: 35px;
+  padding-right: 35px;
+}
+header .search .mic {
+  position: absolute;
+  width: 18px;
+  z-index: 2;
+  left: 9px;
+  top: 9px;
+}
+header .search .search {
+  position: absolute;
+  width: 18px;
+  z-index: 2;
+  right: 9px;
+  top: 9px;
+  border: none;
+  background: transparent;
 }
 
 .topSection {
@@ -946,6 +1009,19 @@ header .account .dropdown-menu .dropdown-item:hover {
   }
   .selectCurrency ul {
     border: 1px solid #ccc !important;
+  }
+}
+
+.mobileMenu {
+  width: 28px;
+  display: none;
+}
+.mobileMenu img {
+  width: 28px;
+}
+@media screen and (max-width: 980px) {
+  .mobileMenu {
+    display: block;
   }
 }
 
@@ -1080,19 +1156,6 @@ header .account .dropdown-menu .dropdown-item:hover {
 }
 
 /*side Modal*/
-.mobileMenu {
-  width: 50px;
-  display: none;
-}
-.mobileMenu img {
-  width: 36px;
-}
-@media screen and (max-width: 980px) {
-  .mobileMenu {
-    display: block;
-  }
-}
-
 .sideMenu {
   position: relative;
 }

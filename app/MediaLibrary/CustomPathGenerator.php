@@ -11,6 +11,7 @@ use App\Models\PurchaseReturn;
 use App\Models\Sale;
 use App\Models\SaleReturn;
 use App\Models\Setting;
+use App\Models\Supplier;
 use App\Models\User;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\PathGenerator\PathGenerator;
@@ -34,8 +35,8 @@ class CustomPathGenerator implements PathGenerator
                 return str_replace('{PARENT_DIR}', Product::PATH, $path);
             case Product::PRODUCT_MAIN_IMAGE_PATH:
                 return str_replace('{PARENT_DIR}', Product::PRODUCT_MAIN_IMAGE_PATH, $path);
-            case Product::PRODUCT_BARCODE_PATH:
-                return str_replace('{PARENT_DIR}', Product::PRODUCT_BARCODE_PATH, $path);
+            // case Product::PRODUCT_BARCODE_PATH:
+            //     return str_replace('{PARENT_DIR}', Product::PRODUCT_BARCODE_PATH, $path);
             case User::PATH:
                 return str_replace('{PARENT_DIR}', User::PATH, $path);
             case Setting::PATH:
@@ -50,6 +51,8 @@ class CustomPathGenerator implements PathGenerator
                 return str_replace('{PARENT_DIR}', SaleReturn::SALE_RETURN_PDF, $path);
             case Sale::SALE_BARCODE_PATH:
                 return str_replace('{PARENT_DIR}', Sale::SALE_BARCODE_PATH, $path);
+            case Supplier::SUPPLIER_DOC:
+                    return str_replace('{PARENT_DIR}', Supplier::SUPPLIER_DOC, $path);
             case 'default':
                 return '';
         }

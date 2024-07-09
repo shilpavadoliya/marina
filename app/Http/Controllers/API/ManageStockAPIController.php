@@ -7,7 +7,8 @@ use App\Http\Resources\ManageStockCollection;
 use App\Http\Resources\ManageStockResource;
 use App\Repositories\ManageStockRepository;
 use Illuminate\Http\Request;
-
+use App\Models\User;
+use App\Models\Supplier;
 /**
  * Class UserAPIController
  */
@@ -26,6 +27,16 @@ class ManageStockAPIController extends AppBaseController
         $perPage = getPageSize($request);
         $search = $request->get('search');
         $warehouseId = $request->get('warehouse_id');
+
+        
+        $user = User::where('id', auth()->id())->first();
+        $roleId = $user->roles()->first()->id;
+        
+        if($roleId == 6) {
+            $supplier = Supplier::where('email',$user->email)->first();
+            $warehouseId =  $supplier->warehouse_id;
+        }
+
         if ($search && $search != 'null') {
             $stocks = $this->manageStockRepository->whereHas('product.productCategory',
                 function ($query) use ($search) {

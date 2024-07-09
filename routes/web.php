@@ -31,6 +31,26 @@ Route::get('/admin', function () {
     return view('welcome');
 });
 
+Route::get('/faq', function () {
+    return view('frontend.faq');
+})->name('faq');
+
+Route::get('/why-choose-us', function () {
+    return view('frontend.why-choose-us');
+})->name('why-choose-us');
+
+Route::get('/terms-conditions', function () {
+    return view('frontend.terms-conditions');
+})->name('terms-conditions');
+
+Route::get('/privacy-policy', function () {
+    return view('frontend.privacy-policy');
+})->name('privacy-policy');
+
+Route::get('/about-us', function () {
+    return view('frontend.about-us');
+})->name('about-us');
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/category/{id?}', [CategoryController::class, 'index'])->name('category');
 Route::get('/product/{id?}', [ProductDetailsController::class, 'index'])->name('productDetails');

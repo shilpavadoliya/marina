@@ -66,18 +66,23 @@ class PurchaseAPIController extends AppBaseController
             $purchases->where('status', $request->get('status'));
         }
 
+        //$purchases->where('is_customer',1);
 
-        if ($request->get('isb2c')) {
-            
-            $user = User::where('id', auth()->id())->first();
-            $roleId = $user->roles()->first()->id;
-            
-            $purchases->where('is_customer', 1);
-            if(!empty($roleId)) {
-                $purchases->where('supplier_id', auth()->id());
-            }
+
+        $user = User::where('id', auth()->id())->first();
+        $roleId = $user->roles()->first()->id;
+        
+        if($roleId == 6) {
+            $supplier = Supplier::where('email',$user->email)->first();
+            $purchases->where('warehouse_id', $supplier->warehouse_id);
+            $purchases->where('supplier_id', $supplier->id);
         }
-
+        
+        
+/*         if($request->get('is_customer') && $request->get('is_customer') == 1){
+            $purchases->where('is_customer', 1);
+        }
+ */
         $purchases = $purchases->paginate($perPage);
 
         PurchaseResource::usingWithCollection();

@@ -195,7 +195,7 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
             'product_code' => $purchaseItem->product->code,
             'product_name' => $purchaseItem->product->name,
             'sales_price' => $purchaseItem->sales_price,
-            'stock' => $purchaseItem->product->stock->toArray()
+            'stock' => !empty($purchaseItem->product->stock) ? $purchaseItem->product->stock->toArray() : []
                 ];
             }),
         ];

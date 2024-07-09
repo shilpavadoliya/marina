@@ -82,9 +82,9 @@
                                     </div>
                                     <div class="addToCart" >
                                         <div class="number">
-                                            <span class="minus border-end-0" data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['product_unit_quantity']??'' }}">-</span>
+                                            <span class="minus border-end-0" data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['productUnit'] }}">-</span>
                                             <input type="text" value="{{ $item['quantity'] }}"/>
-                                            <span class="plus border-start-0" data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['product_unit_quantity']??'' }}">+</span>
+                                            <span class="plus border-start-0" data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['productUnit'] }}">+</span>
                                         </div>
                                     </div>
                                 </div>
@@ -187,3 +187,70 @@
 </div>
 
 <!-- Search -->
+
+
+<!-- Side Menu -->
+<div class="modal modal-left fade" id="left_modal_sm" tabindex="-1" role="dialog" aria-labelledby="left_modal_sm">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content sideMenu">
+      <div class="modal-header" style="height: 50px;">
+            
+      </div>
+      <div class="modal-body">
+            <div class="accordion" id="accordionExample">
+                <a href="{{ route('home') }}" class="singleLink noBorder">Home</a>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Categories
+                    </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <ul>
+                                @php
+                                    $getCategory = App\Models\ProductCategory::getCategory();
+                                @endphp
+
+                                @foreach($getCategory as $key=>$category)
+                                <li class="@if($key == 0)active @endif">
+                                    <a href="{{ route('category',$category->id ) }}">{{ $category->name }}</a>
+                                </li>
+                                @endforeach 
+                            </ul>   
+                        </div>
+                    </div>
+                </div>
+               
+                @if(auth()->user())
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingUser">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUser" aria-expanded="false" aria-controls="collapseUser">
+                    {{ auth()->user()->first_name ?? ''}}
+                    </button>
+                    </h2>
+                    
+                    <div id="collapseUser" class="accordion-collapse collapse" aria-labelledby="headingUser" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><a href="{{ route('myaccount') }}">Dashboard</a></li>
+                                <li><a href="{{ route('myaccount-order') }}">My Orders</a></li>
+                                <li><a href="{{ route('myaccount-address') }}">Addresses</a></li>
+                                <li><a href="{{ route('myaccount-details') }}">Account details</a></li>
+                                <li><a href="{{ route('myaccount-wishlist') }}">Wishlist</a></li>
+                                <li><a class="logoutButton" href="javascript:void(0)">Logout</a></li>
+                            </ul>   
+                        </div>
+                    </div>
+                </div>
+                @else
+                <a href="" class="singleLink" data-toggle="modal" data-target="#account_modal" data-dismiss="modal"><img src="assets/images/icons/account.svg" alt=""> Login / Register</a>
+                @endif
+                
+                
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Side Menu -->

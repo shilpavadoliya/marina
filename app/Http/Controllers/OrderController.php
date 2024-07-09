@@ -134,15 +134,15 @@ class OrderController extends Controller
         $phone = "917486079917";
         $message = "Test";
 
-        $response = $this->brevoSmsService->sendSms($phone, $message);
+        // $response = $this->brevoSmsService->sendSms($phone, $message);
 
-        $this->sendOrderCustomerEmail(Auth()->user()->email, $order, $orderItem, $user);
-        $this->sendOrderCustomerEmail(env('MAIL_ADMIN_ADDRESS'), $order, $orderItem, $user);
-        $this->sendOrderCustomerEmail($supplier->email, $order, $orderItem, $user);
+        // $this->sendOrderCustomerEmail(Auth()->user()->email, $order, $orderItem, $user);
+        // $this->sendOrderCustomerEmail(env('MAIL_ADMIN_ADDRESS'), $order, $orderItem, $user);
+        // $this->sendOrderCustomerEmail($supplier->email, $order, $orderItem, $user);
 
-        // Notification::route('mail', Auth()->user()->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
-        // Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new AdminOrderNotification($order, $orderItem, $user));
-        // Notification::route('mail', $supplier->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
+        Notification::route('mail', Auth()->user()->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
+        Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new AdminOrderNotification($order, $orderItem, $user));
+        Notification::route('mail', $supplier->email)->notify(new AdminOrderNotification($order, $orderItem, $user));
         
         return redirect()->route('thankyou', ['orderId' => $request->order_number]);
     }
@@ -178,7 +178,7 @@ class OrderController extends Controller
         }
 
         $email = new SendSmtpEmail();
-        $email['to'] = [['email' => "mihirprajapatiji1234@gmail.com"]];
+        $email['to'] = [['email' => $email]];
         $email['templateId'] = 1;
         $email['params'] = [
             'CUSTOMER_NAME' => $user->first_name,
@@ -195,5 +195,8 @@ class OrderController extends Controller
             // Handle the exception
             \Log::error('Error sending email: ' . $e->getMessage());
         }
+
+        // Free up memory
+        unset($orderItems, $email);
     }
 }
