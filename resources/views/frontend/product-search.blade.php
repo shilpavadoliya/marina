@@ -37,8 +37,10 @@
                                     </div>
                                     <div class="cartDetails">
                                         <div class="price">
+                                            <s class="pe-2 text-dark" style="font-size:16px">₹{{ dicountPrice($product->product_price) }} </s>
                                             <span class="rupee">₹</span>
                                             {{ $product->product_price }} 
+                                            <small class="px-1" style="font-size:14px">{{env('DISCOUNT_PERCENTAGE')."% Off"}}</small>
                                         </div>
                                         <div class="addToCart">
                                             <button class="mainBtn" @if(countProductInCart($product->name) != 0)style="display: none;" @endif data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">

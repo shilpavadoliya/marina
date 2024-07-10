@@ -219,3 +219,11 @@ if (!function_exists('countOrderItemWithPrice')) {
        return $showPrice;
    }
 }
+
+if (!function_exists('dicountPrice')) {
+    function dicountPrice($price) {
+        $discount = $price * (env('DISCOUNT_PERCENTAGE')/100)??0.10;
+        $discountedPrice = $price + $discount;
+        return $discountedPrice;
+    }
+}

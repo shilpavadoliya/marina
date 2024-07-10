@@ -74,7 +74,7 @@
                                             <input type="text" value="{{ $item['quantity'] }}"/>
                                             <span class="plus"  data-id="{{ $cart }}" data-price="{{ $item['productPrice'] }}" data-name="{{ $item['productName'] }}" data-unit="{{ $item['productUnit'] }}">+</span>
                                         </div>
-                                    </td>\
+                                    </td>
                                     <td>
                                         <div class="price itemTotal">
                                             <span class="rupee">₹</span>
