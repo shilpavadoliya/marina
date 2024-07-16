@@ -78,8 +78,7 @@
                                 <li>
                                     <div class="title">Shipping Charges :</div>
                                     <div class="price">
-                                        <span class="rupee">₹</span>
-                                        0
+                                        Free
                                     </div>
                                 </li>
                             </ul>
@@ -106,26 +105,41 @@
                         {{ csrf_field() }}
                         <input type="hidden" name="paymentID" id="paymentID" value="">
                         <input type="hidden" name="order_number" value="{{ $order->reference_code }}">
+                        <input type="hidden" name="company_name" value="{{ $userbillingdetails->company_name??'' }}">
+                        <input type="hidden" name="email_address" value="{{ $userbillingdetails->email??'' }}">
 
                         <div class="row row-gap-3">
-                            <div class="col-12">
-                                <label for="" class="head">Full Name</label>
-                                <input type="text" name="first_name" value="{{ $userbillingdetails->first_name?? '' }}">
+                            <div class="col-6">
+                                <label for="" class="head">First Name</label>
+                                <input type="text" name="first_name" value="{{ $userbillingdetails->first_name?? '' }}" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="head">Last Name</label>
+                                <input type="text" name="last_name" value="{{ $userbillingdetails->last_name?? '' }}" readonly>
                             </div>
                             <div class="col-12">
                                 <label for="" class="head">Email Address</label>
-                                <input type="text" name="email_address" value="{{ $userbillingdetails->email?? '' }}">
+                                <input type="text" name="email_address" value="{{ $userbillingdetails->email?? '' }}" readonly>
                             </div>
                             <div class="col-12">
                                 <label for="" class="head">Billing Address</label>
                                 <input type="text" name="address" value="{{ $userbillingdetails->address?? '' }}">
                             </div>
                             <div class="col-6">
+                                <label for="" class="head">City</label>
                                 <input type="text" name="city" placeholder="Enter City" value="{{ $userbillingdetails->city?? '' }}">
                             </div>
                             <div class="col-6">
-                                <!-- <input type="text" name="pin_code" class="postalCode" placeholder="Zip Code" value="{{ $userbillingdetails->pin_code?? '' }}"> -->
-                                <input type="text" name="pin_code" class="postalCode" placeholder="Zip Code">
+                                <label for="" class="head">State</label>
+                                <input type="text" name="state" placeholder="Enter State" value="{{ $userbillingdetails->state?? '' }}">
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="head">Pin Code</label>
+                                <input type="text" name="pin_code"  placeholder="Pin Code" value="{{ $userbillingdetails->pin_code?? '' }}">
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="head">Phone</label>
+                                <input type="text" name="phone"  placeholder="Phone" value="{{ $userbillingdetails->phone?? '' }}" readonly>
                             </div>
                             <div class="col-12 mt-3">
                                 <div class="head">Payment Method </div>

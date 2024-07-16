@@ -26,11 +26,9 @@
                                     </a>
                                     <div class="details">
                                         <h2>{{ $product->name }}</h2>
-                                        <div class="des">
-                                            <p>{!! substr($product->product_description, 0, 20) !!}</p>
-                                        </div>
+                                        
                                         <ul class="tags">
-                                            <li><strong>{{ $product->product_unit }} g</strong></li>
+                                            <li><strong>{{ $product->product_unit }} g /- Rs. Per Pack </strong></li>
                                             <li>4-5 pcs</li>
                                             <li>Serves 3</li>
                                         </ul>
@@ -39,8 +37,9 @@
                                         <div class="price">
                                             <s class="pe-2 text-dark" style="font-size:16px">₹{{ dicountPrice($product->product_price) }} </s>
                                             <span class="rupee">₹</span>
-                                            {{ $product->product_price }} 
+                                            {{ $product->product_price }}
                                             <small class="px-1" style="font-size:14px">{{env('DISCOUNT_PERCENTAGE')."% Off"}}</small>
+                                            
                                         </div>
                                         <div class="addToCart">
                                             <button class="mainBtn" @if(countProductInCart($product->name) != 0)style="display: none;" @endif data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">
@@ -55,6 +54,21 @@
                                         <span class="plus border-start-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">+</span>
                                     </div>
                                 </div>
+
+                                @if(Auth::check())
+                                    @if(getWishlist($product->id))
+                                        <form action="{{ route('wishlist.remove', $product) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">Remove from Wishlist</button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('wishlist.add', $product) }}" method="POST">
+                                            @csrf
+                                            <button type="submit">Add to Wishlist</button>
+                                        </form>
+                                    @endif
+                                @endif
                                         </div>
                                     </div>
                                 </div>

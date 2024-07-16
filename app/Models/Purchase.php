@@ -152,6 +152,20 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
 
     const ORDERED = 3;
 
+    public function getStatusName()
+    {
+        switch ($this->status) {
+            case self::RECEIVED:
+                return 'RECEIVED';
+            case self::PENDING:
+                return 'PENDING';
+            case self::ORDERED:
+                return 'ORDERED';
+            default:
+                return 'UNKNOWN';
+        }
+    }
+    
     public function prepareLinks(): array
     {
         return [

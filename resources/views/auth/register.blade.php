@@ -35,7 +35,7 @@
                             </div>
                             <div class="mt-3">
                                 <label for="username">Phone no. <span class="required">*</span></label>
-                                <input type="text" class="@error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                <input type="text" class="@error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus maxlength="10">
                                     @error('phone')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -68,7 +68,11 @@
                                 <input id="password-field3" type="password" class="form-control" name="password_confirmation" required>
                                 <span toggle="#password-field3" class="fa fa-fw fa-eye hidePassfield-icon toggle-password3"></span>
                             </div>
-
+                            <div class="mt-4 d-flex justify-content-between align-items-center">
+                                <label class="d-flex align-items-center">
+                                    <input class="form-check-input" name="rememberme" type="checkbox" value="" title="Remember me" aria-label="Remember me" required> <span class="ms-2">I understand and agree to the <a href="https://mymarina.in/terms-conditions" target="_blank">terms and conditions</a> and <a href="https://mymarina.in/privacy-policy" target="_blank">privacy policy</a>.</span>
+                                </label>
+                            </div>
                             <div class="mt-4">
                                 <button class="btn1" type="submit"><span>REGISTER</span></button>
                             </div>

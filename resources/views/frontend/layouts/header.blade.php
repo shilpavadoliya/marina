@@ -53,7 +53,13 @@
                 <div class="navWrapper">
 
                     
+                    <a href="{{ route('home') }}" class="link desktopOnly">
+                        <svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M399.997 30L800 329.492L780.952 386.538H749.202V751H50.7935V386.538H19.0476L0 329.492L399.997 30ZM114.285 323.154V687.615H685.71V323.154L399.997 109.231L114.285 323.154Z"/>
+                        </svg>
 
+                        <div class="title">Home</div>
+                    </a>
                     <div class="categories desktopOnly">
 
                         <button type="button" class="link" data-bs-toggle="dropdown" aria-expanded="false">

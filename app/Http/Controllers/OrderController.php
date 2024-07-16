@@ -68,14 +68,9 @@ class OrderController extends Controller
                     $orderItems[] = $orderItem; // Collect order items
                 }
                 $order->save();
-                
-                session()->forget('cart');
     
             }
             
-            // $pendingOrder = Purchase::where('user_id', Auth::user()->id)
-            //     ->where('status', '2')
-            //     ->first();
             
             // if($pendingOrder) {
             //     $order = $pendingOrder;
@@ -98,6 +93,8 @@ class OrderController extends Controller
 
     public function orderStatus(Request $request)
     {
+        session()->forget('cart');
+        
         // Update Customer Billing
         $user = Auth::user();
 
@@ -154,8 +151,8 @@ class OrderController extends Controller
 
     public function pincodeCheck(Request $request) 
     {
-        $supplier = Supplier::whereRaw("FIND_IN_SET('$request->pincode', area_pin_code)")->first();
-
+        $supplier = Supplier::whereRaw("FIND_IN_SET(?, area_pin_code)", [$request->pincode])->first();
+        
         if ($supplier) {
             
             $pincode = session()->put('pincode',$request->pincode);
@@ -200,3 +197,4 @@ class OrderController extends Controller
         unset($orderItems, $email);
     }
 }
+                                        

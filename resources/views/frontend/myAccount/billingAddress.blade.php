@@ -4,7 +4,7 @@
     @include('frontend.myAccount.sidebar-account')
                 
                 <div class="col-md-9">
-                    <h3 class="heading3">Billing Address</h3>
+                    <h3 class="heading3">Address</h3>
                     <form action="{{ route('myaccount-billing-address-update') }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
@@ -12,13 +12,13 @@
                             <div class="col-md-6">
                                 <div>
                                     <label for="username">First name <span class="required">*</span></label>
-                                    <input type="text" name="first_name" value="{{ $user->first_name ?? '' }}" required>
+                                    <input type="text" name="first_name" value="{{ $user->first_name ?? '' }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div>
                                     <label for="username">Last name <span class="required">*</span></label>
-                                    <input type="text" name="last_name" value="{{ $user->last_name ?? '' }}" required>
+                                    <input type="text" name="last_name" value="{{ $user->last_name ?? '' }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -54,13 +54,13 @@
                             <div class="col-md-12">
                                 <div>
                                     <label for="username">Phone <span class="required">*</span></label>
-                                    <input type="text" name="phone" value="{{ $user->phone ?? '' }}" required>
+                                    <input type="text" name="phone" value="{{ $user->phone ?? '' }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div>
                                     <label for="username">Email address <span class="required">*</span></label>
-                                    <input type="text" name="email" value="{{ $user->email ?? '' }}" required>
+                                    <input type="text" name="email" value="{{ $user->email ?? '' }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-12">

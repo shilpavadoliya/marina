@@ -13,23 +13,23 @@
                                     <th width="250">Product</th>
                                     <th>Price</th>
                                     <th>Stock Status</th>
+                                    <th>Add To Cart</th>
                                     <th>Action</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($wishlist as $data)
                                 <tr>
                                     <td>
                                         <div class="product">
                                             <div class="thumb">
-                                                <img src="assets/images/products/pro1.jpg" alt="">
+                                                <img src="{{ $data->product->getMainImageUrlAttribute() }}" alt="">
                                             </div>
                                             <div class="details">
-                                                <h1>SURMAI Steaks</h1>
+                                                <h1>{{ $data->product->name }}</h1>
                                                 <ul class="tags">
-                                                    <li><strong>1000 g</strong></li>
-                                                    <li>4-5 pcs</li>
-                                                    <li>Serves 3</li>
+                                                    <li><strong>{{ $data->product->product_unit_quantity }} g</strong></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -37,77 +37,64 @@
                                     <td>
                                         <div class="price">
                                             <span class="rupee">₹</span>
-                                            575
+                                            {{ $data->product->product_price }} 
                                         </div>
                                     </td>
                                     <td>
-                                        <strong>In Stock</strong>
+                                        @if($data->product->stock == null)
+                                            <strong>Out Of Stock</strong>
+                                        @else
+                                            <strong>In Stock</strong>
+                                        @endif
+                                        
                                     </td>
+                                    
+                                    @if($data->product->stock != null)
                                     <td>
-                                        <div class="addToCart">
-                                            <button class="mainBtn" style="display:block">
-                                                <div>
-                                                    <span>Add</span> <img src="assets/images/icons/plus.svg" alt="">
-                                                </div>
-                                            </button>
-                                            <div class="counterWrapper" style="display: none;">
-                                                <div class="number">
-                                                    <span class="minus border-end-0">-</span>
-                                                    <input type="text" value="1"/>
-                                                    <span class="plus border-start-0">+</span>
-                                                </div>
+                                    <div class="addToCart">
+
+                                        <button class="mainBtn" @if(countProductInCart($data->product->name) != 0)style="display: none;" @endif data-id="{{ $data->product->id }}" data-price="{{ $data->product->product_price }}" data-name="{{ $data->product->name }}" data-unit="{{ $data->product->product_unit_quantity }}">
+
+                                            <div>
+
+                                                <span>Add</span> <img src="{{ asset('assets/images/icons/plus.svg') }}" alt="">
+
                                             </div>
+
+                                        </button>
+
+                                        <div class="counterWrapper" @if(countProductInCart($data->product->name) == 0)style="display: none;" @endif>
+
+                                            <div class="number">
+
+                                                <span class="minus border-end-0" data-id="{{ $data->product->id }}" data-price="{{ $data->product->product_price }}" data-name="{{ $data->product->name }}" data-unit="{{ $data->product->product_unit_quantity }}">-</span>
+
+                                                <input type="text" value="{{ countProductInCart($data->product->name) }}"/>
+
+                                                <span class="plus border-start-0" data-id="{{ $data->product->id }}" data-price="{{ $data->product->product_price }}" data-name="{{ $data->product->name }}" data-unit="{{ $data->product->product_unit_quantity }}">+</span>
+
+                                            </div>
+
+                                        </div>
+
                                         </div>
                                     </td>
+                                    @else
+                                    <td class="text-center">
+                                        -
+                                    </td>
+                                    @endif
                                     <td>
-                                        <a href="" class="delete"><img src="assets/images/icons/delete.svg" alt=""></a>
+                                        @if(Auth::check())
+                                            <form action="{{ route('wishlist.remove', $data->product) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit">Remove from Wishlist</button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <div class="product">
-                                            <div class="thumb">
-                                                <img src="assets/images/products/pro1.jpg" alt="">
-                                            </div>
-                                            <div class="details">
-                                                <h1>SURMAI Steaks</h1>
-                                                <ul class="tags">
-                                                    <li><strong>1000 g</strong></li>
-                                                    <li>4-5 pcs</li>
-                                                    <li>Serves 3</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="price">
-                                            <span class="rupee">₹</span>
-                                            575
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <strong>In Stock</strong>
-                                    </td>
-                                    <td>
-                                        <div class="addToCart">
-                                            <button class="mainBtn" style="display:block">
-                                                <div>
-                                                    <span>Add</span> <img src="assets/images/icons/plus.svg" alt="">
-                                                </div>
-                                            </button>
-                                            <div class="counterWrapper" style="display: none;">
-                                                <div class="number">
-                                                    <span class="minus border-end-0">-</span>
-                                                    <input type="text" value="1"/>
-                                                    <span class="plus border-start-0">+</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="" class="delete"><img src="assets/images/icons/delete.svg" alt=""></a>
-                                    </td>
-                                </tr>   
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

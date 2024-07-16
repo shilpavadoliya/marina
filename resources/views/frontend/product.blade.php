@@ -2,8 +2,6 @@
 
 @section('content')
 
-        
-
         <section class="singleProduct | padding-top-main">
 
             <div class="container">
@@ -12,21 +10,37 @@
 
                     <div class="col-md-6">
 
+
                         <div class="swiper productPageSwiper">
-
                             <div class="swiper-wrapper">
-
-                                    <div class="swiper-slide">
-
-                                        <img src="{{ $product->getMainImageUrlAttribute() }}" alt="">
-
-                                    </div>
-
+                                <div class="swiper-slide">
+                                    <img src="{{ $product->getMainImageUrlAttribute() }}" alt="">
+                                </div>
+                                @foreach($product->image_url['imageUrls'] as $images)
+                                <div class="swiper-slide">
+                                    <img src="{{ $images }}" alt="">
+                                </div>
+                                @endforeach
                             </div>
-
                         </div>
-
+                        <div class="position-relative">
+                            <div class="swiper productPageThumbSwiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <img src="{{ $product->getMainImageUrlAttribute() }}" alt="">
+                                    </div>
+                                    @foreach($product->image_url['imageUrls'] as $images)
+                                    <div class="swiper-slide">
+                                        <img src="{{ $images }}" alt="">
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="wyp-prev swiper-button-prev"><img src="{{ asset('assets/images/icons/left-arrow.svg') }}" alt=""></div>
+                            <div class="wym-next swiper-button-next"><img src="{{ asset('assets/images/icons/right-arrow.svg') }}" alt=""></div>
+                        </div>
                     </div>
+
 
                     <div class="col-md-6">
 
@@ -56,7 +70,7 @@
 
                             <ul class="tags">
 
-                                <li><strong>{{ $product->product_unit_quantity }} g</strong></li>
+                                <li><strong>{{ $product->product_unit_quantity }} g </strong></li>
 
                                 <!-- <li>4-5 pcs</li>
 
@@ -74,9 +88,9 @@
 
                                 <div class="cost">
 
-                                    Price : <s class="pe-2 text-dark" style="font-size:16px">₹{{ dicountPrice($product->product_price) }} </s>
+                                    Rs. Per Pack : <s class="pe-2 text-dark" style="font-size:16px">₹{{ dicountPrice($product->product_price) }} </s>
 
-                                    <span class="rupee ms-1"> ₹</span>{{ $product->product_price }} 
+                                    <span class="rupee ms-1"> ₹</span>{{ $product->product_price }}
 
                                     <small class="px-1" style="font-size:14px">{{env('DISCOUNT_PERCENTAGE')."% Off"}}</small>
 
@@ -121,6 +135,21 @@
                                         </div>
 
                                     </div>
+
+                                    @if(Auth::check())
+                                        @if(getWishlist($product->id))
+                                            <form action="{{ route('wishlist.remove', $product) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit">Remove from Wishlist</button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('wishlist.add', $product) }}" method="POST">
+                                                @csrf
+                                                <button type="submit">Add to Wishlist</button>
+                                            </form>
+                                        @endif
+                                    @endif
 
                                 </div>
 

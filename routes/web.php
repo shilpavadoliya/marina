@@ -11,6 +11,7 @@ use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductDetailsController;
+use App\Http\Controllers\WishlistController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,7 +52,12 @@ Route::get('/about-us', function () {
     return view('frontend.about-us');
 })->name('about-us');
 
+Route::get('/fssai-certificate', function () {
+    return view('frontend.fssai-certificate');
+})->name('fssai-certificate');
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/category/{id?}', [CategoryController::class, 'index'])->name('category');
 Route::get('/product/{id?}', [ProductDetailsController::class, 'index'])->name('productDetails');
 
@@ -90,4 +96,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/myaccount-billing-address-update', [UserAddressController::class, 'updateBillingAddress'])->name('myaccount-billing-address-update');
     Route::get('/myaccount-shipping-address-edit', [UserAddressController::class, 'editShippingAddress'])->name('myaccount-shipping-address-edit');
     Route::post('/myaccount-shipping-address-update', [UserAddressController::class, 'updateShippingAddress'])->name('myaccount-shipping-address-update');
+
+    Route::get('wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
+    Route::delete('wishlist/remove/{product}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 });

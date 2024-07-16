@@ -80,7 +80,8 @@
 
                     <h1 class="heading2 subcategoryName"></h1>
 
-                    <h2 class="subHeading2"><span class="productCount">4</span> Items</h2>
+                    <h2 class="subHeading2 isProduct"><span class="productCount">4</span> Items</h2>
+                    <h3 class="comingSoon mt-5">Coming Soon...</h3>
 
                 </div>
 
@@ -306,7 +307,7 @@
 
                                 <ul class="tags">
 
-                                    <li><strong>{{ $product->product_unit_quantity }} g</strong></li>
+                                    <li><strong>{{ $product->product_unit_quantity }} g /- Rs. Per Pack</strong></li>
 
                                 </ul>
 
@@ -317,10 +318,8 @@
                                 <div class="price">
 
                                     <s class="pe-2 text-dark" style="font-size:14px">₹{{ dicountPrice($product->product_price) }} </s>
-
                                     <span class="rupee">₹</span>
                                     {{ $product->product_price }} 
-
                                     <small class="px-1" style="font-size:14px">{{env('DISCOUNT_PERCENTAGE')."% Off"}}</small>
 
                                 </div>
@@ -375,6 +374,20 @@
 
                                 @endif
 
+                                @if(Auth::check())
+                                    @if(getWishlist($product->id))
+                                        <form action="{{ route('wishlist.remove', $product) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">Remove from Wishlist</button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('wishlist.add', $product) }}" method="POST">
+                                            @csrf
+                                            <button type="submit">Add to Wishlist</button>
+                                        </form>
+                                    @endif
+                                @endif
                                 
 
                             </div>
@@ -439,7 +452,15 @@
 
                 $('.subcategoryName').html(subcategoryName);
 
-                $('.productCount').html(productCount);
+                if(productCount == 0){
+                    $(".comingSoon").show();
+                    $('.isProduct').hide();
+                }else{
+                    $(".comingSoon").hide();
+                    $('.isProduct').show();
+                    $('.productCount').html(productCount);
+                }
+                
 
             }
 

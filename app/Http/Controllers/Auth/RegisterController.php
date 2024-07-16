@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Userbillingdetails;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -32,7 +33,14 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+
+     protected function redirectTo()
+     {
+         if(session()->has('prevLink')){
+             return session()->get('prevLink');
+         }
+         return redirect()->route('home');
+     }
 
     /**
      * Create a new controller instance.
@@ -73,12 +81,31 @@ class RegisterController extends Controller
 
         Mail::to(env('MAIL_ADMIN_ADDRESS'))->send(new NewUserRegistered($data));
 
-        return User::create([
+        $user =  User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
         ]);
+        
+        Userbillingdetails::create(
+            [
+                'user_id'=> $user->id,
+                'first_name' => $data['first_name'] ?? '',
+                'last_name' => $data['last_name'] ?? '',
+                'company_name' => $data['company_name'] ?? '',
+                'address' => $data['address'] ?? '',
+                'city' => $data['city'] ?? '',
+                'state' => $data['state'] ?? '',
+                'pin_code' => $data['pin_code'] ?? '',
+                'phone' => $data['phone'] ?? '',
+                'email' => $data['email'] ?? '',
+            ]
+        );
+
+        return $user;
+
+        
     }
 }

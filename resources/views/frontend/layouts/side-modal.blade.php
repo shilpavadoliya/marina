@@ -114,6 +114,7 @@
                             <div class="total">₹ <span class="jqueryTotal">{{ calculateTotalPriceCart(session()->get('cart', [])) }}</span></div>
                         </div>
                     </div>
+                    <p class="mt-2">All Rates are Inclusive of Tax</p>
                 </div>
             </div>
             <div class="modal-footer modal-footer-fixed checkoutFooter">

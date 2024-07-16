@@ -9,6 +9,7 @@ use App\Models\OrderItem;
 use App\Models\Order;  
 use App\Models\Purchase;
 use App\Models\PurchaseItem; 
+use App\Models\Wishlist; 
 
 class MyAccountController extends Controller
 {
@@ -22,7 +23,7 @@ class MyAccountController extends Controller
 
     public function myAccountOrder()
     {
-        $order = Purchase::where('user_id', Auth()->user()->id)->with('purchaseItems')->get();
+        $order = Purchase::where('user_id', Auth()->user()->id)->where('status', 1)->with('purchaseItems')->get();
 
         return view('frontend.myAccount.my-account-orders', compact('order'));
     }
@@ -42,7 +43,8 @@ class MyAccountController extends Controller
 
     public function myAccountWishlist()
     {
-        return view('frontend.myAccount.my-account-wishlist');
+        $wishlist = Wishlist::where('user_id', Auth::id())->with('product')->get();
+        return view('frontend.myAccount.my-account-wishlist', compact('wishlist'));
     }
 
     public function updateDetails(Request $request)

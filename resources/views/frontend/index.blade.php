@@ -809,9 +809,9 @@
 
                                         </div>
 
-                                        <h1>Quality controlled from the get go!</h1>
+                                        <h1>Ensuring Quality from Start to Finish!</h1>
 
-                                        <p>Quality checks are performed before harvest. After the harvest seafood is brought in at controlled temperatures to prevent bacterial growth.</p>
+                                        <p>Our seafood is rigorously checked and monitored from procurement to delivery, ensuring health and safety.</p>
 
                                     </div>
 
@@ -827,9 +827,9 @@
 
                                         </div>
 
-                                        <h1>No harmful ingredients</h1>
+                                        <h1>Good for You, Good for the Planet!</h1>
 
-                                        <p>Our quality processes ensure that all our seafood is free from antibiotics, pesticides, sulphites and metals.</p>
+                                        <p>Marina is guilt-free, adhering to top food safety and quality standards, all while protecting our planet.</p>
 
                                     </div>
 
@@ -845,9 +845,9 @@
 
                                         </div>
 
-                                        <h1>Locking in that Marina goodness</h1>
+                                        <h1>Locking in that Marina Goodness</h1>
 
-                                        <p>We quick freeze our seafood at its best, locking in all the freshness, nutrition & maximum flavour.</p>
+                                        <p>We use Individual Quick Freezing to preserve peak freshness, nutrition, and flavor. Our supply chain ensures products stay perfectly frozen until delivery.</p>
 
                                     </div>
 
@@ -863,9 +863,9 @@
 
                                         </div>
 
-                                        <h1>Always staying perfect frosty!</h1>
+                                        <h1>Delivering Globally Enjoyed Seafood to Indian Homes</h1>
 
-                                        <p>Our special truck and packaging keep our products perfectly frozen until they reach you.</p>
+                                        <p>Marina Frozen Seafood, loved in over 25 countries, is now at your doorstep in India. Enjoy what the world has cherished for six decades.</p>
 
                                     </div>
 
@@ -881,9 +881,9 @@
 
                                         </div>
 
-                                        <h1>Unlocking that Marina flavour</h1>
+                                        <h1>The Smarter Choice for You</h1>
 
-                                        <p>You unlock the freshness at home, plate up your favourite dishes and deep dive into the flavour of Marina!</p>
+                                        <p>Skip the chaos of the fish market and the hassle of cleaning fish. Order Marina for convenient, export-quality seafood anytime, anywhere.</p>
 
                                     </div>
 
@@ -939,7 +939,7 @@
 
                                         <h2>I want to share my experience with frozen seafood</h2>
 
-                                        <p>Particularly from Marina Seafood. As someone who enjoys cooking at home, I was pleasantly surprised by the quality and convenience of their frozen seafood products. The fish were remarkably fresh-tasting and preserved well, maintaining their natural flavors and textures after thawing. Cooking with their frozen seafood has made preparing meals easier without compromising on taste or nutrition. I highly recommend Marina frozen seafood for anyone looking to enjoy high-quality seafood at home.</p>
+                                        <p>"Particularly from Marina Seafood. As someone who enjoys cooking at home, I was pleasantly surprised by the quality and convenience of their frozen seafood products. The prawns were remarkably fresh-tasting and preserved well, maintaining their natural flavors and textures after thawing. Cooking with their frozen seafood has made preparing meals easier without compromising on taste or nutrition. I highly recommend Marina frozen seafood for anyone looking to enjoy high-quality seafood at home."</p>
 
                                         <div class="details">
 
@@ -957,10 +957,10 @@
 
                                     <div class="items">
 
-                                        <h2>The best frozen sea food we hv tasted.</h2>
+                                        <h2>The best frozen sea food we have tasted</h2>
 
-                                        <p>I ordered prawns of Marina Brand and 
-                                        I was pleasantly surprised by the quality of these frozen prawns! Despite being frozen, they tasted fresh and had a firm texture. Perfect for quick meals, they cooked up beautifully in stir-fries and pasta dishes. I'd definitely recommend them for their convenience and great taste!
+                                        <p>"I ordered prawns of Marina Brand and 
+                                        I was pleasantly surprised by the quality of these frozen prawns! Despite being frozen, they tasted fresh and had a firm texture. Perfect for quick meals, they cooked up beautifully in stir-fries and pasta dishes. I'd definitely recommend them for their convenience and great taste!"
                                         </p>
 
                                         <div class="details">
@@ -976,24 +976,48 @@
                                 </div>
 
                                 <div class="swiper-slide">
-
                                     <div class="items">
-
-                                        <h2>Marina has amazing range of seafood</h2>
-
-                                        <p>It’s like one stop solution for quality seafood. Tried the Prawn recently and it’s so amazing; better than fresh as it comes clean and deveined. Quality, size, glazing everything is perfect and best part is the taste. My son never had so many prawns ever before</p>
+                                        <h2>Better than the Fresh Prawns</h2>
+                                        <p>"It’s like one stop solution for quality seafood. Tried the Prawn recently and it’s so amazing; better than fresh as it comes clean and deveined. Quality, size, glazing everything is perfect and best part is the taste. My son never had so many prawns ever before"</p>
 
                                         <div class="details">
 
                                             <div class="name">Yogesh Rawat</div>
 
-                                            <div class="location">Mumbai</div>
-
+                                            <div class="location">Delhi NCR</div>
                                         </div>
-
                                     </div>
-
                                 </div>
+
+                                <div class="swiper-slide">
+                                    <div class="items">
+                                        <h2>Exceptional Freshness: Marina Prawns Impress in Every Dish</h2>
+                                        <p>"I am extremely happy with the Freshness and overall quality of the Marina Prawns. Tried them in the Starters and also in the Gravy. Were really nice."</p>
+
+                                        <div class="details">
+                                            <div class="name">Ravi Punjabi</div>
+                                            <div class="location">Mumbai</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-slide">
+                                    <div class="items">
+                                        <h2>The combination of quality, taste, and freshness are unmatched.</h2>
+                                        <p>"The culinary experience with Marina is simply outstanding. Prawns are well packed. The combination of quality, taste, and freshness are unmatched."</p>
+
+                                        <div class="details">
+                                            <div class="name">Vinayak Haldankar</div>
+                                            <div class="location">Mumbai</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
 
                             </div>
 

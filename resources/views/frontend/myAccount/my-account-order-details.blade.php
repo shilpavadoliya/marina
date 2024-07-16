@@ -36,14 +36,12 @@
                                     <td>
                                         <div class="product">
                                             <div class="thumb">
-                                                <img src="assets/images/products/pro1.jpg" alt="">
+                                                <img src="{{ $order->product->getMainImageUrlAttribute() }}" alt="">
                                             </div>
                                             <div class="details">
                                                 <h1>{{ $order->product->name }}</h1>
                                                 <ul class="tags">
-                                                    <li><strong>{{ $order->product->product_unit }} g</strong></li>
-                                                    <li>4-5 pcs</li>
-                                                    <li>Serves 3</li>
+                                                    <li><strong>{{ $order->product->product_unit_quantity }} g</strong></li>
                                                 </ul>
                                             </div>
                                         </div>

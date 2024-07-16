@@ -86,8 +86,8 @@
                 $input.val(count);
                 $input.change();
                 if (count == 0) {
-                    btn.style.display = "block";
-                    counterWrapper.style.display = "none"
+                    // btn.style.display = "block";
+                    // counterWrapper.style.display = "none"
                 }
 
                 let productId = $(this).data('id');

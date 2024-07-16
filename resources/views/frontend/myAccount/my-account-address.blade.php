@@ -7,7 +7,7 @@
                     <p>The following addresses will be used on the checkout page by default.</p>
                     <div class="row row-gap-4 mt-4">
                         <div class="col-md-6">
-                            <h3 class="heading3">BILLING ADDRESS</h3>
+                            <h3 class="heading3">ADDRESS</h3>
                             @if($userbillingdetails)
                             <p class="mt-3">
                                 {{ $userbillingdetails->company_name?? '' }}
@@ -21,7 +21,7 @@
                             @endif
                             <a href="{{ route('myaccount-billing-address-edit') }}">Edit</a>
                         </div>
-                        <div class="col-md-6">
+                        {{--<div class="col-md-6">
                             <h3 class="heading3">SHIPPING ADDRESS</h3>
                             @if($usershippingdetails)
                             <p class="mt-3">
@@ -38,7 +38,7 @@
                                 <a href="{{ route('myaccount-shipping-address-edit') }}">Add Address</a>
                                 <p class="mt-3">You have not set up this type of address yet.</p>
                             @endif
-                        </div>
+                        </div>--}}
                     </div>
                 </div>
             </div>

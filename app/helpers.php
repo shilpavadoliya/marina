@@ -227,3 +227,10 @@ if (!function_exists('dicountPrice')) {
         return $discountedPrice;
     }
 }
+
+if (!function_exists('getWishlist')) {
+    function getWishlist($productId) {
+        $wishlist = App\Models\Wishlist::where('user_id', Auth::id())->where('product_id', $productId)->first();
+        return $wishlist;
+    }
+}
