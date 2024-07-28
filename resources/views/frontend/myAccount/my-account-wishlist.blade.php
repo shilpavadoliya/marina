@@ -89,7 +89,7 @@
                                             <form action="{{ route('wishlist.remove', $data->product) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit">Remove from Wishlist</button>
+                                                <button type="submit" class="btn1"><span>Remove from Wishlist</span></button>
                                             </form>
                                         @endif
                                     </td>

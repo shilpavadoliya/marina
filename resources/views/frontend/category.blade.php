@@ -14,7 +14,7 @@
 
                     <h1 class="heading2 text-center">{{ $getCategory->name?? '' }}</h1>
 
-                    <h2 class="subHeading2 text-center">Freshest meats and much more!</h2>
+                    <h2 class="subHeading2 text-center">Fin to Fork : Modernity blending with Tradition in Every Catch</h2>
 
                 </div>
 
@@ -81,7 +81,7 @@
                     <h1 class="heading2 subcategoryName"></h1>
 
                     <h2 class="subHeading2 isProduct"><span class="productCount">4</span> Items</h2>
-                    <h3 class="comingSoon mt-5">Coming Soon...</h3>
+                    <!--<h3 class="comingSoon mt-5">Coming Soon...</h3>-->
 
                 </div>
 
@@ -374,7 +374,7 @@
 
                                 @endif
 
-                                @if(Auth::check())
+                                {{-- @if(Auth::check())
                                     @if(getWishlist($product->id))
                                         <form action="{{ route('wishlist.remove', $product) }}" method="POST">
                                             @csrf
@@ -387,7 +387,7 @@
                                             <button type="submit">Add to Wishlist</button>
                                         </form>
                                     @endif
-                                @endif
+                                @endif --}}
                                 
 
                             </div>

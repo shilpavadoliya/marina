@@ -348,14 +348,14 @@
 
             if ("{{session()->get('pincode')}}" == "") {
 
-               if (currentRoute !== "home") {
+            //    if (currentRoute !== "home") {
 
-                    alert('Pincode is required to access');
+            //         // alert('Pincode is required to access');
 
-                    window.location.href = "{{ route('home') }}";
+            //         // window.location.href = "{{ route('home') }}";
 
-               }
-
+            //    }
+                $(".location").trigger('click');
             }
 
         </script>

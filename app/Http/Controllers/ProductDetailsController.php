@@ -12,9 +12,11 @@ class ProductDetailsController extends Controller
 
         $product = Product::whereId($request->id)->first();
 
+        $products = Product::where('product_type', 2)->whereNot('id',$request->id)->with('stock')->get();
+
         $supplier = Supplier::where('area_pin_code', 'LIKE', '%'.session()->get('pincode').'%')->first();
 
-        return view('frontend.product',compact('product', 'supplier'));
+        return view('frontend.product',compact('product', 'supplier', 'products'));
     }
 
     public function search(Request $request){

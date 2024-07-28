@@ -13,7 +13,7 @@ export default {
                 }
                 if (!isToken) {
                     if (!window.location.href.includes('login') && !window.location.href.includes('reset-password') && !window.location.href.includes('forgot-password')) {
-                        window.location.href = environment.URL + '#/' + 'login';
+                        window.location.href = environment.URL + '/' + 'login';
                     }
                 }
                 if (isFormData) {
@@ -38,9 +38,9 @@ export default {
                 localStorage.removeItem(Tokens.ADMIN);
                 localStorage.removeItem(Tokens.USER);
                 localStorage.removeItem(Tokens.GET_PERMISSIONS);
-                window.location.href = environment.URL + '#' + '/login';
+                window.location.href = environment.URL + '' + '/login';
             }else if(error.response.status === 403 || error.response.status === 404) {
-                window.location.href = environment.URL + '#' + '/app/dashboard';
+                window.location.href = environment.URL + '' + '/app/dashboard';
             }else {
                 return Promise.reject({...error})
             }

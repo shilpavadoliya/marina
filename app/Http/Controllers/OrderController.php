@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderPlacedNotification;
 use App\Notifications\AdminOrderNotification;
+use App\Notifications\OrderCancelNotification;
 
 use SendinBlue\Client\Api\TransactionalEmailsApi;
 use SendinBlue\Client\Model\SendSmtpEmail;
@@ -195,6 +196,24 @@ class OrderController extends Controller
 
         // Free up memory
         unset($orderItems, $email);
+    }
+
+    public function orderCancel(Request $request) {
+        $order = Purchase::where('reference_code', $request->order_id)->with('purchaseItems')->first();
+        $order->status = 4;
+        $order->save();
+
+        $pincode = session()->get('pincode') ?? '360006';
+        $supplier = Supplier::whereRaw("FIND_IN_SET('$pincode', area_pin_code)")->first();
+
+        $orderItem = PurchaseItem::where('purchase_id', $order->id)->with('product')->get();
+        $user = User::where('id', $order->user_id)->with('Userbillingdetail')->first();
+
+        Notification::route('mail', Auth()->user()->email)->notify(new OrderCancelNotification($order, $orderItem, $user));
+        Notification::route('mail', env('MAIL_ADMIN_ADDRESS'))->notify(new OrderCancelNotification($order, $orderItem, $user));
+        Notification::route('mail', $supplier->email)->notify(new OrderCancelNotification($order, $orderItem, $user));
+
+        return redirect()->route('myaccount-order');
     }
 }
                                         

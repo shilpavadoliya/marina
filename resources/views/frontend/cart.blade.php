@@ -130,6 +130,7 @@
 
                 <div class="row">
                     <div class="col-md-3 offset-md-9">
+                        <p class="mt-2">All Rates are Inclusive of Tax</p>
                         <ul class="checkoutSec">
                             <li>
                                 <div class="title">Subtotal :</div>

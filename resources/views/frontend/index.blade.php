@@ -18,8 +18,8 @@
 
         </section> -->
         <section class="imgBanner">
-            <img src="{{ asset('assets/images/banners/1900x800.jpg') }}" class="desktop" alt="">
-            <img src="{{ asset('assets/images/banners/400x800.jpg') }}" class="mobile" alt="">
+            <img src="{{ asset('assets/images/banners/1900x800.webp') }}" class="desktop" alt="">
+            <img src="{{ asset('assets/images/banners/400x800.webp') }}" class="mobile" alt="">
 
         </section>
 
@@ -49,19 +49,25 @@
 
                                     <div class="swiper-slide">
 
-                                        <img src="{{ asset('assets/images/home-banner.jpg') }}" alt="">
+                                        <img src="{{ asset('assets/images/banners/Mainpage Banner-01.webp') }}" alt="">
 
                                     </div>
 
                                     <div class="swiper-slide">
 
-                                        <img src="{{ asset('assets/images/home-banner.jpg') }}" alt="">
+                                        <img src="{{ asset('assets/images/banners/Mainpage Banner-02.webp') }}" alt="">
 
                                     </div>
 
                                     <div class="swiper-slide">
 
-                                        <img src="{{ asset('assets/images/home-banner.jpg') }}" alt="">
+                                        <img src="{{ asset('assets/images/banners/Mainpage Banner-03.webp') }}" alt="">
+
+                                    </div>
+
+                                    <div class="swiper-slide">
+
+                                        <img src="{{ asset('assets/images/banners/Mainpage Banner-04.webp') }}" alt="">
 
                                     </div>
 
@@ -89,7 +95,7 @@
 
                         <h1 class="heading2 text-center">What's on your mind?</h1>
 
-                        <h2 class="subHeading2 text-center">Freshest meats and much more!</h2>
+                        <h2 class="subHeading2 text-center">Fin to Fork : Modernity blending with Tradition in Every Catch</h2>
 
                     </div>
 

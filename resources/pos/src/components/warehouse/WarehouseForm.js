@@ -12,7 +12,6 @@ const WarehouseForm = (props) => {
     const {addWarehouseData, id, editWarehouse, singleWarehouse} = props;
     const navigate = useNavigate();
 
-    // console.log(singleWarehouse);
 
     const [warehouseValue, setWarehouseValue] = useState({
         name: singleWarehouse ? singleWarehouse[0].name : '',

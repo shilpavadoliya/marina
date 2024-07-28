@@ -87,9 +87,9 @@
                         @csrf
                             <div>
                                 <label for="username">Username or email address <span class="required">*</span></label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email" class="form-control @error('loginEmail') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                                @error('email')
+                                @error('loginEmail')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -97,13 +97,8 @@
                             </div>
                             <div class="mt-3">
                                 <label for="username">Password <span class="required">*</span></label>
-                                <input id="password-field4" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                                <input id="password-field4" type="password" class="form-control" name="password" required>
                                 <span toggle="#password-field4" class="fa fa-fw fa-eye hidePassfield-icon toggle-password2"></span>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
                             </div>
                             <div class="mt-4">
                                 <button class="btn1" class="submit"><span>LOG IN</span></button>

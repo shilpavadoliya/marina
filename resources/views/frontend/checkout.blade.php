@@ -181,46 +181,57 @@
 @endsection
 
 @push('scripts')
+        
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         
         $(".place_order").on("click", function(){
-            var first_name = $("input[name='first_name']").val();
-            var address = $("input[name='address']").val();
-            var city = $("input[name='city']").val();
-            var pin_code = $("input[name='pin_code']").val();
-            var email_address = $("input[name='email_address']").val();
+            var area_pincode = "{{ session()->get('pincode') }}";
+            var customer_pincode = $("input[name='pin_code']").val();
+            console.log(customer_pincode);
             
-            if (first_name == "" || address == "" || city == "" || pin_code == "" || email_address == "") {
-                alert("Please fill out required fields");
-            }else{
-                let totalAmout = "{{ $order->grand_total * 100 }} "; //Price should be * 100
-                let currency = "INR";
-                let name = first_name;
-                let description = "Food Order";
-
-                $("#paymentID").val('COD');
-                $("#shiipingForm").submit();
+            if(area_pincode != customer_pincode) {
+                alert('Opps! Area Pincode & Delivery Pincode Not Matched');
+            }
+            else {
+                var first_name = $("input[name='first_name']").val();
+                var address = $("input[name='address']").val();
+                var city = $("input[name='city']").val();
+                var pin_code = $("input[name='pin_code']").val();
+                var email_address = $("input[name='email_address']").val();
                 
-                // var options = {
-                //     key: '{{ env("RAZORPAY_KEY_ID") }}',
-                //     amount: totalAmout, // Example: 50000 paise = INR 500
-                //     currency: currency,
-                //     name: name,
-                //     description: description,
-                //     handler: function(response) {
-                //         $("#paymentID").val(response.razorpay_payment_id);
-                //         $("#shiipingForm").submit();
-                //     },
-                // };
+                if (first_name == "" || address == "" || city == "" || pin_code == "" || email_address == "") {
+                    alert("Please fill out required fields");
+                }else{
+                    let totalAmout = "{{ $order->grand_total * 100 }} "; //Price should be * 100
+                    let currency = "INR";
+                    let name = first_name;
+                    let description = "Food Order";
 
-                // var rzp = new Razorpay(options);
+                    $("#paymentID").val('COD');
+                    $("#shiipingForm").submit();
+                    
+                    // var options = {
+                    //     key: '{{ env("RAZORPAY_KEY_ID") }}',
+                    //     amount: totalAmout, // Example: 50000 paise = INR 500
+                    //     currency: currency,
+                    //     name: name,
+                    //     description: description,
+                    //     handler: function(response) {
+                    //         $("#paymentID").val(response.razorpay_payment_id);
+                    //         $("#shiipingForm").submit();
+                    //     },
+                    // };
 
-                // rzp.open();
-                // e.preventDefault();
-                
+                    // var rzp = new Razorpay(options);
+
+                    // rzp.open();
+                    // e.preventDefault();
+                    
+                }
             }
 
         });     
+
     </script>
 @endpush

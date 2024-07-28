@@ -39,7 +39,7 @@ class ResetPasswordNotification extends Notification
      */
     public function toMail($notifiable): MailMessage
     {
-        $this->url = $this->url.'/'.$notifiable->email;
+        $this->url = str_replace('#/', '', $this->url.'/'.$notifiable->email);
 
         return (new MailMessage)
             ->line('You are receiving this email because we received a password reset request for your account. Click the button below to reset your password:')

@@ -45,7 +45,7 @@
                     <div class="col-md-6">
 
                         <div class="details">
-
+                            <!--
                             <div class="d-flex align-items-center">
 
                                 <div class="ratings">
@@ -64,7 +64,7 @@
 
                                 <h5 class="review-count">12 Reviews</h5>
 
-                            </div>
+                            </div> -->
 
                             <h1 class="mt-4">{{ $product->name }}</h1>
 
@@ -178,7 +178,7 @@
 
         <section class="padding-top-main margin-bottom-max">
 
-            {{--<div class="container">
+            <div class="container">
 
                 <div class="row">
 
@@ -191,52 +191,51 @@
                 </div>
 
                 <div class="row row-gap-5 margin-top-main">
-
+                    @foreach($products as $product)
                     <div class="col-md-3">
-
                         <div class="productBox">
-
-                            <div class="thumb">
-
-                                <img src="{{ asset('assets/images/products/pro1.jpg') }}" alt="">
-
-                            </div>
+                            <a href="{{ route('productDetails', $product->id ) }}"class="thumb">
+                                <div class="thumb">
+                                    <img src="{{ $product->getMainImageUrlAttribute() }}" alt="">
+                                </div>
+                            </a>
 
                             <div class="details">
-
-                                <h2>MACKERAL Whole</h2>
-
-                                <div class="des">
-
-                                    Fresh whole fish for curries & fry-up
-
-                                </div>
-
+                                <h2>{{ $product->name }}</h2>
                                 <ul class="tags">
-
-                                    <li><strong>1000 g</strong></li>
-
-                                    <li>4-5 pcs</li>
-
-                                    <li>Serves 3</li>
-
+                                    <li><strong>{{ $product->product_unit_quantity }} g /- Rs. Per Pack</strong></li>
                                 </ul>
-
                             </div>
 
                             <div class="cartDetails">
-
                                 <div class="price">
-
+                                    <s class="pe-2 text-dark" style="font-size:14px">₹{{ dicountPrice($product->product_price) }} </s>
                                     <span class="rupee">₹</span>
-
-                                    575
-
+                                    {{ $product->product_price }} 
+                                    <small class="px-1" style="font-size:14px">{{env('DISCOUNT_PERCENTAGE')."% Off"}}</small>
                                 </div>
+                                
+                                @if($product->stock == null)
 
                                 <div class="addToCart">
 
-                                    <button class="mainBtn" style="display:block">
+                                    <button class="w-100">
+
+                                        <div>
+
+                                            <span style="font-size:14px">Out of Stock</span>
+
+                                        </div>
+
+                                    </button>
+
+                                </div>
+
+                                @else
+
+                                <div class="addToCart">
+
+                                    <button class="mainBtn" @if(countProductInCart($product->name) != 0)style="display: none;" @endif data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">
 
                                         <div>
 
@@ -246,15 +245,15 @@
 
                                     </button>
 
-                                    <div class="counterWrapper" style="display: none;">
+                                    <div class="counterWrapper" @if(countProductInCart($product->name) == 0)style="display: none;" @endif>
 
                                         <div class="number">
 
-                                            <span class="minus border-end-0">-</span>
+                                            <span class="minus border-end-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">-</span>
 
-                                            <input type="text" value="1"/>
+                                            <input type="text" value="{{ countProductInCart($product->name) }}"/>
 
-                                            <span class="plus border-start-0">+</span>
+                                            <span class="plus border-start-0" data-id="{{ $product->id }}" data-price="{{ $product->product_price }}" data-name="{{ $product->name }}" data-unit="{{ $product->product_unit_quantity }}">+</span>
 
                                         </div>
 
@@ -262,17 +261,33 @@
 
                                 </div>
 
+                                @endif
+
+                                @if(Auth::check())
+                                    @if(getWishlist($product->id))
+                                        <form action="{{ route('wishlist.remove', $product) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">Remove from Wishlist</button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('wishlist.add', $product) }}" method="POST">
+                                            @csrf
+                                            <button type="submit">Add to Wishlist</button>
+                                        </form>
+                                    @endif
+                                @endif
+                                
                             </div>
-
                         </div>
-
                     </div>
+                    @endforeach()
 
                     
 
                 </div>
 
-            </div>--}}
+            </div>
 
         </section>
 

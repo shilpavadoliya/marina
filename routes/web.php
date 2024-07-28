@@ -12,6 +12,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductDetailsController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +23,8 @@ use App\Http\Controllers\WishlistController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Auth::routes();
 
 Route::get('cache-clear',function(){ 
     Artisan::call("optimize:clear"); 
@@ -76,10 +79,10 @@ Route::get('/search', [ProductDetailsController::class, 'search'])->name('produc
 
 Route::post('/pincode-check', [OrderController::class, 'pincodeCheck'])->name('pincode-check');
 
+Route::get('reset-password/{token}/{email}', [ResetPasswordController::class, 'showResetForm'] )->name('password.reset');
 
 include 'upgrade.php';
 
-Auth::routes();
 
 Route::middleware('auth')->group(function () {
     Route::get('/myaccount', [MyAccountController::class, 'index'])->name('myaccount');
@@ -100,4 +103,6 @@ Route::middleware('auth')->group(function () {
     Route::get('wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
     Route::delete('wishlist/remove/{product}', [WishlistController::class, 'remove'])->name('wishlist.remove');
+
+    Route::post('order-cancel', [OrderController::class, 'orderCancel'])->name('orderCancel');
 });

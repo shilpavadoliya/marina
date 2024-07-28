@@ -23,8 +23,8 @@ class MyAccountController extends Controller
 
     public function myAccountOrder()
     {
-        $order = Purchase::where('user_id', Auth()->user()->id)->where('status', 1)->with('purchaseItems')->get();
-
+        $order = Purchase::where('user_id', Auth()->user()->id)->whereIn('status', [1, 4])->with('purchaseItems')->get();
+        
         return view('frontend.myAccount.my-account-orders', compact('order'));
     }
 

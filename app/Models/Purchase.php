@@ -152,6 +152,8 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
 
     const ORDERED = 3;
 
+    const CANCELED = 4;
+
     public function getStatusName()
     {
         switch ($this->status) {
@@ -161,6 +163,8 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
                 return 'PENDING';
             case self::ORDERED:
                 return 'ORDERED';
+            case self::CANCELED:
+                return 'CANCELED';
             default:
                 return 'UNKNOWN';
         }

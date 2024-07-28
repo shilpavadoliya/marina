@@ -3,16 +3,16 @@
         
     <section class="registerPage | padding-top-main margin-bottom-max">
         <div class="container">
-            <div class="row row-gap-5">
-                <div class="col-12">
+            <div class="row justify-content-center">
+                <div class="col-6">
                     <div class="wrapper border-0 ps-md-4">
-                    <h1 class="heading2">Sign In</h1>
+                    <h1 class="heading2 mb-3">Reset Password</h1>
                         <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 
                         <input type="hidden" name="token" value="{{ $token }}">
                             <div>
-                                <label for="username">Username or email address <span class="required">*</span></label>
+                                <label for="username">Email address <span class="required">*</span></label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
 
                                 @error('email')
@@ -22,6 +22,7 @@
                                 @enderror
                             </div>
                             <div class="mt-3">
+                                <label for="password-confirm">Password</label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                                 @error('password')
@@ -31,12 +32,9 @@
                                 @enderror
                             </div>
 
-                            <div class="row mb-3">
-                                <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                </div>
+                            <div class="mt-3">
+                                <label for="password-confirm">{{ __('Confirm Password') }}</label>
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
 
                             <div class="mt-4">

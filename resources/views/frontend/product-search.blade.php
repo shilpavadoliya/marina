@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
 
-                                @if(Auth::check())
+                                {{-- @if(Auth::check())
                                     @if(getWishlist($product->id))
                                         <form action="{{ route('wishlist.remove', $product) }}" method="POST">
                                             @csrf
@@ -68,7 +68,7 @@
                                             <button type="submit">Add to Wishlist</button>
                                         </form>
                                     @endif
-                                @endif
+                                @endif --}}
                                         </div>
                                     </div>
                                 </div>

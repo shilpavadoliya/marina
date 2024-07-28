@@ -18,7 +18,6 @@ const Suppliers = (props) => {
     const [isDelete, setIsDelete] = useState(null);
     const [importSuppliers, setImportSuppliers] = useState(false);
 
-    console.log(userRole);
     const handleClose = () => {
         setImportSuppliers(!importSuppliers);
     };

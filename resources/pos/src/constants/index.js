@@ -55,6 +55,7 @@ export const apiBaseURL = {
     QUOTATION_PDF: "quotation-pdf-download",
     SALE_RETURN_PDF: "sale-return-pdf-download",
     PURCHASE_PDF: "purchase-pdf-download",
+    B2C_PURCHASE_PDF: "b2c-purchase-pdf-download",
     PURCHASES_RETURN: "purchases-return",
     SALE_RETURN_DETAILS: "sale-return-info",
     PURCHASES_RETURN_DETAILS: "purchase-return-info",
@@ -182,7 +183,8 @@ export const supplierActionType = {
     FETCH_ALL_SUPPLIERS: "FETCH_ALL_SUPPLIERS",
     FETCH_SUPPLIERS_REPORT: "FETCH_SUPPLIERS_REPORT",
     SET_ACTIVE_DE_ACTIVE: "SET_ACTIVE_DE_ACTIVE",
-    FETCH_COUNTRIES:"FETCH_COUNTRIES"
+    FETCH_COUNTRIES:"FETCH_COUNTRIES",
+    FETCH_STATES:"FETCH_STATES"
 };
 
 export const smsApiActionType = {

@@ -22,13 +22,13 @@
 
                                             <ul class="mt-2">
 
-                                                <li><a href="" target="_blank"><img src="{{ asset('assets/images/icons/facebook.svg') }}" alt=""></a></li>
+                                                <li><a href="https://www.facebook.com/mymarinafoods/" target="_blank"><img src="{{ asset('assets/images/icons/facebook.svg') }}" alt=""></a></li>
 
-                                                <li><a href="" target="_blank"><img src="{{ asset('assets/images/icons/youtube.svg') }}" alt=""></a></li>
+                                                <li><a href="https://x.com/MyMarina_India" target="_blank"><img src="{{ asset('assets/images/icons/x.svg') }}" alt=""></a></li>
 
-                                                <li><a href="" target="_blank"><img src="{{ asset('assets/images/icons/insta.svg') }}" alt=""></a></li>
+                                                <li><a href="https://www.instagram.com/mymarinafoods/" target="_blank"><img src="{{ asset('assets/images/icons/insta.svg') }}" alt=""></a></li>
 
-                                                <li><a href="" target="_blank"><img src="{{ asset('assets/images/icons/linkedin.svg') }}" alt=""></a></li>
+                                                <li><a href="https://www.linkedin.com/company/my-marina-india/" target="_blank"><img src="{{ asset('assets/images/icons/linkedin.svg') }}" alt=""></a></li>
 
                                             </ul>
 
@@ -40,7 +40,7 @@
 
                                 <div class="col-md-8">
 
-                                    <h2 class="title">Usefull Links</h2>
+                                    <h2 class="title">Useful Links</h2>
 
                                     <div class="d-flex mt-4" style="width: 100%;">
 

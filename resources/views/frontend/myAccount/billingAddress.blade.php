@@ -24,7 +24,7 @@
                             <div class="col-md-12">
                                 <div>
                                     <label for="username">Company name (optional)</label>
-                                    <input type="text" name="company_name" value="{{ $user->company_name ?? '' }}" required>
+                                    <input type="text" name="company_name" value="{{ $user->company_name ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
