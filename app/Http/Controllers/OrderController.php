@@ -217,6 +217,7 @@ class OrderController extends Controller
     }
 
     public function submitPaymentForm(Request $request) {
+        dd($request->all());
         $merchantId = 'PGTESTPAYUAT77';
         $apiKey = '14fa5465-f8a7-443f-8477-f986b8fcfde9';
         $redirectUrl = route('confirm');
@@ -249,7 +250,7 @@ class OrderController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+        CURLOPT_URL => "https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/pay",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -269,10 +270,13 @@ class OrderController extends Controller
 
         curl_close($curl);
 
+        $rData = json_decode($response);
+
         if ($err) {
             echo "cURL Error #:" . $err;
         } else {
             $res = json_decode($response);
+            return redirect()->to($rData->data->instrumentResponse->redirectInfo->url);
         }
           
     }
