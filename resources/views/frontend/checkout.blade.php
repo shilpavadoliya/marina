@@ -149,14 +149,14 @@
                                             <!-- <img src="{{ asset('assets/images/icons/Razorpay_logo.svg') }}" style="width: 150px;" alt=""> -->
                                             Cash On Delivery
                                         </label>
-                                        <input type="radio" name="paymentMethod" id="razorpay" checked  />
+                                        <input type="radio" name="paymentMethod" id="cod" value="cod" checked  />
                                     </div>
-                                    <!-- <div class="col-5 d-flex flex-column align-items-center">
+                                    <div class="col-5 d-flex flex-column align-items-center">
                                         <label for="paytm" class="mb-2">
                                             <img src="{{ asset('assets/images/icons/Paytm_Logo.svg') }}" style="width: 100px;" alt="">
                                         </label>
-                                        <input type="radio" name="paymentMethod" id="paytm" />
-                                    </div> -->
+                                        <input type="radio" name="paymentMethod" id="phonepay" value="phonepay" />
+                                    </div>
                                 </div>
                                 
                                 
@@ -178,13 +178,17 @@
         </div>
     </section>
 
+    <form method="post" action="{{ route('pay-now') }}" id="phonePayForm">
+        @csrf
+
+    </form>
+
 @endsection
 
 @push('scripts')
         
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script>
-        
+    <script> 
         $(".place_order").on("click", function(){
             var area_pincode = "{{ session()->get('pincode') }}";
             var customer_pincode = $("input[name='pin_code']").val();
@@ -207,9 +211,18 @@
                     let currency = "INR";
                     let name = first_name;
                     let description = "Food Order";
+                    let order_number = $("input[name='order_number']").val();
+                    let paymentMethod = $("input[name='paymentMethod']:checked").val();
 
-                    $("#paymentID").val('COD');
-                    $("#shiipingForm").submit();
+                    if(paymentMethod == "cod") {
+                        $("#paymentID").val('COD');
+                        $("#shiipingForm").submit();
+                    }else{
+                        $("#paymentID").val('PHONEPAY');
+
+                        $("#paymentID").val('COD');
+                        $("#phonePayForm").submit();
+                    }
                     
                     // var options = {
                     //     key: '{{ env("RAZORPAY_KEY_ID") }}',
@@ -227,6 +240,8 @@
 
                     // rzp.open();
                     // e.preventDefault();
+
+                    
                     
                 }
             }

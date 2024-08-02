@@ -79,6 +79,13 @@ Route::get('/search', [ProductDetailsController::class, 'search'])->name('produc
 
 Route::post('/pincode-check', [OrderController::class, 'pincodeCheck'])->name('pincode-check');
 
+//SUBMIT PAYMENT FORM ROUTE
+Route::post('/pay-now', [OrderController::class, 'submitPaymentForm'])->name('pay-now');
+
+//CALLBACK ROUTE
+Route::get('/confirm', [OrderController::class, 'confirmPayment'])->name('confirm');
+
+
 Route::get('reset-password/{token}/{email}', [ResetPasswordController::class, 'showResetForm'] )->name('password.reset');
 
 include 'upgrade.php';

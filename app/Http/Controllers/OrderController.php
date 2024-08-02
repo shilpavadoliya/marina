@@ -215,5 +215,97 @@ class OrderController extends Controller
 
         return redirect()->route('myaccount-order');
     }
+
+    public function submitPaymentForm(Request $request) {
+        $merchantId = 'PGTESTPAYUAT77';
+        $apiKey = '14fa5465-f8a7-443f-8477-f986b8fcfde9';
+        $redirectUrl = route('confirm');
+        $order_id = uniqid(); 
+        $amount = 100;
+
+        $transaction_data = array(
+            'merchantId' => "$merchantId",
+            'merchantTransactionId' => "$order_id",
+            "merchantUserId"=>$order_id,
+            'amount' => $amount*100,
+            'redirectUrl'=>"$redirectUrl",
+            'redirectMode'=>"POST",
+            'callbackUrl'=>"$redirectUrl",
+            "paymentInstrument"=> array(    
+                "type"=> "PAY_PAGE",
+            )
+        );
+
+        $encode = json_encode($transaction_data);
+        $payloadMain = base64_encode($encode);
+        $salt_index = 1; //key index 1
+        $payload = $payloadMain . "/pg/v1/pay" . $apiKey;
+        $sha256 = hash("sha256", $payload);
+        $final_x_header = $sha256 . '###' . $salt_index;
+        $request = json_encode(array('request'=>$payloadMain));
+        
+
+        
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $request,
+        CURLOPT_HTTPHEADER => [
+        "Content-Type: application/json",
+        "X-VERIFY: " . $final_x_header,
+        "accept: application/json"
+        ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            $res = json_decode($response);
+        }
+          
+    }
+
+    
+    public function confirmPayment(Request $request) {
+            
+        if($request->code == 'PAYMENT_SUCCESS'){
+            $transactionId = $request->transactionId;
+            $merchantId=$request->merchantId;
+            $providerReferenceId=$request->providerReferenceId;
+            $merchantOrderId=$request->merchantOrderId;
+            $checksum=$request->checksum;
+            $status=$request->code;
+    
+            //Transaction completed, You can add transaction details into database
+            $data = [
+                'providerReferenceId' => $providerReferenceId,
+                'checksum' => $checksum,
+            ];
+
+            if($merchantOrderId !=''){
+                $data['merchantOrderId']=$merchantOrderId;
+            }
+
+            Payment::where('transaction_id', $transactionId)->update($data); 
+
+            return view('confirm_payment',compact('providerReferenceId', 'transactionId'));
+
+        }else{
+            dd('ERROR : ' .$request->code. ', Please Try Again Later.');
+        }
+    }
+
 }
                                         
